@@ -29,7 +29,6 @@ public class NewBehaviourScript : ScriptableObject {
     public int numDrawCards;
     public int numDiscardDraw;
     public int numPoisonsPlace;
-    public int numPickupFromDiscard;
 
     //BURN EFFECTS
     public int numBurn_Deck;

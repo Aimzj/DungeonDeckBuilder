@@ -15,8 +15,21 @@ MonoBehaviour:
   Description: 
   isDiscardEffect: 0
   isBurnEffect: 0
+  isFree: 0
+  hasSigil: 0
+  useHighestVal_Attack: 0
   Artwork: {fileID: 0}
   DiscardCost: 0
   BurnCost: 0
   Attack: 0
   Defense: 0
+  numDiscard_Deck: 0
+  numDiscard_Hand: 0
+  numDrawCards: 0
+  numDiscardDraw: 0
+  numPoisonsPlace: 0
+  numPickupFromDiscard: 0
+  numBurn_Deck: 0
+  numBurn_Hand: 0
+  canUnsear: 0
+  CardType: 0
