@@ -1,0 +1,27 @@
+card_1,
+name,Lucky Charm
+discard_cost,0
+burn_cost,0
+flavour_text,none
+attack,0
+defense,1
+has_sigil,FALSE
+discard_effect,+2 cards at random from your deck
+DISCARD_num,1
+DISCARD_num_deck_draw_random,2
+DISCARD_num_Free,0
+DISCARD_highest_val_is_attack,FALSE
+DISCARD_num_poisons,0
+DISCARD_num_discard_draw_choice,0
+DISCARD_num_deck_draw_top,0
+DISCARD_add_attack,0
+burn_effect,+ 1 card of your choice from deck
+BURN_num,1
+BURN_num_deck_draw_choice,1
+BURN_can_unsear,FALSE
+BURN_num_wounds_discard,0
+BURN_num_poisons,0
+BURN_draw_cards,0
+BURN_is_option,FALSE
+BURN_add_defense,0
+imageid,lucky_charm
