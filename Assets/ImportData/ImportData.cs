@@ -31,7 +31,7 @@ using System.Collections.Generic;
 
 public class ImportData   {
 
-	static string[] importNames = new string[]  { "example","items" };
+	static string[] importNames = new string[]  { "cards" };
 
 
 	static ImportData instance;
