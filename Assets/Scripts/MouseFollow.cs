@@ -16,7 +16,7 @@ public class MouseFollow : MonoBehaviour {
 	void Update () {
             if (isFollowing)
         {
-            transform.position = new Vector3((Input.mousePosition.x - Screen.width / 2) / Screen.width / 0.05f, 0, (Input.mousePosition.y - Screen.width /8) / Screen.width / 0.05f);
+            transform.position = new Vector3((Input.mousePosition.x - Screen.width / 2) / Screen.width / 0.05f, 2, (Input.mousePosition.y - Screen.width /8) / Screen.width / 0.05f);
 
             // Smoothly tilts a transform towards a target rotation.
             double tiltAroundZ = Input.GetAxis("Mouse X") * angle * 2;
@@ -30,5 +30,12 @@ public class MouseFollow : MonoBehaviour {
     private void OnMouseDown()
     {
         isFollowing = true;
+    }
+
+    private void OnMouseUp()
+    {
+        isFollowing = false;
+        transform.rotation = Quaternion.identity;
+        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 }
