@@ -36,6 +36,6 @@ public class MouseFollow : MonoBehaviour {
     {
         isFollowing = false;
         transform.rotation = Quaternion.identity;
-        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+       // transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 }
