@@ -12,7 +12,7 @@ public class SelfDestruct : MonoBehaviour {
     IEnumerator DestroySelf()
     {
         yield return new WaitForSecondsRealtime(2f);
-        Destroy(this.gameObject);
+       // Destroy(this.gameObject);
     }
 
 	// Update is called once per frame
