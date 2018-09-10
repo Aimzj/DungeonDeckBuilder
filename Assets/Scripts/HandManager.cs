@@ -8,6 +8,7 @@ public class HandManager : MonoBehaviour {
     private Transform playerTrash, enemyTrash;
 
     public GameObject CardObj;
+    public GameObject TempObj;
 
     public List<GameObject> cardList;
 
@@ -57,44 +58,13 @@ public class HandManager : MonoBehaviour {
                 newCardPos = multiplier * x;
                 HandPositions[i] = newCardPos;
                 multiplier -= 1f;
-                /* if (i< (numCardsInHand / 2) - 1)
-                 {
-                     //right hand side
-                     multiplier -= 1
-                     HandPositions[i] = newCardPos;
-                 }
-                 else
-                 {
-                     //left hand side
-                     HandPositions[i] = -newCardPos;
-                 }*/
-
             }
         }
         else
         {
             HandPositions[0] = 0;
         }
-        /*else
-        {
-            //number is odd
-            if (numCardsInHand > 1)
-            {
-                float multiplier = (numCardsInHand - 1)/2;
-
-                newCardPos = multiplier * x;
-                while (newCardPos > boundaryValue)
-                {
-                    x -= 0.1f;
-                    newCardPos = multiplier * x;
-                }
-            }
-            else
-            {
-                //only one card in hand
-                HandPositions[0] = 0;
-            }
-        }*/
+        
     }
 
     // Update is called once per frame
@@ -105,7 +75,7 @@ public class HandManager : MonoBehaviour {
             AddCardToHand();
 
             //instantiate card in deck and add to list
-            var temp = (GameObject)Instantiate(CardObj, Vector3.zero, Quaternion.identity);
+            var temp = (GameObject)Instantiate(CardObj, playerDeck.position, Quaternion.identity);
             cardList.Add(temp);
 
             Debug.Log("num cards " + numCardsInHand.ToString());
@@ -114,9 +84,13 @@ public class HandManager : MonoBehaviour {
             {
                 Debug.Log(HandPositions[i]);
                 CardMovement cardScript = cardList[i].GetComponent<CardMovement>();
-               // cardScript._targetTransform = null;
-                cardList[i].GetComponent<CardMovement>()._targetTransform.position = new Vector3(HandPositions[i], 0f, -0.83f);
-                Debug.Log("lol");
+                // cardScript._targetTransform = null;
+                var obj = (GameObject)Instantiate(TempObj, new Vector3(HandPositions[i], 0f, -0.83f), Quaternion.identity);
+                //GameObject tempObj = new GameObject();
+                //tempObj.transform.position = new Vector3(HandPositions[i], 0f, -0.83f);
+                cardList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
+                //cardList[i].GetComponent<CardMovement>()._targetTransform.position = new Vector3(HandPositions[i], 0f, -0.83f);
+               // Debug.Log("lol");
             }
         }
 
