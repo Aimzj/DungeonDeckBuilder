@@ -3,21 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CardMovement : MonoBehaviour {
-    public Transform PlayerDeck, EnemyDeck;
-    public Transform PlayerDiscard, EnemyDiscard;
-    public Transform PlayerTrash, EnemyTrash;
 
     public Texture FrontPlayerCard, BackPlayerCard;
-
-    //list of x positions for the cards in the player's hand
-    public List<float> HandPositions;
-    //distance between the cards in the player's hand.
-    private float x;
-    //the x value that the cards should not cross. The distance between cards is made smaller when this value is crossed
-    private float boundaryValue;
-
-    [SerializeField]
-    private int numCardsInHand;
 
     public Transform TargetTransform
     {
@@ -33,7 +20,7 @@ public class CardMovement : MonoBehaviour {
             return _targetTransform;
         }
     }
-    private Transform _targetTransform;
+    public Transform _targetTransform;
 
     private float _positionDamp = .2f;
 
@@ -41,83 +28,15 @@ public class CardMovement : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        numCardsInHand= 0;
 
-        x = 3;
-        boundaryValue = 6;
 	}
 	
-    public void AddCardToHand()
-    {
-        //  Instantiate(cardObj, PlayerDeck.transform.position, Quaternion.identity);
-        numCardsInHand++;
-        HandPositions.Add(0);
-        float newCardPos = 0;
-        //check if number of cards is odd or even
-        if(numCardsInHand>1)
-        {
-            //number is even
-            float multiplier = (numCardsInHand - 1) / 2;
-            //check to see that the boundary value hasn't been crossed
-            //if it has been crossed, make the distance between cards smaller
-            newCardPos = multiplier* x;
-            while (newCardPos > boundaryValue)
-            {
-                x -= 0.1f;
-                newCardPos = multiplier * x;
-            }
-
-            //start on the right hand side
-            //move from right to left
-            for (int i = 0; i < numCardsInHand - 1; i++)
-            {
-                newCardPos = multiplier * x;
-                HandPositions[i] = newCardPos;
-                multiplier -= 1f;
-               /* if (i< (numCardsInHand / 2) - 1)
-                {
-                    //right hand side
-                    multiplier -= 1
-                    HandPositions[i] = newCardPos;
-                }
-                else
-                {
-                    //left hand side
-                    HandPositions[i] = -newCardPos;
-                }*/
-                
-            }
-        }
-        /*else
-        {
-            //number is odd
-            if (numCardsInHand > 1)
-            {
-                float multiplier = (numCardsInHand - 1)/2;
-
-                newCardPos = multiplier * x;
-                while (newCardPos > boundaryValue)
-                {
-                    x -= 0.1f;
-                    newCardPos = multiplier * x;
-                }
-            }
-            else
-            {
-                //only one card in hand
-                HandPositions[0] = 0;
-            }
-        }*/
-    }
+    
 
 	// Update is called once per frame
 	void Update () {
         SmoothToTargetPositionRotation();
 
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            _targetTransform = PlayerDeck;
-        }
     }
 
     private void SmoothToTargetPositionRotation()
