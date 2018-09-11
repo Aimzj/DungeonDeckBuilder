@@ -6,13 +6,13 @@ public class SelfDestruct : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        StartCoroutine(DestroySelf());
+       // StartCoroutine(DestroySelf());
 	}
 	
     IEnumerator DestroySelf()
     {
         yield return new WaitForSecondsRealtime(2f);
-       // Destroy(this.gameObject);
+        Destroy(this.gameObject);
     }
 
 	// Update is called once per frame

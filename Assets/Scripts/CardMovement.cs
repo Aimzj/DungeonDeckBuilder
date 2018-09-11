@@ -31,8 +31,12 @@ public class CardMovement : MonoBehaviour {
     private double angle = 15.0;
     private double smooth = 5.0;
 
+    private HandManager handManagerScript;
+
     // Use this for initialization
     void Start () {
+        handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
+
         isFollowing = false;
     }
 
@@ -60,6 +64,7 @@ public class CardMovement : MonoBehaviour {
     private void OnMouseDown()
     {
         isFollowing = !isFollowing;
+        handManagerScript.isHoldingCard = isFollowing;
     }
 
     private void SmoothToTargetPositionRotation()

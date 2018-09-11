@@ -21,6 +21,9 @@ public class HandManager : MonoBehaviour {
 
     private int numCardsInHand;
 
+    //is the player holding a card
+    public bool isHoldingCard;
+
     // Use this for initialization
     void Start () {
         playerDeck = GameObject.Find("Deck").GetComponent<Transform>();
@@ -29,6 +32,8 @@ public class HandManager : MonoBehaviour {
 
         x = 3;
         boundaryValue = 6;
+
+        isHoldingCard = false;
     }
 
     public void AddCardToHand()
