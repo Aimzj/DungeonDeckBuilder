@@ -32,10 +32,12 @@ public class CardMovement : MonoBehaviour {
     private double smooth = 5.0;
 
     private HandManager handManagerScript;
+    private PlayAreaSensor areaSensorScript;
 
     // Use this for initialization
     void Start () {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
+        areaSensorScript = GameObject.Find("PlayArea").GetComponent<PlayAreaSensor>();
 
         isFollowing = false;
     }
@@ -65,6 +67,13 @@ public class CardMovement : MonoBehaviour {
     {
         isFollowing = !isFollowing;
         handManagerScript.isHoldingCard = isFollowing;
+
+        //check to see if the card was released in an area of importance 
+        if (areaSensorScript.cardIsPresent)
+        {
+            //place the card on the table
+
+        }
     }
 
     private void SmoothToTargetPositionRotation()

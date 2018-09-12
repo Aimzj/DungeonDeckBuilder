@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HandManager : MonoBehaviour {
+    //possible target positions
     private Transform playerDeck, enemyDeck;
     private Transform playerDiscard, enemyDiscard;
     private Transform playerTrash, enemyTrash;
@@ -20,6 +21,8 @@ public class HandManager : MonoBehaviour {
     private float boundaryValue;
 
     private int numCardsInHand;
+
+    private float newCardPos, multiplier;
 
     //is the player holding a card
     public bool isHoldingCard;
@@ -41,12 +44,12 @@ public class HandManager : MonoBehaviour {
         //  Instantiate(cardObj, PlayerDeck.transform.position, Quaternion.identity);
         numCardsInHand++;
         HandPositions.Add(0f);
-        float newCardPos = 0;
+        newCardPos = 0;
         //check if number of cards is odd or even
         if (numCardsInHand > 1)
         {
-            //number is even
-            float multiplier = (numCardsInHand - 1) / 2;
+            multiplier = (numCardsInHand - 1f) / 2;
+                
             //check to see that the boundary value hasn't been crossed
             //if it has been crossed, make the distance between cards smaller
             newCardPos = multiplier * x;
@@ -89,13 +92,11 @@ public class HandManager : MonoBehaviour {
             {
                 Debug.Log(HandPositions[i]);
                 CardMovement cardScript = cardList[i].GetComponent<CardMovement>();
-                // cardScript._targetTransform = null;
+                
                 var obj = (GameObject)Instantiate(TempObj, new Vector3(HandPositions[i], 0f, -0.83f), Quaternion.identity);
-                //GameObject tempObj = new GameObject();
-                //tempObj.transform.position = new Vector3(HandPositions[i], 0f, -0.83f);
+                
                 cardList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
-                //cardList[i].GetComponent<CardMovement>()._targetTransform.position = new Vector3(HandPositions[i], 0f, -0.83f);
-               // Debug.Log("lol");
+                
             }
         }
 

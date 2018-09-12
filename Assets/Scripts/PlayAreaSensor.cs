@@ -6,6 +6,8 @@ public class PlayAreaSensor : MonoBehaviour {
     private HandManager handManagerScript;
     private GameObject playArea;
 
+    public bool cardIsPresent;
+
     Ray ray;
     RaycastHit hit;
     RaycastHit[] hits;
@@ -13,6 +15,8 @@ public class PlayAreaSensor : MonoBehaviour {
     void Start () {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         playArea = GameObject.Find("PlayArea");
+
+        cardIsPresent = false;
 	}
 
     // Update is called once per frame
@@ -37,16 +41,19 @@ public class PlayAreaSensor : MonoBehaviour {
                 {
                     Debug.Log("hi");
                     playArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0.5f);
+                    cardIsPresent = true;
                 }
                 else
                 {
                     playArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0f);
+                    cardIsPresent = false;
                 }
                     
             }
             else if(count==len && !isFound)
             {
                 playArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0f);
+                cardIsPresent = false;
             }
         }
 
