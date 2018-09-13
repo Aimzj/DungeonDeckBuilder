@@ -1741,6 +1741,11 @@ MonoBehaviour:
   FrontPlayerCard: {fileID: 2800000, guid: 4b30d7d6bbe5a7e4a8d3f12ffd7aea91, type: 3}
   BackPlayerCard: {fileID: 2800000, guid: acceae24e0f1a7a409fefc300aebe144, type: 3}
   _targetTransform: {fileID: 0}
+  isInHand: 0
+  hoverHeight: 0
+  zShift: 0
+  posInHand: 0
+  isPlayed: 0
 --- !u!1 &1903382115
 GameObject:
   m_ObjectHideFlags: 0
@@ -1987,6 +1992,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2134202298}
   - component: {fileID: 2134202297}
+  - component: {fileID: 2134202299}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2028,3 +2034,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0.03}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2134202299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2134202296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c6ee0144e62e2148904ec8f7b941083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardList: []
+  TempObj: {fileID: 1099375877924872, guid: 77fd7d81c8342e24d86401421403acb2, type: 2}
+  PlayAreaPositions: []

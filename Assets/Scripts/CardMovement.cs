@@ -40,13 +40,21 @@ public class CardMovement : MonoBehaviour {
     [SerializeField]
     private float zShift;
 
+    //position tracking
+    public int posInHand;
+
+    //play area
+    public bool isPlayed;
+
     private HandManager handManagerScript;
     private PlayAreaSensor areaSensorScript;
+    private PlayAreaManager areaManagerScript;
 
     // Use this for initialization
     void Start () {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         areaSensorScript = GameObject.Find("PlayArea").GetComponent<PlayAreaSensor>();
+        areaManagerScript = GameObject.Find("GameManager").GetComponent<PlayAreaManager>();
 
         isFollowing = false;
 
@@ -54,7 +62,8 @@ public class CardMovement : MonoBehaviour {
 
         hoverHeight = 2f;
         zShift = 0.5f;
-        //isInHand = false;
+
+        isPlayed= false;
 
     }
 
@@ -81,13 +90,32 @@ public class CardMovement : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        isFollowing = !isFollowing;
+        //check if the card is in the player's hand
+        if (isInHand)
+        {
+            isFollowing = true;
+            handManagerScript.isHoldingCard = isFollowing;
+            isHovering = false;
+        }
+ 
+    }
+
+    private void OnMouseUp()
+    {
+        isFollowing = false;
         handManagerScript.isHoldingCard = isFollowing;
 
         //check to see if the card was released in an area of importance 
         if (areaSensorScript.cardIsPresent)
         {
+            //remove the card from the Hand List
+            handManagerScript.RemoveCardFromHand(this.posInHand);
+            posInHand = -1;
+
             //place the card on the table
+            areaManagerScript.PlayCard(this.gameObject);
+            isPlayed = true;
+            isInHand = false;
 
         }
     }
@@ -97,10 +125,8 @@ public class CardMovement : MonoBehaviour {
         //if the card is in the player's hand and they mouse over it, the card should rise towards the player.
         //player must not be holding the card already
         //card must be in the player's hand
-        Debug.Log(isInHand);
         if (!handManagerScript.isHoldingCard && isInHand)
         {
-            Debug.Log("hover!");
             isHovering = true;
             _targetTransform.position = new Vector3(_targetTransform.position.x, hoverHeight, zShift);
         }
@@ -112,7 +138,6 @@ public class CardMovement : MonoBehaviour {
         // move the card to it's original transform only if it is already hovering
         if (isHovering)
         {
-            Debug.Log("un-hover");
             isHovering = false;
             _targetTransform.position = new Vector3(_targetTransform.position.x, _targetTransform.position.y-hoverHeight, -0.83f);
         }

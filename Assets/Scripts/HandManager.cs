@@ -39,17 +39,72 @@ public class HandManager : MonoBehaviour {
         isHoldingCard = false;
     }
 
+    public void RemoveCardFromHand(int pos)
+    {
+        numCardsInHand--;
+        HandPositions.RemoveAt(pos);
+        cardList.RemoveAt(pos);
+
+        Debug.Log(cardList.Count);
+
+        //loop through all cards after the removed card and change their pos value
+        //check if the card removed was the last card
+        if(pos != cardList.Count)
+        {
+            for (int i = pos; i < cardList.Count; i++)
+            {
+                cardList[i].GetComponent<CardMovement>().posInHand = i;
+            }
+        }
+        
+    }
+
     public void AddCardToHand()
     {
-        //  Instantiate(cardObj, PlayerDeck.transform.position, Quaternion.identity);
         numCardsInHand++;
         HandPositions.Add(0f);
         newCardPos = 0;
+
+        SetCardPositionsInHand();
+    }
+
+    // Update is called once per frame
+    void Update () {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            //add a card to the hand
+            AddCardToHand();
+
+            //instantiate card in deck and add to list
+            var temp = (GameObject)Instantiate(CardObj, playerDeck.position, Quaternion.identity);
+            cardList.Add(temp);
+
+            //card is now in the player's hand
+            cardList[cardList.Count - 1].GetComponent<CardMovement>().isInHand = true;
+            //set the position(index) of the card in the hand
+            cardList[cardList.Count - 1].GetComponent<CardMovement>().posInHand = cardList.Count - 1;
+
+            UpdateCardPositionsInHand();
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            //move all cards to the deck
+            for(int i =0; i < cardList.Count; i++)
+            {
+                cardList[i].GetComponent<CardMovement>()._targetTransform = playerDeck;
+            }
+        }
+    }
+
+    public void SetCardPositionsInHand()
+    {
+        Debug.Log("card in hand: "+numCardsInHand);
         //check if number of cards is odd or even
         if (numCardsInHand > 1)
         {
             multiplier = (numCardsInHand - 1f) / 2;
-                
+
             //check to see that the boundary value hasn't been crossed
             //if it has been crossed, make the distance between cards smaller
             newCardPos = multiplier * x;
@@ -70,46 +125,23 @@ public class HandManager : MonoBehaviour {
         }
         else
         {
-            HandPositions[0] = 0;
+            if(numCardsInHand != 0)
+                HandPositions[0] = 0;
         }
-        
     }
 
-    // Update is called once per frame
-    void Update () {
-        if (Input.GetKeyDown(KeyCode.A))
+    public void UpdateCardPositionsInHand()
+    {
+        Debug.Log("POOP");
+        //assign positions to cards
+        for (int i = 0; i < cardList.Count; i++)
         {
-            //add a card to the hand
-            AddCardToHand();
+            CardMovement cardScript = cardList[i].GetComponent<CardMovement>();
 
-            //instantiate card in deck and add to list
-            var temp = (GameObject)Instantiate(CardObj, playerDeck.position, Quaternion.identity);
-            cardList.Add(temp);
+            var obj = (GameObject)Instantiate(TempObj, new Vector3(HandPositions[i], 0f, -0.83f), Quaternion.identity);
 
-            //card is now in the player's hand
-            cardList[cardList.Count - 1].GetComponent<CardMovement>().isInHand = true;
-            //temp.GetComponent<CardMovement>().isInHand = true;
+            cardList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
 
-            //assign positions to cards
-            for (int i = 0; i < cardList.Count; i++)
-            {
-                CardMovement cardScript = cardList[i].GetComponent<CardMovement>();
-                
-                var obj = (GameObject)Instantiate(TempObj, new Vector3(HandPositions[i], 0f, -0.83f), Quaternion.identity);
-                
-                cardList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
-                
-            }
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            //move all cards to the deck
-            for(int i =0; i < cardList.Count; i++)
-            {
-                cardList[i].GetComponent<CardMovement>()._targetTransform = playerDeck;
-            }
         }
     }
 }
