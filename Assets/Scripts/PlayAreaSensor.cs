@@ -36,10 +36,10 @@ public class PlayAreaSensor : MonoBehaviour {
             {
                 isFound = true;
 
-                Debug.Log(handManagerScript.isHoldingCard);
+                //Debug.Log(handManagerScript.isHoldingCard);
                 if (handManagerScript.isHoldingCard)
                 {
-                    Debug.Log("hi");
+                  //  Debug.Log("hi");
                     playArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0.5f);
                     cardIsPresent = true;
                 }

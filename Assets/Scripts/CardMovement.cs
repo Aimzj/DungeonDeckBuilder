@@ -31,6 +31,15 @@ public class CardMovement : MonoBehaviour {
     private double angle = 15.0;
     private double smooth = 5.0;
 
+    //hovering
+    private bool isHovering;
+    public bool isInHand;
+    private Vector3 origHandPos;
+    [SerializeField]
+    private float hoverHeight;
+    [SerializeField]
+    private float zShift;
+
     private HandManager handManagerScript;
     private PlayAreaSensor areaSensorScript;
 
@@ -40,6 +49,13 @@ public class CardMovement : MonoBehaviour {
         areaSensorScript = GameObject.Find("PlayArea").GetComponent<PlayAreaSensor>();
 
         isFollowing = false;
+
+        isHovering = false;
+
+        hoverHeight = 2f;
+        zShift = 0.5f;
+        //isInHand = false;
+
     }
 
 	// Update is called once per frame
@@ -73,6 +89,32 @@ public class CardMovement : MonoBehaviour {
         {
             //place the card on the table
 
+        }
+    }
+
+    private void OnMouseOver()
+    {
+        //if the card is in the player's hand and they mouse over it, the card should rise towards the player.
+        //player must not be holding the card already
+        //card must be in the player's hand
+        Debug.Log(isInHand);
+        if (!handManagerScript.isHoldingCard && isInHand)
+        {
+            Debug.Log("hover!");
+            isHovering = true;
+            _targetTransform.position = new Vector3(_targetTransform.position.x, hoverHeight, zShift);
+        }
+        
+    }
+
+    private void OnMouseExit()
+    {
+        // move the card to it's original transform only if it is already hovering
+        if (isHovering)
+        {
+            Debug.Log("un-hover");
+            isHovering = false;
+            _targetTransform.position = new Vector3(_targetTransform.position.x, _targetTransform.position.y-hoverHeight, -0.83f);
         }
     }
 

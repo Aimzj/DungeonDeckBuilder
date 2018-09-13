@@ -86,11 +86,13 @@ public class HandManager : MonoBehaviour {
             var temp = (GameObject)Instantiate(CardObj, playerDeck.position, Quaternion.identity);
             cardList.Add(temp);
 
-            Debug.Log("num cards " + numCardsInHand.ToString());
+            //card is now in the player's hand
+            cardList[cardList.Count - 1].GetComponent<CardMovement>().isInHand = true;
+            //temp.GetComponent<CardMovement>().isInHand = true;
+
             //assign positions to cards
             for (int i = 0; i < cardList.Count; i++)
             {
-                Debug.Log(HandPositions[i]);
                 CardMovement cardScript = cardList[i].GetComponent<CardMovement>();
                 
                 var obj = (GameObject)Instantiate(TempObj, new Vector3(HandPositions[i], 0f, -0.83f), Quaternion.identity);
