@@ -47,14 +47,14 @@ public class CardMovement : MonoBehaviour {
     public bool isPlayed;
 
     private HandManager handManagerScript;
-    private PlayAreaSensor areaSensorScript;
-    private PlayAreaManager areaManagerScript;
+    private AreaSensor areaSensorScript;
+    private AreaManager areaManagerScript;
 
     // Use this for initialization
     void Start () {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
-        areaSensorScript = GameObject.Find("PlayArea").GetComponent<PlayAreaSensor>();
-        areaManagerScript = GameObject.Find("GameManager").GetComponent<PlayAreaManager>();
+        areaSensorScript = GameObject.Find("GameManager").GetComponent<AreaSensor>();
+        areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
 
         isFollowing = false;
 
@@ -112,10 +112,28 @@ public class CardMovement : MonoBehaviour {
             handManagerScript.RemoveCardFromHand(this.posInHand);
             posInHand = -1;
 
-            //place the card on the table
-            areaManagerScript.PlayCard(this.gameObject);
             isPlayed = true;
             isInHand = false;
+
+            //check which area of importance
+            //PLAY
+            if (areaSensorScript.isPlay)
+            {
+                //place the card on the table
+                areaManagerScript.PlayCard(this.gameObject);              
+            }
+            //DISCARD
+            else if (areaSensorScript.isDiscard)
+            {
+                areaManagerScript.DiscardCard(this.gameObject);
+            }
+            //TRASH
+            else if (areaSensorScript.isTrash)
+            {
+                areaManagerScript.TrashCard(this.gameObject);
+            }
+
+            
 
         }
     }

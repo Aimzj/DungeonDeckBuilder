@@ -30,6 +30,8 @@ public class HandManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         playerDeck = GameObject.Find("Deck").GetComponent<Transform>();
+        playerDiscard = GameObject.Find("Discard").GetComponent<Transform>();
+        playerTrash = GameObject.Find("Trash").GetComponent<Transform>();
 
         numCardsInHand = 0;
 
@@ -44,8 +46,6 @@ public class HandManager : MonoBehaviour {
         numCardsInHand--;
         HandPositions.RemoveAt(pos);
         cardList.RemoveAt(pos);
-
-        Debug.Log(cardList.Count);
 
         //loop through all cards after the removed card and change their pos value
         //check if the card removed was the last card
@@ -87,19 +87,10 @@ public class HandManager : MonoBehaviour {
             UpdateCardPositionsInHand();
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            //move all cards to the deck
-            for(int i =0; i < cardList.Count; i++)
-            {
-                cardList[i].GetComponent<CardMovement>()._targetTransform = playerDeck;
-            }
-        }
     }
 
     public void SetCardPositionsInHand()
     {
-        Debug.Log("card in hand: "+numCardsInHand);
         //check if number of cards is odd or even
         if (numCardsInHand > 1)
         {
@@ -132,7 +123,6 @@ public class HandManager : MonoBehaviour {
 
     public void UpdateCardPositionsInHand()
     {
-        Debug.Log("POOP");
         //assign positions to cards
         for (int i = 0; i < cardList.Count; i++)
         {
