@@ -27,11 +27,16 @@ public class HandManager : MonoBehaviour {
     //is the player holding a card
     public bool isHoldingCard;
 
+    //sounds
+    private SoundManager soundScript;
+
     // Use this for initialization
     void Start () {
         playerDeck = GameObject.Find("Deck").GetComponent<Transform>();
         playerDiscard = GameObject.Find("Discard").GetComponent<Transform>();
         playerTrash = GameObject.Find("Trash").GetComponent<Transform>();
+
+        soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
 
         numCardsInHand = 0;
 
@@ -72,6 +77,9 @@ public class HandManager : MonoBehaviour {
     void Update () {
         if (Input.GetKeyDown(KeyCode.A))
         {
+            //play sound
+            soundScript.PlaySound_DrawCard();
+
             //add a card to the hand
             AddCardToHand();
 

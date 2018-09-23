@@ -50,11 +50,16 @@ public class CardMovement : MonoBehaviour {
     private AreaSensor areaSensorScript;
     private AreaManager areaManagerScript;
 
+    //sound
+    private SoundManager soundScript;
+
     // Use this for initialization
     void Start () {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         areaSensorScript = GameObject.Find("GameManager").GetComponent<AreaSensor>();
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
+
+        soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
 
         isFollowing = false;
 
@@ -93,6 +98,9 @@ public class CardMovement : MonoBehaviour {
         //check if the card is in the player's hand
         if (isInHand)
         {
+            //play sound
+            soundScript.PlaySound_PickUpCard();
+
             isFollowing = true;
             handManagerScript.isHoldingCard = isFollowing;
             isHovering = false;
@@ -108,6 +116,9 @@ public class CardMovement : MonoBehaviour {
         //check to see if the card was released in an area of importance 
         if (areaSensorScript.cardIsPresent)
         {
+            //play sound
+            soundScript.PlaySound_PlayCard();
+
             //remove the card from the Hand List
             handManagerScript.RemoveCardFromHand(this.posInHand);
             posInHand = -1;
@@ -138,13 +149,16 @@ public class CardMovement : MonoBehaviour {
         }
     }
 
-    private void OnMouseOver()
+    private void OnMouseEnter()
     {
         //if the card is in the player's hand and they mouse over it, the card should rise towards the player.
         //player must not be holding the card already
         //card must be in the player's hand
         if (!handManagerScript.isHoldingCard && isInHand)
         {
+            //play sound
+            soundScript.PlaySound_HoverCard();
+
             isHovering = true;
             _targetTransform.position = new Vector3(_targetTransform.position.x, hoverHeight, zShift);
         }
