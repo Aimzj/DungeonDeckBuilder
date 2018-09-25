@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CardMovement : MonoBehaviour {
 
@@ -83,7 +84,7 @@ public class CardMovement : MonoBehaviour {
             // Smoothly tilts a transform towards a target rotation.
             double tiltAroundZ = Input.GetAxis("Mouse X") * angle * 2;
             double tiltAroundX = Input.GetAxis("Mouse Y") * angle * 2;
-            var target = Quaternion.Euler((float)tiltAroundX, 0, -(float)tiltAroundZ);
+            var target = Quaternion.Euler((float)tiltAroundX+90, 0, -(float)tiltAroundZ);
             // Dampen towards the target rotation
             transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * (float)smooth);
         }
@@ -116,36 +117,68 @@ public class CardMovement : MonoBehaviour {
         //check to see if the card was released in an area of importance 
         if (areaSensorScript.cardIsPresent)
         {
-            //play sound
-            soundScript.PlaySound_PlayCard();
-
-            //remove the card from the Hand List
-            handManagerScript.RemoveCardFromHand(this.posInHand);
-            posInHand = -1;
-
-            isPlayed = true;
-            isInHand = false;
 
             //check which area of importance
             //PLAY
             if (areaSensorScript.isPlay)
             {
                 //place the card on the table
-                areaManagerScript.PlayCard(this.gameObject);              
+                //only if the hand size is not exceeded
+                if (!handManagerScript.isExceedingHandSize)
+                {
+                    //play sound
+                    soundScript.PlaySound_PlayCard();
+
+                    //remove the card from the Hand List
+                    handManagerScript.RemoveCardFromHand(this.posInHand);
+                    posInHand = -1;
+
+                    isPlayed = true;
+                    isInHand = false;
+
+                    areaManagerScript.PlayCard(this.gameObject);
+
+                }
+                             
             }
             //DISCARD
             else if (areaSensorScript.isDiscard)
             {
+                //play sound
+                soundScript.PlaySound_PlayCard();
+
+                //remove the card from the Hand List
+                handManagerScript.RemoveCardFromHand(this.posInHand);
+                posInHand = -1;
+
+                isPlayed = true;
+                isInHand = false;
+
                 areaManagerScript.DiscardCard(this.gameObject);
             }
             //TRASH
             else if (areaSensorScript.isTrash)
             {
+                //play sound
+                soundScript.PlaySound_PlayCard();
+
+                //remove the card from the Hand List
+                handManagerScript.RemoveCardFromHand(this.posInHand);
+                posInHand = -1;
+
+                isPlayed = true;
+                isInHand = false;
+
                 areaManagerScript.TrashCard(this.gameObject);
             }
-
+        }
+        else
+        {
+            if(SceneManager.GetActiveScene().buildIndex == 1)
+            {
+                isHovering = true;
+            }
             
-
         }
     }
 

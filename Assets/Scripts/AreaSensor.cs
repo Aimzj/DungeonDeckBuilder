@@ -11,6 +11,8 @@ public class AreaSensor : MonoBehaviour {
     public bool cardIsPresent;
     public bool isPlay, isDiscard, isTrash;
 
+    private Color playArea_StartColour;
+
     Ray ray;
     RaycastHit hit;
     RaycastHit[] hits;
@@ -19,13 +21,14 @@ public class AreaSensor : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
 
         playArea = GameObject.Find("PlayArea");
-        playArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0f);
+        playArea_StartColour = playArea.GetComponent<SpriteRenderer>().color;
+        playArea.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0f);
 
         trashArea = GameObject.Find("TrashArea");
-        trashArea.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 0f);
+       //trashArea.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 0f);
 
         discardArea = GameObject.Find("DiscardArea");
-        discardArea.GetComponent<SpriteRenderer>().color = new Color(1, 1, 0, 0f);
+        //discardArea.GetComponent<SpriteRenderer>().color = new Color(1, 1, 0, 0f);
 
         cardIsPresent = false;
 
@@ -53,7 +56,7 @@ public class AreaSensor : MonoBehaviour {
 
                 if (handManagerScript.isHoldingCard)
                 {
-                    playArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0.5f);
+                    playArea.GetComponent<SpriteRenderer>().color = playArea_StartColour;
                     cardIsPresent = true;
 
                     isPlay = true;
@@ -84,7 +87,7 @@ public class AreaSensor : MonoBehaviour {
                 }
                 else
                 {
-                    trashArea.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 0f);
+                    trashArea.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
                     cardIsPresent = false;
 
                     isTrash = false;
@@ -106,7 +109,7 @@ public class AreaSensor : MonoBehaviour {
                 }
                 else
                 {
-                    discardArea.GetComponent<SpriteRenderer>().color = new Color(1, 1, 0, 0f);
+                    discardArea.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
                     cardIsPresent = false;
 
                     isDiscard = false;
@@ -116,8 +119,8 @@ public class AreaSensor : MonoBehaviour {
             else if (count==len && !isFound)
             {
                 playArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0f);
-                trashArea.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 0f);
-                discardArea.GetComponent<SpriteRenderer>().color = new Color(1, 1, 0, 0f);
+                trashArea.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
+                discardArea.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
                 cardIsPresent = false;
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class HandManager : MonoBehaviour {
     //possible target positions
@@ -30,6 +31,12 @@ public class HandManager : MonoBehaviour {
     //sounds
     private SoundManager soundScript;
 
+    //hand size
+    private int maxHandSize;
+    public bool isExceedingHandSize;
+    private TextMeshProUGUI limitExceeded_Text;
+    private SpriteRenderer limit_halo;
+
     // Use this for initialization
     void Start () {
         playerDeck = GameObject.Find("Deck").GetComponent<Transform>();
@@ -38,12 +45,19 @@ public class HandManager : MonoBehaviour {
 
         soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
 
+        limitExceeded_Text = GameObject.Find("HandLimitNotice").GetComponent<TextMeshProUGUI>();
+        limitExceeded_Text.enabled = false;
+        limit_halo = GameObject.Find("HandLimit_Halo").GetComponent<SpriteRenderer>();
+        limit_halo.enabled = false;
+
         numCardsInHand = 0;
 
-        x = 3;
-        boundaryValue = 6;
+        x = 4;
+        boundaryValue = 5;
 
         isHoldingCard = false;
+
+        maxHandSize = 10;
     }
 
     public void RemoveCardFromHand(int pos)
@@ -61,7 +75,16 @@ public class HandManager : MonoBehaviour {
                 cardList[i].GetComponent<CardMovement>().posInHand = i;
             }
         }
-        
+
+        //check if card hand size is below the limit
+        if (numCardsInHand < maxHandSize)
+        {
+            //hide message informing player that they need to discard down to 10 cards before they can continue play
+            limitExceeded_Text.enabled = false;
+            limit_halo.enabled = false;
+            isExceedingHandSize = false;
+        }
+
     }
 
     public void AddCardToHand()
@@ -73,9 +96,9 @@ public class HandManager : MonoBehaviour {
         SetCardPositionsInHand();
     }
 
-    // Update is called once per frame
-    void Update () {
-        if (Input.GetKeyDown(KeyCode.A))
+    public IEnumerator DrawCards(int numCards)
+    {
+        for(int i =0; i<numCards; i++)
         {
             //play sound
             soundScript.PlaySound_DrawCard();
@@ -84,7 +107,7 @@ public class HandManager : MonoBehaviour {
             AddCardToHand();
 
             //instantiate card in deck and add to list
-            var temp = (GameObject)Instantiate(CardObj, playerDeck.position, Quaternion.identity);
+            var temp = (GameObject)Instantiate(CardObj, playerDeck.position, Quaternion.Euler(90,0,0));
             cardList.Add(temp);
 
             //card is now in the player's hand
@@ -93,6 +116,26 @@ public class HandManager : MonoBehaviour {
             cardList[cardList.Count - 1].GetComponent<CardMovement>().posInHand = cardList.Count - 1;
 
             UpdateCardPositionsInHand();
+
+            yield return new WaitForSecondsRealtime(0.3f);
+        }
+
+        //check if card hand size is exceeded
+        if (numCardsInHand > maxHandSize)
+        {
+            //display message informing player that they need to discard down to 10 cards before they can continue play
+            //another check in the Discard Card function
+            limitExceeded_Text.enabled = true;
+            limit_halo.enabled = true;
+            isExceedingHandSize = true;
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            StartCoroutine(DrawCards(1));
         }
 
     }
@@ -136,7 +179,7 @@ public class HandManager : MonoBehaviour {
         {
             CardMovement cardScript = cardList[i].GetComponent<CardMovement>();
 
-            var obj = (GameObject)Instantiate(TempObj, new Vector3(HandPositions[i], 0f, -0.83f), Quaternion.identity);
+            var obj = (GameObject)Instantiate(TempObj, new Vector3(HandPositions[i], 0f, -0.83f), Quaternion.Euler(90,0,0));
 
             cardList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
 

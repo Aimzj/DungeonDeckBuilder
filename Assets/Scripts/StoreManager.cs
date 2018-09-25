@@ -42,12 +42,12 @@ public class StoreManager : MonoBehaviour {
         mythic3 = GameObject.Find("Mythic3").GetComponent<Transform>();
 
         //instantiate cards and put into place holders
-        rare1_Card = (GameObject) Instantiate(CardObj, rare1.position, Quaternion.identity);
-        legendary1_Card = (GameObject)Instantiate(CardObj, legendary1.position, Quaternion.identity);
-        legendary2_Card = (GameObject)Instantiate(CardObj, legendary2.position, Quaternion.identity);
-        mythic1_Card = (GameObject)Instantiate(CardObj, mythic1.position, Quaternion.identity);
-        mythic2_Card = (GameObject)Instantiate(CardObj, mythic2.position, Quaternion.identity);
-        mythic3_Card = (GameObject)Instantiate(CardObj, mythic3.position, Quaternion.identity);
+        rare1_Card = (GameObject) Instantiate(CardObj, rare1.position, Quaternion.Euler(90, 0, 0));
+        legendary1_Card = (GameObject)Instantiate(CardObj, legendary1.position, Quaternion.Euler(90, 0, 0));
+        legendary2_Card = (GameObject)Instantiate(CardObj, legendary2.position, Quaternion.Euler(90, 0, 0));
+        mythic1_Card = (GameObject)Instantiate(CardObj, mythic1.position, Quaternion.Euler(90, 0, 0));
+        mythic2_Card = (GameObject)Instantiate(CardObj, mythic2.position, Quaternion.Euler(90, 0, 0));
+        mythic3_Card = (GameObject)Instantiate(CardObj, mythic3.position, Quaternion.Euler(90, 0, 0));
 
     }
 	
@@ -70,7 +70,7 @@ public class StoreManager : MonoBehaviour {
                     cardList_Deck.Add(rare1_Card);
 
                     //change target position of rare card to the player deck
-                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.identity);
+                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.Euler(90, 0, 0));
                     rare1_Card.GetComponent<CardMovement>()._targetTransform = obj.transform;
                 }
                 else if(hit.collider.name == "Legendary1")
@@ -79,7 +79,7 @@ public class StoreManager : MonoBehaviour {
                     cardList_Deck.Add(legendary1_Card);
 
                     //change target position of rare card to the player deck
-                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.identity);
+                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.Euler(90, 0, 0));
                     legendary1_Card.GetComponent<CardMovement>()._targetTransform = obj.transform;
                 }
                 else if(hit.collider.name == "Legendary2")
@@ -88,7 +88,7 @@ public class StoreManager : MonoBehaviour {
                     cardList_Deck.Add(legendary2_Card);
 
                     //change target position of rare card to the player deck
-                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.identity);
+                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.Euler(90, 0, 0));
                     legendary2_Card.GetComponent<CardMovement>()._targetTransform = obj.transform;
                 }
                 else if(hit.collider.name == "Mythic1")
@@ -97,7 +97,7 @@ public class StoreManager : MonoBehaviour {
                     cardList_Deck.Add(mythic1_Card);
 
                     //change target position of rare card to the player deck
-                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.identity);
+                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.Euler(90, 0, 0));
                     mythic1_Card.GetComponent<CardMovement>()._targetTransform = obj.transform;
                 }
                 else if(hit.collider.name == "Mythic2")
@@ -106,7 +106,7 @@ public class StoreManager : MonoBehaviour {
                     cardList_Deck.Add(mythic2_Card);
 
                     //change target position of rare card to the player deck
-                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.identity);
+                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.Euler(90, 0, 0));
                     mythic2_Card.GetComponent<CardMovement>()._targetTransform = obj.transform;
                 }
                 else if(hit.collider.name == "Mythic3")
@@ -115,7 +115,7 @@ public class StoreManager : MonoBehaviour {
                     cardList_Deck.Add(mythic3_Card);
 
                     //change target position of rare card to the player deck
-                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.identity);
+                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.Euler(90, 0, 0));
                     mythic3_Card.GetComponent<CardMovement>()._targetTransform = obj.transform;
                 }
             }

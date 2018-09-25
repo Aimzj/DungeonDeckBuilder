@@ -29,7 +29,7 @@ public class Scene_Manager : MonoBehaviour {
         }
     }
 
-    private IEnumerator FadeOut(int numScene)
+    public IEnumerator FadeOut(int numScene)
     {
         float val = 0;
         for (int i = 0; i < 30; i++)
