@@ -43,6 +43,16 @@ public class Scene_Manager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		
-	}
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (SceneManager.GetActiveScene().buildIndex >0)
+            {
+                StartCoroutine(FadeOut(0));
+            }
+            else
+            {
+                Application.Quit();
+            }
+        }
+    }
 }
