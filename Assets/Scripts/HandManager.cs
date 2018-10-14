@@ -33,6 +33,7 @@ public class HandManager : MonoBehaviour {
 
     //hand size
     private int maxHandSize;
+
     public bool isExceedingHandSize;
     private TextMeshProUGUI limitExceeded_Text;
     private SpriteRenderer limit_halo;
