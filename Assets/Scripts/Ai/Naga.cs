@@ -18,7 +18,8 @@ public class Naga : MonoBehaviour {
     private int hp = 10;
     private int sigilCount = 4;
     private int handSize = 4;
-
+    public int Numdebuffs = 0;
+    private int damageTaken = 0;
 
     private void Start()
     {
@@ -66,11 +67,32 @@ public class Naga : MonoBehaviour {
 
     protected void Reaction()
     {
-        for (int i = 0; i <= enemyHand.Count; i++)
+        for (int i = 0; i <= enemyHand.Count-1; i++)
         {
-         
+         if(numEldritchOath > 0)
+            {
+                // Play EE
+            }
+         else if(Numdebuffs  >= 5)
+            {
+                if(numCotD > 0)
+                {
+                    //Play card
+                    numCotD--;
+                }
+            }
+         else if(damageTaken > hp)
+            {
+                if(numScale > 0)
+                {
+                    //Play Card
+                    damageTaken -= enemyHand[i].GetComponent<CardObj>().Defense;
+                    numScale--;
+                }
+            }
         }
     }
+
 
     protected void Action()
     {
@@ -110,5 +132,50 @@ public class Naga : MonoBehaviour {
     public void Draw(int drawNum)
     {
         //Draws Cards
+    }
+
+    public void Discard(int Cost)
+    {
+        int remainingCost = Cost;
+        int i = 0;
+        bool foundCard = false;
+        while(remainingCost > 0)
+        {
+            if(numCotD > 0)
+            {
+                while (!foundCard)
+                {
+                    if(remainingCost == 0)
+
+                    {
+                        foundCard = true;
+                    }
+                    else
+                    {
+                        if (enemyHand[i].GetComponent<CardObj>().name == "Eldritch Oath")
+                        {
+                            remainingCost--;
+                            //Remove Card
+
+                        }
+                        else if (enemyHand[i].GetComponent<CardObj>().name == "Call of the deep")
+                        {
+                            remainingCost--;
+                            //Remove Card
+
+                        }
+                        else if (enemyHand[i].GetComponent<CardObj>().name == "Crushing Blow")
+                        {
+                            remainingCost--;
+                            //Remove Card
+
+                        }
+                    }
+                   
+                }
+            }
+            
+        }
+        //Discard Cost
     }
 }
