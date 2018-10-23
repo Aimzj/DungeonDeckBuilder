@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -222,11 +222,11 @@ RectTransform:
   m_Father: {fileID: 781094042}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -95.3, y: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &716820080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,16 +238,6 @@ MonoBehaviour:
   m_Script: {fileID: 207469858, guid: 220224b43fc464c28bc0e8de8f54a432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EventName: ButtonPress
-  m_TrackableProperty:
-    m_Fields:
-    - m_ParamName: Color
-      m_Target: {fileID: 0}
-      m_FieldPath: 
-      m_TypeString: 
-      m_DoStatic: 1
-      m_StaticString: 
-  m_Trigger: 0
 --- !u!114 &716820081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,53 +335,6 @@ MonoBehaviour:
   m_Script: {fileID: -745406591, guid: 220224b43fc464c28bc0e8de8f54a432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Trigger:
-    m_IsTriggerExpanded: 1
-    m_Type: 1
-    m_LifecycleEvent: 0
-    m_ApplyRules: 0
-    m_Rules:
-      m_Rules: []
-    m_TriggerBool: 0
-    m_InitTime: 5
-    m_RepeatTime: 5
-    m_Repetitions: 0
-    repetitionCount: 0
-  m_EventPayload:
-    m_IsEventExpanded: 1
-    m_StandardEventType: CustomEvent
-    m_Parameters:
-      m_Parameters:
-      - m_RequirementType: 0
-        m_GroupID: 
-        m_Tooltip: 
-        m_Name: Color
-        m_Value:
-          m_EditingCustomValue: 0
-          m_PopupIndex: 0
-          m_CustomValue: 
-          m_FixedType: 0
-          m_EnumType: 
-          m_EnumTypeIsCustomizable: 0
-          m_CanDisable: 0
-          m_PropertyType: 1
-          m_ValueType: System.String
-          m_Value: Red
-          m_Target:
-            m_Target: {fileID: 0}
-            m_Path: 
-            m_ValidTypeNames:
-            - System.Int32
-            - System.Boolean
-            - System.Decimal
-            - System.Double
-            - System.Single
-            - System.Int64
-            - System.Int16
-            - System.String
-            m_Type: System.String
-            m_EnumType: 
-    m_Name: ButtonPress
 --- !u!1 &781094038
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,7 +423,7 @@ RectTransform:
   - {fileID: 716820079}
   - {fileID: 1751802677}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -551,8 +494,50 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1001 &933825958
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4994635445769824, guid: 7db14e0d90d630645abeef99acd35f71, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 7.799096
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 7db14e0d90d630645abeef99acd35f71, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 3.5672398
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 7db14e0d90d630645abeef99acd35f71, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 7.776851
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 7db14e0d90d630645abeef99acd35f71, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 7db14e0d90d630645abeef99acd35f71, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 7db14e0d90d630645abeef99acd35f71, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 7db14e0d90d630645abeef99acd35f71, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 7db14e0d90d630645abeef99acd35f71, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7db14e0d90d630645abeef99acd35f71, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &1148536891
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,13 +608,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1148536891}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 7, y: 10.1, z: 8.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1254624511
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,7 +675,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1415039522
 GameObject:
@@ -767,6 +752,31 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1415039522}
   m_CullTransparentMesh: 0
+--- !u!1 &1429725365 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1194213479686936, guid: 7db14e0d90d630645abeef99acd35f71,
+    type: 2}
+  m_PrefabInternal: {fileID: 933825958}
+--- !u!114 &1429725366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1429725365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab65c9c4cef84b846842cd4a89ac1e7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inPlay: 0
+  textVisible: 0
+  textTimer: 0
+  textTimerLim: 0.5
+  textPerc: 0
+  IconTimer: 0
+  IconTimerLim: 0.75
+  IconPerc: 0
+  cardLayer1: {fileID: 0}
 --- !u!1 &1751802676
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,10 +826,6 @@ MonoBehaviour:
   m_Script: {fileID: 207469858, guid: 220224b43fc464c28bc0e8de8f54a432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EventName: ButtonPress
-  m_TrackableProperty:
-    m_Fields: []
-  m_Trigger: 0
 --- !u!114 &1751802679
 MonoBehaviour:
   m_ObjectHideFlags: 0

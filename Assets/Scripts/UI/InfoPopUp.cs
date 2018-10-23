@@ -12,6 +12,7 @@ public class InfoPopUp : MonoBehaviour {
     {
        
             PlayerPortrait.transform.localPosition = new Vector3(-12f, -23f, 0);
+        //gameObject.transform = new Vector3();
         
       
        
