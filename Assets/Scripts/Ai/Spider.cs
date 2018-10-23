@@ -12,11 +12,11 @@ public class Spider : MonoBehaviour {
 
         for(int i = 0 ; i <= enemyHand.Count ; i++)
         {
-            if(enemyHand[i].GetComponent<CardObj>().Card_Name == "Skitter")
+            if(enemyHand[i].GetComponent<CardObj>().CardName == "Skitter")
             {
                 //Play card
             }
-            if(enemyHand[i].GetComponent<CardObj>().Card_Name == "Bite")
+            if(enemyHand[i].GetComponent<CardObj>().CardName == "Bite")
             {
                 //Play card
             }
