@@ -14,7 +14,18 @@ public class CardObj : MonoBehaviour {
     public int Attack;
     public int Defense;
 
-    public int Has_Sigil;
+    public bool Has_Sigil;
+
+    public bool Has_Event;
+
+    public bool Is_On_Arrival;
+    public bool OA_Is_Choice;
+    public int OA_Num_Deck_Draw_Top;
+    public int OA_Temp_Defense_Increase;
+
+    public bool Is_Undying;
+    public bool Is_Stack;
+    public bool Is_Untapped;
 
     public string Effect;
     public int E_num_deck_draw_top;

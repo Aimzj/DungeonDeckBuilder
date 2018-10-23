@@ -7,6 +7,10 @@ public class GameManager : MonoBehaviour {
     private AreaManager areaManagerScript;
     private HandManager handManagerScript;
     private Scene_Manager sceneManagerScript;
+
+    private int cycleTokens;
+    private int discardBank, trashBank;
+    private int attackVal, defenseVal;
 	// Use this for initialization
 	void Start () {
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
@@ -17,7 +21,12 @@ public class GameManager : MonoBehaviour {
         {
             StartCoroutine(handManagerScript.DrawCards(3));
         }
-        
+
+        cycleTokens = 0;
+        discardBank = 0;
+        trashBank = 0;
+        attackVal = 0;
+        defenseVal = 0;
     }
 
     public void EndPlayerTurn()

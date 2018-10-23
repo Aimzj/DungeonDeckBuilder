@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CardGenerator : MonoBehaviour {
     //script loops through excel spreadsheet and seperates cards into their different decks
-    public int numUniqueCards=13;
+    public int numUniqueCards=7;
 
     public GameObject Card;
 

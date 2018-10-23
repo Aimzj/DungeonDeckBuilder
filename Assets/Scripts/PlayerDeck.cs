@@ -15,8 +15,6 @@ public class PlayerDeck : MonoBehaviour {
     private int handSize;
     private int numBurnt;
 
-    private 
-
 	// Use this for initialization
 	void Start () {
         deckMainSize = 0;
