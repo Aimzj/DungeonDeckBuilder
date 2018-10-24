@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CardGenerator : MonoBehaviour {
     //script loops through excel spreadsheet and seperates cards into their different decks
+
     public int numUniqueCards=7;
 
     public GameObject Card;
@@ -11,9 +12,23 @@ public class CardGenerator : MonoBehaviour {
     private GameObject cardObj;
     private CardObj cardScript;
     
+    //decks
+    public List<GameObject> 
+        //player deck
+        PlayerDeck,
+        //enemy decks
+        SpiderDeck,
+        NagaDeck,
+        GemDeck,
+        DragonDeck,
+        //status effect decks
+        PoisonDeck,
+        BurnDeck,
+        WoundDeck,
+        HexDeck;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         //looping through all unique cards
         for(int i = 1; i < numUniqueCards+1; i++)
         {
@@ -21,6 +36,27 @@ public class CardGenerator : MonoBehaviour {
             cardObj = (GameObject)Instantiate(Card, Vector3.zero, Quaternion.identity);
             cardScript = cardObj.GetComponent<CardObj>();
             LoadMyData("card_"+i.ToString());
+
+            //seperate cards into decks
+            for(int j=0; j<cardScript.NumInDeck; j++)
+            {
+                if (cardScript.CardType == "player_starting")
+                {
+                    PlayerDeck.Add(cardObj);
+                }
+                else if(cardScript.CardType == "spider")
+                {
+                    SpiderDeck.Add(cardObj);
+                }
+                else if(cardScript.CardType == "status")
+                {
+                    if(cardScript.CardName == "Poison")
+                    {
+                        PoisonDeck.Add(cardObj);
+                    }
+                }
+            }
+            
         }
         
         
@@ -38,8 +74,6 @@ public class CardGenerator : MonoBehaviour {
         cardScript.Defense = my_container.GetData("defense").ToInt();
 
         cardScript.HasSigil = my_container.GetData("has_sigil").ToInt();
-
-        cardScript.HasEvent = my_container.GetData("has_event").ToInt();
 
         cardScript.IsOnArrival = my_container.GetData("is_on_arrival").ToInt();
         cardScript.OA_IsChoice = my_container.GetData("OA_is_choice").ToInt();
@@ -74,9 +108,8 @@ public class CardGenerator : MonoBehaviour {
         cardScript.BE_DrawDefenseValOfBurnt = my_container.GetData("BURN_draw_defense_val_of_burnt").ToInt();
 
         cardScript.Image_Name = my_container.GetData("imageid").ToString();
-        cardScript.NumInPlayerDeck = my_container.GetData("num_in_player_deck").ToInt();
-        cardScript.NumInEnemyDeck = my_container.GetData("num_in_enemy_deck").ToInt();
-        cardScript.NumInOtherDeck = my_container.GetData("num_in_other_deck").ToInt();
+        cardScript.NumInDeck = my_container.GetData("num_in_deck").ToInt();
+        cardScript.CardType = my_container.GetData("type").ToString();
 
     }
 	

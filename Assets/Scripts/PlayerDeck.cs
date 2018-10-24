@@ -8,12 +8,12 @@ public class PlayerDeck : MonoBehaviour {
     public List<GameObject> CardsInHand;
     public List<GameObject> BurntCards;
 
-    public bool isPlayer;
-
     private int deckMainSize, deckMainRemaining;
     private int discardSize;
     private int handSize;
     private int numBurnt;
+
+    private int health;
 
 	// Use this for initialization
 	void Start () {
@@ -108,15 +108,17 @@ public class PlayerDeck : MonoBehaviour {
 
     //play a card from the hand
     //check for all card stats and abilities
-    private void PlayCard(int posInHand)
+    public void PlayCard(GameObject playedCard)
     {
-        //remove card from hand
-        GameObject cardObj = RemoveCard_FromHand(posInHand);
 
         //retrieve card data
-        CardObj Card = cardObj.GetComponent<CardObj>();
+        CardObj Card = playedCard.GetComponent<CardObj>();
+
+        //check opponent
 
         //analyse card data
+
+        //check if action or reaction phase
 
         //ATTACK
         if (Card.Attack > 0)

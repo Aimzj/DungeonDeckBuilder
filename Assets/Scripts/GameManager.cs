@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour {
     private HandManager handManagerScript;
     private Scene_Manager sceneManagerScript;
 
+    private bool isActionPhase;
+    private bool isReactionPhase;
     private int cycleTokens;
     private int discardBank, trashBank;
     private int attackVal, defenseVal;
@@ -27,6 +29,9 @@ public class GameManager : MonoBehaviour {
         trashBank = 0;
         attackVal = 0;
         defenseVal = 0;
+
+        isActionPhase = true;
+        isReactionPhase = true;
     }
 
     public void EndPlayerTurn()

@@ -137,8 +137,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 62853846}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -393.4}
-  m_LocalScale: {x: 0.060612213, y: 0.060612213, z: 0.060612213}
+  m_LocalPosition: {x: 0, y: 0, z: -392.7}
+  m_LocalScale: {x: 0.049714293, y: 0.049714293, z: 0.049714293}
   m_Children:
   - {fileID: 741873961}
   m_Father: {fileID: 836087973}
@@ -146,7 +146,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -21.255, y: -4.2}
+  m_AnchoredPosition: {x: -18.095, y: -3.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &62853848
@@ -236,7 +236,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -650.222, w: 0}
+  m_margin: {x: 0, y: 0, z: -752.30396, w: 0}
   m_textInfo:
     textComponent: {fileID: 62853848}
     characterCount: 50
@@ -2765,6 +2765,8 @@ GameObject:
   - component: {fileID: 2134202300}
   - component: {fileID: 2134202301}
   - component: {fileID: 2134202302}
+  - component: {fileID: 2134202303}
+  - component: {fileID: 2134202304}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2861,3 +2863,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f9266eac7e14e4ebc4bdd9b51f0254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2134202303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2134202296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4774fd5eb13a4f1499eb016d681f7c95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainDeck: []
+  DiscardPile: []
+  CardsInHand: []
+  BurntCards: []
+--- !u!114 &2134202304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2134202296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0451a7baf5e5ac49a25a9af23c56638, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numUniqueCards: 7
+  Card: {fileID: 0}

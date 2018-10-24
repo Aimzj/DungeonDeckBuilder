@@ -16,8 +16,6 @@ public class CardObj : MonoBehaviour {
 
     public int HasSigil;
 
-    public int HasEvent;
-
     public int IsOnArrival;
     public int OA_IsChoice;
     public int OA_NumDeckDrawTop;
@@ -50,9 +48,8 @@ public class CardObj : MonoBehaviour {
     public int BE_DrawDefenseValOfBurnt;
 
     public string Image_Name;
-    public int NumInPlayerDeck;
-    public int NumInEnemyDeck;
-    public int NumInOtherDeck;
+    public int NumInDeck;
+    public string CardType;
 
     private TextMeshPro cardName_Text, discardCost_Text, burnCost_Text, 
                 effect_Text, discardEffect_Text, burnEffect_Text, 
@@ -65,7 +62,6 @@ public class CardObj : MonoBehaviour {
         effect_Text = this.gameObject.transform.Find("Effect").GetComponent<TextMeshPro>();
         discardEffect_Text = this.gameObject.transform.Find("DiscardEffect").GetComponent<TextMeshPro>();
         burnEffect_Text = this.gameObject.transform.Find("BurnEffect").GetComponent<TextMeshPro>();
-        //flavourText_Text = this.gameObject.transform.Find("CardName").GetComponent<TextMeshPro>();
         attack_Text = this.gameObject.transform.Find("Attack").GetComponent<TextMeshPro>();
         defence_Text = this.gameObject.transform.Find("Defense").GetComponent<TextMeshPro>();
 
