@@ -4,16 +4,31 @@ using UnityEngine;
 
 public class CardGenerator : MonoBehaviour {
     //script loops through excel spreadsheet and seperates cards into their different decks
-    public int numUniqueCards=13;
+
+    public int numUniqueCards=7;
 
     public GameObject Card;
 
     private GameObject cardObj;
     private CardObj cardScript;
     
+    //decks
+    public List<GameObject> 
+        //player deck
+        PlayerDeck,
+        //enemy decks
+        SpiderDeck,
+        NagaDeck,
+        GemDeck,
+        DragonDeck,
+        //status effect decks
+        PoisonDeck,
+        BurnDeck,
+        WoundDeck,
+        HexDeck;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         //looping through all unique cards
         for(int i = 1; i < numUniqueCards+1; i++)
         {
@@ -21,6 +36,27 @@ public class CardGenerator : MonoBehaviour {
             cardObj = (GameObject)Instantiate(Card, Vector3.zero, Quaternion.identity);
             cardScript = cardObj.GetComponent<CardObj>();
             LoadMyData("card_"+i.ToString());
+
+            //seperate cards into decks
+            for(int j=0; j<cardScript.NumInDeck; j++)
+            {
+                if (cardScript.CardType == "player_starting")
+                {
+                    PlayerDeck.Add(cardObj);
+                }
+                else if(cardScript.CardType == "spider")
+                {
+                    SpiderDeck.Add(cardObj);
+                }
+                else if(cardScript.CardType == "status")
+                {
+                    if(cardScript.CardName == "Poison")
+                    {
+                        PoisonDeck.Add(cardObj);
+                    }
+                }
+            }
+            
         }
         
         
@@ -30,39 +66,51 @@ public class CardGenerator : MonoBehaviour {
     {
         ImportedDataContainer my_container = ImportData.GetContainer(cardReference);
 
-        cardScript.Card_Name = my_container.GetData("name").ToString();
-        cardScript.Discard_Cost = my_container.GetData("discard_cost").ToInt();
-        cardScript.Burn_Cost = my_container.GetData("burn_cost").ToInt();
-        cardScript.Flavour_Text = my_container.GetData("flavour_text").ToString();
+        cardScript.CardName = my_container.GetData("name").ToString();
+        cardScript.DiscardCost = my_container.GetData("discard_cost").ToInt();
+        cardScript.BurnCost = my_container.GetData("burn_cost").ToInt();
+        cardScript.FlavourText = my_container.GetData("flavour_text").ToString();
         cardScript.Attack = my_container.GetData("attack").ToInt();
         cardScript.Defense = my_container.GetData("defense").ToInt();
-        cardScript.Has_Sigil = my_container.GetData("has_sigil").ToInt();
 
-        cardScript.Effect = my_container.GetData("effect").ToString();
-        cardScript.E_num_deck_draw_top = my_container.GetData("EFFECT_num_deck_draw_top").ToInt();
+        cardScript.HasSigil = my_container.GetData("has_sigil").ToInt();
 
-        cardScript.Discard_Effect = my_container.GetData("discard_effect").ToString();
-        cardScript.DE_Num = my_container.GetData("DISCARD_num").ToInt();
-        cardScript.DE_Num_Deck_Draw_Random = my_container.GetData("DISCARD_num_deck_draw_random").ToInt();
-        cardScript.DE_Num_Free = my_container.GetData("DISCARD_num_free").ToInt();
-        cardScript.DE_Is_Highest_Val_Attack = my_container.GetData("DISCARD_is_highest_val_attack").ToInt();
-        cardScript.DE_Num_Poisons = my_container.GetData("DISCARD_num_poisons").ToInt();
-        cardScript.DE_Num_Discard_Draw_Choice = my_container.GetData("DISCARD_num_discard_draw_choice").ToInt();
-        cardScript.DE_Num_Deck_Draw_Top = my_container.GetData("DISCARD_num_deck_draw_top").ToInt();
-        cardScript.DE_Add_Attack = my_container.GetData("DISCARD_add_attack").ToInt();
+        cardScript.IsOnArrival = my_container.GetData("is_on_arrival").ToInt();
+        cardScript.OA_IsChoice = my_container.GetData("OA_is_choice").ToInt();
+        cardScript.OA_NumDeckDrawTop = my_container.GetData("OA_num_deck_draw_top").ToInt();
+        cardScript.OA_TempDefenseIncrease = my_container.GetData("OA_temp_defense_increase").ToInt();
 
-        cardScript.Burn_Effect = my_container.GetData("burn_effect").ToString();
-        cardScript.BE_Num = my_container.GetData("BURN_num").ToInt();
-        cardScript.BE_Num_Deck_Draw_Choice = my_container.GetData("BURN_num_deck_draw_choice").ToInt();
-        cardScript.BE_Can_Unsear = my_container.GetData("BURN_can_unsear").ToInt();
-        cardScript.BE_Num_Wounds_Discard = my_container.GetData("BURN_num_wounds_discard").ToInt();
-        cardScript.BE_Num_Poisons = my_container.GetData("BURN_num_poisons").ToInt();
-        cardScript.BE_Num_Deck_Draw_Top = my_container.GetData("BURN_num_deck_draw_top").ToInt();
-        cardScript.BE_Is_Option = my_container.GetData("BURN_is_option").ToInt();
-        cardScript.BE_Add_Defense = my_container.GetData("BURN_add_defense").ToInt();
+        cardScript.IsUndying = my_container.GetData("is_undying").ToInt();
+        cardScript.IsStack = my_container.GetData("is_stack").ToInt();
+        cardScript.IsUntapped = my_container.GetData("is_untapped").ToInt();
+
+        cardScript.DiscardEffect = my_container.GetData("discard_effect").ToString();
+        cardScript.DE_NumDeckDrawRandom = my_container.GetData("DISCARD_num_deck_draw_random").ToInt();
+        cardScript.DE_NumFree = my_container.GetData("DISCARD_num_free").ToInt();
+        cardScript.DE_IsHighestValAttack = my_container.GetData("DISCARD_is_highest_val_attack").ToInt();
+        cardScript.DE_NumPoisons = my_container.GetData("DISCARD_num_poisons").ToInt();
+        cardScript.DE_NumDiscardDrawChoice = my_container.GetData("DISCARD_num_discard_draw_choice").ToInt();
+        cardScript.DE_NumDeckDrawTop = my_container.GetData("DISCARD_num_deck_draw_top").ToInt();
+        cardScript.DE_AddAttack = my_container.GetData("DISCARD_add_attack").ToInt();
+        cardScript.DE_SelectDiscardAddAttack = my_container.GetData("DISCARD_select_discard_add_attack").ToInt();
+
+        cardScript.BurnEffect = my_container.GetData("burn_effect").ToString();
+        cardScript.BE_NumDeckDrawChoice = my_container.GetData("BURN_num_deck_draw_choice").ToInt();
+        cardScript.BE_RegainSigil = my_container.GetData("BURN_regain_sigil").ToInt();
+        cardScript.BE_NumWoundsDiscard = my_container.GetData("BURN_num_wounds_discard").ToInt();
+        cardScript.BE_NumPoisons = my_container.GetData("BURN_num_poisons").ToInt();
+        cardScript.BE_NumDeckDrawTop = my_container.GetData("BURN_num_deck_draw_top").ToInt();
+        cardScript.BE_IsOption = my_container.GetData("BURN_is_option").ToInt();
+        cardScript.BE_AddDefense = my_container.GetData("BURN_add_defense").ToInt();
+        cardScript.BE_AddDefense = my_container.GetData("BURN_add_defense").ToInt();
+        cardScript.BE_DrawAttackValOfBurnt = my_container.GetData("BURN_draw_attack_val_of_burnt").ToInt();
+        cardScript.BE_HasReaction = my_container.GetData("BURN_has_reaction").ToInt();
+        cardScript.BE_DrawDefenseValOfBurnt = my_container.GetData("BURN_draw_defense_val_of_burnt").ToInt();
+
         cardScript.Image_Name = my_container.GetData("imageid").ToString();
+        cardScript.NumInDeck = my_container.GetData("num_in_deck").ToInt();
+        cardScript.CardType = my_container.GetData("type").ToString();
 
-        Debug.Log("done");
     }
 	
 	// Update is called once per frame

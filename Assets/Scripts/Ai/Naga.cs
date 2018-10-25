@@ -46,19 +46,19 @@ public class Naga : MonoBehaviour {
     {
         for(int i = 0; i <= enemyHand.Count; i++)
         {
-            if(enemyHand[i].GetComponent<CardObj>().Card_Name == "Eldritch Oath")
+            if(enemyHand[i].GetComponent<CardObj>().CardName == "Eldritch Oath")
             {
                 numEldritchOath++;
             }
-            else if (enemyHand[i].GetComponent<CardObj>().Card_Name == "Crushing Blow")
+            else if (enemyHand[i].GetComponent<CardObj>().CardName == "Crushing Blow")
             {
                 numCrushBlow++;
             }
-            else if (enemyHand[i].GetComponent<CardObj>().Card_Name == "Serpent's Scale")
+            else if (enemyHand[i].GetComponent<CardObj>().CardName == "Serpent's Scale")
             {
                 numScale++;
             }
-            else if (enemyHand[i].GetComponent<CardObj>().Card_Name == "Call of the Deep")
+            else if (enemyHand[i].GetComponent<CardObj>().CardName == "Call of the Deep")
             {
                 numCotD++;
             }

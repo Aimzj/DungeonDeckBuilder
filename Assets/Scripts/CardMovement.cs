@@ -50,6 +50,7 @@ public class CardMovement : MonoBehaviour {
     private HandManager handManagerScript;
     private AreaSensor areaSensorScript;
     private AreaManager areaManagerScript;
+    private PlayerDeck playerDeckScript;
 
     //sound
     private SoundManager soundScript;
@@ -59,6 +60,7 @@ public class CardMovement : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         areaSensorScript = GameObject.Find("GameManager").GetComponent<AreaSensor>();
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
+        playerDeckScript = GameObject.Find("GameManager").GetComponent<PlayerDeck>();
 
         soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
 
@@ -138,6 +140,8 @@ public class CardMovement : MonoBehaviour {
 
                     areaManagerScript.PlayCard(this.gameObject);
 
+                    //play card
+                    playerDeckScript.PlayCard(this.gameObject);
                 }
                              
             }

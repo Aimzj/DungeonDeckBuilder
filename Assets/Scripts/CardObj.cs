@@ -7,39 +7,49 @@ using TMPro;
 public class CardObj : MonoBehaviour {
 
     //card stats
-    public string Card_Name;
-    public int Discard_Cost;
-    public int Burn_Cost;
-    public string Flavour_Text;
+    public string CardName;
+    public int DiscardCost;
+    public int BurnCost;
+    public string FlavourText;
     public int Attack;
     public int Defense;
 
-    public int Has_Sigil;
+    public int HasSigil;
 
-    public string Effect;
-    public int E_num_deck_draw_top;
+    public int IsOnArrival;
+    public int OA_IsChoice;
+    public int OA_NumDeckDrawTop;
+    public int OA_TempDefenseIncrease;
 
-    public string Discard_Effect;
-    public int DE_Num;
-    public int DE_Num_Deck_Draw_Random;
-    public int DE_Num_Free;
-    public int DE_Is_Highest_Val_Attack;
-    public int DE_Num_Poisons;
-    public int DE_Num_Discard_Draw_Choice;
-    public int DE_Num_Deck_Draw_Top;
-    public int DE_Add_Attack;
+    public int IsUndying;
+    public int IsStack;
+    public int IsUntapped;
 
-    public string Burn_Effect;
-    public int BE_Num;
-    public int BE_Num_Deck_Draw_Choice;
-    public int BE_Can_Unsear;
-    public int BE_Num_Wounds_Discard;
-    public int BE_Num_Poisons;
-    public int BE_Num_Deck_Draw_Top;
-    public int BE_Is_Option;
-    public int BE_Add_Defense;
+    public string DiscardEffect;
+    public int DE_NumDeckDrawRandom;
+    public int DE_NumFree;
+    public int DE_IsHighestValAttack;
+    public int DE_NumPoisons;
+    public int DE_NumDiscardDrawChoice;
+    public int DE_NumDeckDrawTop;
+    public int DE_AddAttack;
+    public int DE_SelectDiscardAddAttack;
+
+    public string BurnEffect;
+    public int BE_NumDeckDrawChoice;
+    public int BE_RegainSigil;
+    public int BE_NumWoundsDiscard;
+    public int BE_NumPoisons;
+    public int BE_NumDeckDrawTop;
+    public int BE_IsOption;
+    public int BE_AddDefense;
+    public int BE_DrawAttackValOfBurnt;
+    public int BE_HasReaction;
+    public int BE_DrawDefenseValOfBurnt;
 
     public string Image_Name;
+    public int NumInDeck;
+    public string CardType;
 
     private TextMeshPro cardName_Text, discardCost_Text, burnCost_Text, 
                 effect_Text, discardEffect_Text, burnEffect_Text, 
@@ -52,16 +62,14 @@ public class CardObj : MonoBehaviour {
         effect_Text = this.gameObject.transform.Find("Effect").GetComponent<TextMeshPro>();
         discardEffect_Text = this.gameObject.transform.Find("DiscardEffect").GetComponent<TextMeshPro>();
         burnEffect_Text = this.gameObject.transform.Find("BurnEffect").GetComponent<TextMeshPro>();
-        //flavourText_Text = this.gameObject.transform.Find("CardName").GetComponent<TextMeshPro>();
         attack_Text = this.gameObject.transform.Find("Attack").GetComponent<TextMeshPro>();
         defence_Text = this.gameObject.transform.Find("Defense").GetComponent<TextMeshPro>();
 
-        cardName_Text.text = Card_Name;
-        discardCost_Text.text = Discard_Cost.ToString();
-        burnCost_Text.text = Burn_Cost.ToString();
-        effect_Text.text = Effect;
-        discardEffect_Text.text = Discard_Effect;
-        burnEffect_Text.text = Burn_Effect;
+        cardName_Text.text = CardName;
+        discardCost_Text.text = DiscardCost.ToString();
+        burnCost_Text.text = BurnCost.ToString();
+        discardEffect_Text.text = DiscardEffect;
+        burnEffect_Text.text = BurnEffect;
         attack_Text.text = Attack.ToString();
         defence_Text.text = Defense.ToString();
     }
