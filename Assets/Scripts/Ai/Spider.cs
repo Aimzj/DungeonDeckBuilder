@@ -48,19 +48,15 @@ public class Spider : MonoBehaviour {
         for (int i = spiderHand.inHand.Count -1 ; i >= 0 ; i--)
             //for (int i = 0 ; i <= spiderHand.inHand.Count  ; i++)
         {
-<<<<<<< HEAD
             //Reshuffle if deck is empty
             if (spiderDeck.deck.Count <= 0)
-=======
-            if(enemyHand[i].GetComponent<CardObj>().CardName == "Skitter")
->>>>>>> e93707e19e116c1ed865d4557c03675ca2ef577b
             {
                 print("EMPTY");
                 spiderDeck.Reshuffle();
                 //spiderHand.inHand.fin
 
             }
-            if (spiderHand.inHand[i].GetComponent<CardObj>().Card_Name == "Skitter")
+            if (spiderHand.inHand[i].GetComponent<CardObj>().CardName == "Skitter")
             {
                 print("Skitter Played");
              
@@ -73,11 +69,7 @@ public class Spider : MonoBehaviour {
 
 
             }
-<<<<<<< HEAD
-            else if (spiderHand.inHand[i].GetComponent<CardObj>().Card_Name == "Bite")
-=======
-            if(enemyHand[i].GetComponent<CardObj>().CardName == "Bite")
->>>>>>> e93707e19e116c1ed865d4557c03675ca2ef577b
+            else if (spiderHand.inHand[i].GetComponent<CardObj>().CardName == "Bite")
             {
                 print("Bite Played");
                 RemoveCard(i);
