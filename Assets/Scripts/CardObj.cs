@@ -14,7 +14,7 @@ public class CardObj : MonoBehaviour {
     public int Attack;
     public int Defense;
 
-    public int HasSigil;
+    public int SigilNum;
 
     public int IsOnArrival;
     public int OA_IsChoice;
@@ -51,12 +51,12 @@ public class CardObj : MonoBehaviour {
     public int NumInDeck;
     public string CardType;
 
-    private TextMeshPro cardName_Text, discardCost_Text, burnCost_Text, 
+   /* private TextMeshPro cardName_Text, discardCost_Text, burnCost_Text, 
                 effect_Text, discardEffect_Text, burnEffect_Text, 
-                flavourText_Text, attack_Text, defence_Text;
+                flavourText_Text, attack_Text, defence_Text;*/
     // Use this for initialization
     void Start () {
-        cardName_Text = this.gameObject.transform.Find("CardName").GetComponent<TextMeshPro>();
+        /*cardName_Text = this.gameObject.transform.Find("CardName").GetComponent<TextMeshPro>();
         discardCost_Text = this.gameObject.transform.Find("DiscardCost").GetComponent<TextMeshPro>();
         burnCost_Text = this.gameObject.transform.Find("BurnCost").GetComponent<TextMeshPro>();
         effect_Text = this.gameObject.transform.Find("Effect").GetComponent<TextMeshPro>();
@@ -71,7 +71,7 @@ public class CardObj : MonoBehaviour {
         discardEffect_Text.text = DiscardEffect;
         burnEffect_Text.text = BurnEffect;
         attack_Text.text = Attack.ToString();
-        defence_Text.text = Defense.ToString();
+        defence_Text.text = Defense.ToString();*/
     }
 	
 	// Update is called once per frame

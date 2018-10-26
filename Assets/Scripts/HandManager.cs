@@ -12,7 +12,7 @@ public class HandManager : MonoBehaviour {
     public GameObject CardObj;
     public GameObject TempObj;
 
-    public List<GameObject> cardList;
+    public List<GameObject> playerCardList;
 
     //list of x positions for the cards in the player's hand
     public List<float> HandPositions;
@@ -38,6 +38,9 @@ public class HandManager : MonoBehaviour {
     private TextMeshProUGUI limitExceeded_Text;
     private SpriteRenderer limit_halo;
 
+    private CardGenerator cardGenScript;
+    private AreaManager areaManagerScript;
+
     // Use this for initialization
     void Start () {
         playerDeck = GameObject.Find("Deck").GetComponent<Transform>();
@@ -45,6 +48,8 @@ public class HandManager : MonoBehaviour {
         playerTrash = GameObject.Find("Trash").GetComponent<Transform>();
 
         soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
+        cardGenScript = GameObject.Find("GameManager").GetComponent<CardGenerator>();
+        areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
 
         limitExceeded_Text = GameObject.Find("HandLimitNotice").GetComponent<TextMeshProUGUI>();
         limitExceeded_Text.enabled = false;
@@ -61,19 +66,29 @@ public class HandManager : MonoBehaviour {
         maxHandSize = 10;
     }
 
+    public void SpawnCards()
+    {
+        //looping through the card list, adding to local list and instantiating into scene
+        for(int i=0; i< cardGenScript.PlayerDeck.Count; i++)
+        {
+            var temp = (GameObject)Instantiate(CardObj, playerDeck.position, Quaternion.Euler(90, 0, 0));
+            playerCardList.Add(temp);
+        }
+    }
+
     public void RemoveCardFromHand(int pos)
     {
         numCardsInHand--;
         HandPositions.RemoveAt(pos);
-        cardList.RemoveAt(pos);
+        playerCardList.RemoveAt(pos);
 
         //loop through all cards after the removed card and change their pos value
         //check if the card removed was the last card
-        if(pos != cardList.Count)
+        if(pos != playerCardList.Count)
         {
-            for (int i = pos; i < cardList.Count; i++)
+            for (int i = pos; i < playerCardList.Count; i++)
             {
-                cardList[i].GetComponent<CardMovement>().posInHand = i;
+                playerCardList[i].GetComponent<CardMovement>().posInHand = i;
             }
         }
 
@@ -99,26 +114,44 @@ public class HandManager : MonoBehaviour {
 
     public IEnumerator DrawCards(int numCards)
     {
+        
         for(int i =0; i<numCards; i++)
         {
-            //play sound
-            soundScript.PlaySound_DrawCard();
+            //check if there are enough cards left in deck
+            if (playerCardList.Count - numCards >= 0)
+            {
+                //play sound
+                soundScript.PlaySound_DrawCard();
 
-            //add a card to the hand
-            AddCardToHand();
+                //add a card to the hand
+                AddCardToHand();
 
-            //instantiate card in deck and add to list
-            var temp = (GameObject)Instantiate(CardObj, playerDeck.position, Quaternion.Euler(90,0,0));
-            cardList.Add(temp);
+                //instantiate card in deck and add to list
+                // var temp = (GameObject)Instantiate(CardObj, playerDeck.position, Quaternion.Euler(90,0,0));
+                // playerCardList.Add(temp);
 
-            //card is now in the player's hand
-            cardList[cardList.Count - 1].GetComponent<CardMovement>().isInHand = true;
-            //set the position(index) of the card in the hand
-            cardList[cardList.Count - 1].GetComponent<CardMovement>().posInHand = cardList.Count - 1;
+                //card is now in the player's hand
+                playerCardList[playerCardList.Count - 1].GetComponent<CardMovement>().isInHand = true;
+                //set the position(index) of the card in the hand
+                playerCardList[playerCardList.Count - 1].GetComponent<CardMovement>().posInHand = playerCardList.Count - 1;
 
-            UpdateCardPositionsInHand();
+                UpdateCardPositionsInHand();
 
-            yield return new WaitForSecondsRealtime(0.3f);
+                yield return new WaitForSecondsRealtime(0.3f);
+            }
+            else
+            {
+                //Need to shuffle the discard pile and reform the playerdeck
+                Shuffle(ref areaManagerScript.cardList_Discard);
+
+                //add shuffled discard pile to playerDeck
+                for(int j= 0; j< areaManagerScript.cardList_Discard.Count; j++)
+                {
+                    playerCardList.Add(areaManagerScript.cardList_Discard[j]);
+                }
+                areaManagerScript.cardList_Discard.Clear();
+            }
+
         }
 
         //check if card hand size is exceeded
@@ -130,6 +163,26 @@ public class HandManager : MonoBehaviour {
             limit_halo.enabled = true;
             isExceedingHandSize = true;
         }
+    }
+
+    //shuffling cards
+    public void Shuffle(ref List<GameObject> cardList)
+    {
+        int len = cardList.Count;
+        Random rand = new Random();
+
+        for(int i=0; i<len; i++)
+        {
+            Swap(ref cardList, i, i + Random.Range(0,len - i));
+        }
+    }
+
+    //swapping two positions in List
+    private void Swap(ref List<GameObject> cards, int pos1, int pos2)
+    {
+        GameObject temp = cards[pos1];
+        cards[pos1] = cards[pos2];
+        cards[pos2] = temp;
     }
 
     // Update is called once per frame
@@ -176,13 +229,13 @@ public class HandManager : MonoBehaviour {
     public void UpdateCardPositionsInHand()
     {
         //assign positions to cards
-        for (int i = 0; i < cardList.Count; i++)
+        for (int i = 0; i < playerCardList.Count; i++)
         {
-            CardMovement cardScript = cardList[i].GetComponent<CardMovement>();
+            CardMovement cardScript = playerCardList[i].GetComponent<CardMovement>();
 
             var obj = (GameObject)Instantiate(TempObj, new Vector3(HandPositions[i], 0f, -0.83f), Quaternion.Euler(90,0,0));
 
-            cardList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
+            playerCardList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
 
         }
     }
