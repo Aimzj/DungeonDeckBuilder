@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class CardMovement : MonoBehaviour {
 
@@ -107,14 +108,38 @@ public class CardMovement : MonoBehaviour {
             isFollowing = true;
             handManagerScript.isHoldingCard = isFollowing;
             isHovering = false;
+
+            //change the order in layer of card and text
+            ChangeOrder(20);
         }
  
     }
 
+    private void ChangeOrder(int num)
+    {
+        gameObject.GetComponent<SpriteRenderer>().sortingOrder = num;
+
+        TextMeshPro tMP = gameObject.transform.Find("Title").GetComponent<TextMeshPro>();
+        tMP.sortingOrder = num+1;
+        tMP = gameObject.transform.Find("DiscardCost").GetComponent<TextMeshPro>();
+        tMP.sortingOrder = num + 1;
+        tMP = gameObject.transform.Find("BurnCost").GetComponent<TextMeshPro>();
+        tMP.sortingOrder = num + 1;
+        tMP = gameObject.transform.Find("DiscardEffect").GetComponent<TextMeshPro>();
+        tMP.sortingOrder = num + 1;
+        tMP = gameObject.transform.Find("BurnEffect").GetComponent<TextMeshPro>();
+        tMP.sortingOrder = num + 1;
+        tMP = gameObject.transform.Find("AttackCost").GetComponent<TextMeshPro>();
+        tMP.sortingOrder = num + 1;
+        tMP = gameObject.transform.Find("DefenseCost").GetComponent<TextMeshPro>();
+        tMP.sortingOrder = num + 1;
+    }
     private void OnMouseUp()
     {
         isFollowing = false;
         handManagerScript.isHoldingCard = isFollowing;
+
+        ChangeOrder(15);
 
         //check to see if the card was released in an area of importance 
         if (areaSensorScript.cardIsPresent)
