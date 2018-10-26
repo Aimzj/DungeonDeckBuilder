@@ -51,27 +51,26 @@ public class CardObj : MonoBehaviour {
     public int NumInDeck;
     public string CardType;
 
-   /* private TextMeshPro cardName_Text, discardCost_Text, burnCost_Text, 
-                effect_Text, discardEffect_Text, burnEffect_Text, 
-                flavourText_Text, attack_Text, defence_Text;*/
+    private TextMeshPro cardName_Text, discardCost_Text, burnCost_Text, 
+                discardEffect_Text, burnEffect_Text, 
+                flavourText_Text, attack_Text, defence_Text;
     // Use this for initialization
     void Start () {
-        /*cardName_Text = this.gameObject.transform.Find("CardName").GetComponent<TextMeshPro>();
+        cardName_Text = this.gameObject.transform.Find("Title").GetComponent<TextMeshPro>();
         discardCost_Text = this.gameObject.transform.Find("DiscardCost").GetComponent<TextMeshPro>();
         burnCost_Text = this.gameObject.transform.Find("BurnCost").GetComponent<TextMeshPro>();
-        effect_Text = this.gameObject.transform.Find("Effect").GetComponent<TextMeshPro>();
         discardEffect_Text = this.gameObject.transform.Find("DiscardEffect").GetComponent<TextMeshPro>();
         burnEffect_Text = this.gameObject.transform.Find("BurnEffect").GetComponent<TextMeshPro>();
-        attack_Text = this.gameObject.transform.Find("Attack").GetComponent<TextMeshPro>();
-        defence_Text = this.gameObject.transform.Find("Defense").GetComponent<TextMeshPro>();
+        attack_Text = this.gameObject.transform.Find("AttackCost").GetComponent<TextMeshPro>();
+        defence_Text = this.gameObject.transform.Find("DefenseCost").GetComponent<TextMeshPro>();
 
         cardName_Text.text = CardName;
         discardCost_Text.text = DiscardCost.ToString();
         burnCost_Text.text = BurnCost.ToString();
-        discardEffect_Text.text = DiscardEffect;
+        //discardEffect_Text.text = DiscardEffect;
         burnEffect_Text.text = BurnEffect;
         attack_Text.text = Attack.ToString();
-        defence_Text.text = Defense.ToString();*/
+        defence_Text.text = Defense.ToString();
     }
 	
 	// Update is called once per frame

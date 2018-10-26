@@ -16,6 +16,7 @@ public class CardGenerator : MonoBehaviour {
     private CardObj cardScript;
 
     private HandManager handManagerScript;
+    private GameManager gameManagerScript;
     
     //decks
     public List<GameObject> 
@@ -40,6 +41,7 @@ public class CardGenerator : MonoBehaviour {
 
 
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         //looping through all unique cards
         for(int i = 1; i < numUniqueCards+1; i++)
@@ -80,8 +82,12 @@ public class CardGenerator : MonoBehaviour {
             Destroy(cardObj);
 
         }
-        
-        
+
+        //Initialise decks in their respective scripts
+        handManagerScript.InitialiseCards();
+
+        //start the game
+        gameManagerScript.StartGame();
     }
 
 

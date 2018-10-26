@@ -15,11 +15,16 @@ public class GameManager : MonoBehaviour {
     private int attackVal, defenseVal;
 	// Use this for initialization
 	void Start () {
+
+    }
+
+    public void StartGame()
+    {
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         sceneManagerScript = GameObject.Find("GameManager").GetComponent<Scene_Manager>();
 
-        if(SceneManager.GetActiveScene().buildIndex == 1)
+        if (SceneManager.GetActiveScene().buildIndex == 1)
         {
             StartCoroutine(handManagerScript.DrawCards(3));
         }

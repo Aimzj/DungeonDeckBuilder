@@ -66,14 +66,10 @@ public class HandManager : MonoBehaviour {
         maxHandSize = 10;
     }
 
-    public void SpawnCards()
+    public void InitialiseCards()
     {
-        //looping through the card list, adding to local list and instantiating into scene
-        for(int i=0; i< cardGenScript.PlayerDeck.Count; i++)
-        {
-            var temp = (GameObject)Instantiate(CardObj, playerDeck.position, Quaternion.Euler(90, 0, 0));
-            playerCardList.Add(temp);
-        }
+        playerCardList = cardGenScript.PlayerDeck;
+        Debug.Log(playerCardList.Count);
     }
 
     public void RemoveCardFromHand(int pos)
@@ -114,12 +110,13 @@ public class HandManager : MonoBehaviour {
 
     public IEnumerator DrawCards(int numCards)
     {
-        
+        Debug.Log("Num cards:" +playerCardList.Count);
         for(int i =0; i<numCards; i++)
         {
             //check if there are enough cards left in deck
             if (playerCardList.Count - numCards >= 0)
             {
+                Debug.Log("Play card!");
                 //play sound
                 soundScript.PlaySound_DrawCard();
 
@@ -131,9 +128,9 @@ public class HandManager : MonoBehaviour {
                 // playerCardList.Add(temp);
 
                 //card is now in the player's hand
-                playerCardList[playerCardList.Count - 1].GetComponent<CardMovement>().isInHand = true;
+                playerCardList[numCardsInHand-1].GetComponent<CardMovement>().isInHand = true;
                 //set the position(index) of the card in the hand
-                playerCardList[playerCardList.Count - 1].GetComponent<CardMovement>().posInHand = playerCardList.Count - 1;
+                playerCardList[numCardsInHand-1].GetComponent<CardMovement>().posInHand = numCardsInHand-1;
 
                 UpdateCardPositionsInHand();
 
@@ -141,6 +138,7 @@ public class HandManager : MonoBehaviour {
             }
             else
             {
+                Debug.Log("Shuffle discard");
                 //Need to shuffle the discard pile and reform the playerdeck
                 Shuffle(ref areaManagerScript.cardList_Discard);
 
@@ -229,7 +227,7 @@ public class HandManager : MonoBehaviour {
     public void UpdateCardPositionsInHand()
     {
         //assign positions to cards
-        for (int i = 0; i < playerCardList.Count; i++)
+        for (int i = 0; i < numCardsInHand; i++)
         {
             CardMovement cardScript = playerCardList[i].GetComponent<CardMovement>();
 
