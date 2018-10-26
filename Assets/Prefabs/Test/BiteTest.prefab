@@ -22,9 +22,10 @@ GameObject:
   - component: {fileID: 212093131656309390}
   - component: {fileID: 114382990941350444}
   - component: {fileID: 65852687873118444}
-  - component: {fileID: 114241457955869714}
+  - component: {fileID: 114133869473677362}
+  - component: {fileID: 114759447358576522}
   m_Layer: 0
-  m_Name: Hero_StarterCard
+  m_Name: BiteTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1194213479686936}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 10, z: 0}
+  m_LocalPosition: {x: -5, y: -0.81, z: 7.04}
   m_LocalScale: {x: 0.7344204, y: 0.7344204, z: 0.7344204}
   m_Children: []
   m_Father: {fileID: 0}
@@ -55,61 +56,26 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5.23, y: 5.5900006, z: 0.20000003}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114241457955869714
+--- !u!114 &114133869473677362
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1194213479686936}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36efb9a2e30f39544b150df38f3d0c65, type: 3}
+  m_Script: {fileID: 11500000, guid: d0451a7baf5e5ac49a25a9af23c56638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardName: 
-  DiscardCost: 0
-  BurnCost: 0
-  FlavourText: 
-  Attack: 0
-  Defense: 0
-  SigilNum: 0
-  IsOnArrival: 0
-  OA_IsChoice: 0
-  OA_NumDeckDrawTop: 0
-  OA_TempDefenseIncrease: 0
-  IsUndying: 0
-  IsStack: 0
-  IsUntapped: 0
-  DiscardEffect: 
-  DE_NumDeckDrawRandom: 0
-  DE_NumFree: 0
-  DE_IsHighestValAttack: 0
-  DE_NumPoisons: 0
-  DE_NumDiscardDrawChoice: 0
-  DE_NumDeckDrawTop: 0
-  DE_AddAttack: 0
-  DE_SelectDiscardAddAttack: 0
-  BurnEffect: 
-  BE_NumDeckDrawChoice: 0
-  BE_RegainSigil: 0
-  BE_NumWoundsDiscard: 0
-  BE_NumPoisons: 0
-  BE_NumDeckDrawTop: 0
-  BE_IsOption: 0
-  BE_AddDefense: 0
-  BE_DrawAttackValOfBurnt: 0
-  BE_HasReaction: 0
-  BE_DrawDefenseValOfBurnt: 0
-  Image_Name: 
-  NumInDeck: 0
-  CardType: 
+  numUniqueCards: 13
+  Card: {fileID: 0}
 --- !u!114 &114382990941350444
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1194213479686936}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 626eaa2121d884e48930d7eae30ab7d6, type: 3}
   m_Name: 
@@ -122,6 +88,45 @@ MonoBehaviour:
   zShift: 0
   posInHand: 0
   isPlayed: 0
+--- !u!114 &114759447358576522
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1194213479686936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36efb9a2e30f39544b150df38f3d0c65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Card_Name: Bite
+  Discard_Cost: 0
+  Burn_Cost: 0
+  Flavour_Text: 
+  Attack: 1
+  Defense: 0
+  Has_Sigil: 0
+  Effect: 
+  E_num_deck_draw_top: 0
+  Discard_Effect: 
+  DE_Num: 0
+  DE_Num_Deck_Draw_Random: 0
+  DE_Num_Free: 0
+  DE_Is_Highest_Val_Attack: 0
+  DE_Num_Poisons: 0
+  DE_Num_Discard_Draw_Choice: 0
+  DE_Num_Deck_Draw_Top: 0
+  DE_Add_Attack: 0
+  Burn_Effect: 
+  BE_Num: 0
+  BE_Num_Deck_Draw_Choice: 1
+  BE_Can_Unsear: 0
+  BE_Num_Wounds_Discard: 0
+  BE_Num_Poisons: 0
+  BE_Num_Deck_Draw_Top: 0
+  BE_Is_Option: 0
+  BE_Add_Defense: 0
+  Image_Name: 
 --- !u!212 &212093131656309390
 SpriteRenderer:
   m_ObjectHideFlags: 1
