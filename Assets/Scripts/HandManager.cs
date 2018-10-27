@@ -12,7 +12,8 @@ public class HandManager : MonoBehaviour {
     public GameObject CardObj;
     public GameObject TempObj;
 
-    public List<GameObject> playerCardList;
+    public List<GameObject> playerDeckList;
+    //public List<GameObject> playerHandList;
 
     //list of x positions for the cards in the player's hand
     public List<float> HandPositions;
@@ -68,23 +69,26 @@ public class HandManager : MonoBehaviour {
 
     public void InitialiseCards()
     {
-        playerCardList = cardGenScript.PlayerDeck;
-        Debug.Log(playerCardList.Count);
+        playerDeckList = cardGenScript.PlayerDeck;
+        Debug.Log(playerDeckList.Count);
+
+        //shuffle the card list
+        Shuffle(ref playerDeckList);
     }
 
     public void RemoveCardFromHand(int pos)
     {
         numCardsInHand--;
         HandPositions.RemoveAt(pos);
-        playerCardList.RemoveAt(pos);
+        playerDeckList.RemoveAt(pos);
 
         //loop through all cards after the removed card and change their pos value
         //check if the card removed was the last card
-        if(pos != playerCardList.Count)
+        if(pos != playerDeckList.Count)
         {
-            for (int i = pos; i < playerCardList.Count; i++)
+            for (int i = pos; i < playerDeckList.Count; i++)
             {
-                playerCardList[i].GetComponent<CardMovement>().posInHand = i;
+                playerDeckList[i].GetComponent<CardMovement>().posInHand = i;
             }
         }
 
@@ -97,6 +101,10 @@ public class HandManager : MonoBehaviour {
             isExceedingHandSize = false;
         }
 
+        SetCardPositionsInHand();
+        UpdateCardPositionsInHand();
+
+        Debug.Log("REMOVED! "+numCardsInHand.ToString());
     }
 
     public void AddCardToHand()
@@ -110,11 +118,11 @@ public class HandManager : MonoBehaviour {
 
     public IEnumerator DrawCards(int numCards)
     {
-        Debug.Log("Num cards:" +playerCardList.Count);
+        Debug.Log("Num cards:" +playerDeckList.Count);
         for(int i =0; i<numCards; i++)
         {
             //check if there are enough cards left in deck
-            if (playerCardList.Count - numCards >= 0)
+            if (playerDeckList.Count - numCards >= 0)
             {
                 Debug.Log("Play card!");
                 //play sound
@@ -128,9 +136,15 @@ public class HandManager : MonoBehaviour {
                 // playerCardList.Add(temp);
 
                 //card is now in the player's hand
-                playerCardList[numCardsInHand-1].GetComponent<CardMovement>().isInHand = true;
+                
+                //playerHandList.Add(playerDeckList[numCardsInHand - 1]);
+                playerDeckList[numCardsInHand-1].GetComponent<CardMovement>().isInHand = true;
+
                 //set the position(index) of the card in the hand
-                playerCardList[numCardsInHand-1].GetComponent<CardMovement>().posInHand = numCardsInHand-1;
+                playerDeckList[numCardsInHand-1].GetComponent<CardMovement>().posInHand = numCardsInHand-1;
+
+                //change the card's layering
+                SetLayeringInHand();
 
                 UpdateCardPositionsInHand();
 
@@ -145,7 +159,7 @@ public class HandManager : MonoBehaviour {
                 //add shuffled discard pile to playerDeck
                 for(int j= 0; j< areaManagerScript.cardList_Discard.Count; j++)
                 {
-                    playerCardList.Add(areaManagerScript.cardList_Discard[j]);
+                    playerDeckList.Add(areaManagerScript.cardList_Discard[j]);
                 }
                 areaManagerScript.cardList_Discard.Clear();
             }
@@ -161,6 +175,37 @@ public class HandManager : MonoBehaviour {
             limit_halo.enabled = true;
             isExceedingHandSize = true;
         }
+    }
+
+    //loop through all cards and assign Layers
+    private void SetLayeringInHand()
+    {
+        int count = 0;
+        for(int i=0; i<playerDeckList.Count; i++)
+        {
+            if (playerDeckList[i].GetComponent<CardMovement>().isInHand)
+            {
+                playerDeckList[i].GetComponent<SpriteRenderer>().sortingOrder = 15 + count*2;
+                TextMeshPro tMP = playerDeckList[i].transform.Find("Title").GetComponent<TextMeshPro>();
+                tMP.sortingOrder = 16 + count*2;
+                tMP = playerDeckList[i].transform.Find("DiscardCost").GetComponent<TextMeshPro>();
+                tMP.sortingOrder = 16 + count * 2;
+                tMP = playerDeckList[i].transform.Find("BurnCost").GetComponent<TextMeshPro>();
+                tMP.sortingOrder = 16 + count * 2;
+                tMP = playerDeckList[i].transform.Find("DiscardEffect").GetComponent<TextMeshPro>();
+                tMP.sortingOrder = 16 + count * 2;
+                tMP = playerDeckList[i].transform.Find("BurnEffect").GetComponent<TextMeshPro>();
+                tMP.sortingOrder = 16 + count * 2;
+                tMP = playerDeckList[i].transform.Find("AttackCost").GetComponent<TextMeshPro>();
+                tMP.sortingOrder = 16 + count * 2;
+                tMP = playerDeckList[i].transform.Find("DefenseCost").GetComponent<TextMeshPro>();
+                tMP.sortingOrder = 16 + count * 2;
+
+                count++;
+            }
+            
+        }
+        
     }
 
     //shuffling cards
@@ -229,11 +274,11 @@ public class HandManager : MonoBehaviour {
         //assign positions to cards
         for (int i = 0; i < numCardsInHand; i++)
         {
-            CardMovement cardScript = playerCardList[i].GetComponent<CardMovement>();
+            CardMovement cardScript = playerDeckList[i].GetComponent<CardMovement>();
 
             var obj = (GameObject)Instantiate(TempObj, new Vector3(HandPositions[i], 0f, -0.83f), Quaternion.Euler(90,0,0));
 
-            playerCardList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
+            playerDeckList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
 
         }
     }

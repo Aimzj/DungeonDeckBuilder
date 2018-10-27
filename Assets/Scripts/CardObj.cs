@@ -67,7 +67,7 @@ public class CardObj : MonoBehaviour {
         cardName_Text.text = CardName;
         discardCost_Text.text = DiscardCost.ToString();
         burnCost_Text.text = BurnCost.ToString();
-        //discardEffect_Text.text = DiscardEffect;
+        discardEffect_Text.text = DiscardEffect;
         burnEffect_Text.text = BurnEffect;
         attack_Text.text = Attack.ToString();
         defence_Text.text = Defense.ToString();

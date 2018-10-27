@@ -110,7 +110,7 @@ public class CardMovement : MonoBehaviour {
             isHovering = false;
 
             //change the order in layer of card and text
-            ChangeOrder(20);
+            ChangeOrder(30);
         }
  
     }

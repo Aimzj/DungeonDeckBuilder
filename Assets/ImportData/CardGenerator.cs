@@ -114,7 +114,7 @@ public class CardGenerator : MonoBehaviour {
         cardScript.IsStack = my_container.GetData("stack").ToInt();
         cardScript.IsUntapped = my_container.GetData("untapped").ToInt();
 
-       // cardScript.DiscardEffect = my_container.GetData("effect").ToString();
+        cardScript.DiscardEffect = my_container.GetData("discard_effect").ToString();
         cardScript.DE_NumDeckDrawRandom = my_container.GetData("DISCARD_num_deck_draw_random").ToInt();
         cardScript.DE_NumFree = my_container.GetData("DISCARD_num_free").ToInt();
         cardScript.DE_IsHighestValAttack = my_container.GetData("DISCARD_is_highest_val_attack").ToInt();
