@@ -46,12 +46,13 @@ public class CardMovement : MonoBehaviour {
     public int posInHand;
 
     //play area
-    public bool isPlayed;
+    public bool isPlayed, hasBurnEffect;
 
     private HandManager handManagerScript;
     private AreaSensor areaSensorScript;
     private AreaManager areaManagerScript;
     private PlayerDeck playerDeckScript;
+    private StatsManager statManagerScript;
 
     //sound
     private SoundManager soundScript;
@@ -62,6 +63,7 @@ public class CardMovement : MonoBehaviour {
         areaSensorScript = GameObject.Find("GameManager").GetComponent<AreaSensor>();
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         playerDeckScript = GameObject.Find("GameManager").GetComponent<PlayerDeck>();
+        statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
         soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
 
@@ -73,7 +75,7 @@ public class CardMovement : MonoBehaviour {
         zShift = 0.5f;
 
         isPlayed= false;
-
+        
     }
 
 	// Update is called once per frame
@@ -145,8 +147,11 @@ public class CardMovement : MonoBehaviour {
             if (areaSensorScript.isPlay)
             {
                 //place the card on the table
+
                 //only if the hand size is not exceeded
-                if (!handManagerScript.isExceedingHandSize)
+                //and if the player can "afford" it
+                if (!handManagerScript.isExceedingHandSize 
+                    && gameObject.GetComponent<CardObj>().DiscardCost <= statManagerScript.numDiscard_player)
                 {
                     //play sound
                     soundScript.PlaySound_PlayCard();
@@ -160,10 +165,36 @@ public class CardMovement : MonoBehaviour {
 
                     areaManagerScript.PlayCard(this.gameObject);
 
-                    //play card
-                    playerDeckScript.PlayCard(this.gameObject);
+                    //play card with effects
+                    playerDeckScript.PlayCard(this.gameObject, false);
                 }
                              
+            }
+            //BURN
+            else if (areaSensorScript.isBurn)
+            {
+                //only if the hand size is not exceeded
+                //and if the player can "afford" it
+                if (!handManagerScript.isExceedingHandSize 
+                    && gameObject.GetComponent<CardObj>().BurnCost <= statManagerScript.numBurn_player 
+                    && gameObject.GetComponent<CardObj>().DiscardCost <= statManagerScript.numDiscard_player)
+                {
+                    //play burn sound
+
+                    //remove the card from the Hand List
+                    handManagerScript.RemoveCardFromHand(this.posInHand);
+                    posInHand = -1;
+
+                    isPlayed = true;
+                    isInHand = false;
+
+                    areaManagerScript.PlayCard(this.gameObject);
+
+                    //play card with burn effects
+                    playerDeckScript.PlayCard(this.gameObject, true);
+
+
+                }
             }
             //DISCARD
             else if (areaSensorScript.isDiscard)

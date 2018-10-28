@@ -3,30 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerDeck : MonoBehaviour {
-    public List<GameObject> MainDeck;
-    public List<GameObject> DiscardPile;
-    public List<GameObject> CardsInHand;
-    public List<GameObject> BurntCards;
-
-    private int deckMainSize, deckMainRemaining;
-    private int discardSize;
-    private int handSize;
-    private int numBurnt;
-
-    private int health;
+    private StatsManager statManagerScript;
 
 	// Use this for initialization
 	void Start () {
-        deckMainSize = 0;
-        deckMainRemaining = 0;
+        statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
-        discardSize = 0;
-        handSize = 0;
-        numBurnt = 0;
 	}
 
     //putting a new card into the player's deck
-    public void IncreaseSize_MainDeck(GameObject newCard)
+   /* public void IncreaseSize_MainDeck(GameObject newCard)
     {
         GameObject temp = (GameObject)Instantiate(newCard, Vector3.zero, Quaternion.identity);
         temp.SetActive(false);
@@ -104,15 +90,23 @@ public class PlayerDeck : MonoBehaviour {
         DiscardPile.Add(cardObj);
         discardSize++;
 
-    }
+    }*/
 
     //play a card from the hand
     //check for all card stats and abilities
-    public void PlayCard(GameObject playedCard)
+    public void PlayCard(GameObject playedCard, bool isBurn)
     {
-
         //retrieve card data
         CardObj Card = playedCard.GetComponent<CardObj>();
+
+        //take off of the discard pool
+        statManagerScript.UpdateDiscard("player", -Card.DiscardCost);
+
+        if (isBurn)
+        {
+            //take off of the burn pool
+            statManagerScript.UpdateDiscard("player", -Card.BurnCost);
+        }
 
         //check opponent
 
