@@ -148,6 +148,9 @@ public class AreaManager : MonoBehaviour {
             //loop through play area list and add to discard list
             for (int i = 0; i < cardList_Play.Count; i++)
             {
+                //disable burn halos
+                cardList_Play[i].transform.Find("BurnBorder").GetComponent<SpriteRenderer>().enabled = false;
+
                 cardList_Discard.Add(cardList_Play[i]);
 
                 //change target position of each card to the discard pile

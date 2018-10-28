@@ -51,7 +51,7 @@ public class CardMovement : MonoBehaviour {
     private HandManager handManagerScript;
     private AreaSensor areaSensorScript;
     private AreaManager areaManagerScript;
-    private PlayerDeck playerDeckScript;
+    private CardEffectManager cardEffectScript;
     private StatsManager statManagerScript;
 
     //sound
@@ -62,7 +62,7 @@ public class CardMovement : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         areaSensorScript = GameObject.Find("GameManager").GetComponent<AreaSensor>();
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
-        playerDeckScript = GameObject.Find("GameManager").GetComponent<PlayerDeck>();
+        cardEffectScript = GameObject.Find("GameManager").GetComponent<CardEffectManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
         soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
@@ -166,7 +166,7 @@ public class CardMovement : MonoBehaviour {
                     areaManagerScript.PlayCard(this.gameObject);
 
                     //play card with effects
-                    playerDeckScript.PlayCard(this.gameObject, false);
+                    cardEffectScript.PlayCard(this.gameObject, false);
                 }
                              
             }
@@ -191,7 +191,7 @@ public class CardMovement : MonoBehaviour {
                     areaManagerScript.PlayCard(this.gameObject);
 
                     //play card with burn effects
-                    playerDeckScript.PlayCard(this.gameObject, true);
+                    cardEffectScript.PlayCard(this.gameObject, true);
 
 
                 }

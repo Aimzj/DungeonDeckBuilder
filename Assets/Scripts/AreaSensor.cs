@@ -135,12 +135,15 @@ public class AreaSensor : MonoBehaviour {
 
                 if (handManagerScript.isHoldingCard)
                 {
+                    //need to check if the card has a burn value
+
                     //play particle effect
                     if (!burnParticles.isPlaying)
                         burnParticles.Play();
+                    burnArea.GetComponent<SpriteRenderer>().color = burnArea_StartColour;
 
                     playArea.GetComponent<SpriteRenderer>().color = playArea_StartColour;
-                    burnArea.GetComponent<SpriteRenderer>().color = burnArea_StartColour;
+                    
                     cardIsPresent = true;
 
                     isPlay = false;
