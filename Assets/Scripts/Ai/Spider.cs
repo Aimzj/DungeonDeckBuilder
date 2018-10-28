@@ -20,6 +20,8 @@ public class Spider : MonoBehaviour {
     private List<GameObject> inHand = new List<GameObject>();
 
 
+    int totalDamage = 0;
+
     private GameObject[] clearList;
     // Use this for initialization
 
@@ -59,6 +61,8 @@ public class Spider : MonoBehaviour {
             if (card.GetComponent<EnemyCardMove>().state == 2)
             card.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform);
         }
+
+        totalDamage = 0;
     }
     //Trigger turn start and then all ohter related functions
     public void TurnStart()
@@ -84,13 +88,12 @@ public class Spider : MonoBehaviour {
             if (spiderHand.inHand[i].GetComponent<CardObj>().CardName == "Skitter")
             {
                 // print("Skitter Played");
-                spiderHand.inHand[i].GetComponent<EnemyCardMove>().state = 2;
-                spiderHand.inHand[i].GetComponent<EnemyCardMove>().SetTarget(board.transform);
-                spiderHand.inHand[i].GetComponent<BoxCollider>().enabled = false;
-                RemoveCard(i);
+                triggerEffects(i);
+                
                 spiderDeck.DrawCard(1);
                 // i = 0;
                 i = spiderHand.inHand.Count - 1;
+                totalDamage++;
 
 
 
@@ -98,11 +101,7 @@ public class Spider : MonoBehaviour {
             else if (spiderHand.inHand[i].GetComponent<CardObj>().CardName == "Bite")
             {
                 //print("Bite Played");
-                spiderHand.inHand[i].GetComponent<EnemyCardMove>().state = 2;
-                spiderHand.inHand[i].GetComponent<EnemyCardMove>().SetTarget(board.transform);
-                spiderHand.inHand[i].GetComponent<BoxCollider>().enabled = false;
-               
-                RemoveCard(i);
+                triggerEffects(i);
                 // i = 0;
                 i = spiderHand.inHand.Count - 1;
             }
@@ -111,13 +110,15 @@ public class Spider : MonoBehaviour {
     
     }
 
-   /*void reshuffle()
+    void triggerEffects(int index)
     {
-        //spiderDeck.deck = new List<GameObject>();
-        spiderDeck.deck = spiderDeck.discardPile;
-        print("RELOAD");
-        spiderDeck.discardPile = new List<GameObject>(); 
-    }*/
+        spiderHand.inHand[index].GetComponent<EnemyCardMove>().state = 2;
+        spiderHand.inHand[index].GetComponent<EnemyCardMove>().SetTarget(board.transform);
+        spiderHand.inHand[index].GetComponent<BoxCollider>().enabled = false;
+        RemoveCard(index);
+    }
+
+
 
     void RemoveCard(int arrPos)
     {
