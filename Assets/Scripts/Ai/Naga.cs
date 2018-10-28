@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿//TODO: [] Discard Properly
+//      [] Play Correct order
+//      [] Repond to player input
+
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +15,7 @@ public class Naga : MonoBehaviour {
     [SerializeField]
     private List<GameObject> deck = new List<GameObject>();
     private List<GameObject> inHand = new List<GameObject>();
+    private GameObject[] clearList;
 
     //Outside Scripts
     private DeckManager NagaDeck;
@@ -22,13 +28,15 @@ public class Naga : MonoBehaviour {
     private int numCotD = 0;
 
     //Stat tracker
-    private int hp = 10;
-    private int sigilCount = 4;
-    private int handSize = 4;
+    public int hp = 10;
+    public int sigilCount = 4;
+    public int handSize = 4;
     public int Numdebuffs = 0;
     private int damageTaken = 0;
+    int totalDamage = 0;
 
     //Zones
+    [SerializeField]
     private GameObject discardZone;
     [SerializeField]
     private GameObject deckZone;
@@ -42,6 +50,44 @@ public class Naga : MonoBehaviour {
         cardCount();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            Reaction();
+
+        }
+
+        if (Input.GetKeyUp(KeyCode.D))
+        {
+            Action();
+
+        }
+
+
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            NagaDeck.DrawCard(4);
+        }
+
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            EndTurn();
+        }
+    }
+
+    public void EndTurn()
+    {
+        clearList = GameObject.FindGameObjectsWithTag("EnemyCard");
+        foreach (var card in clearList)
+        {
+            if (card.GetComponent<EnemyCardMove>().state == 2)
+                card.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform);
+        }
+
+        totalDamage = 0;
+    }
+
     public void TurnStart()//Start Turn
     {
 
@@ -52,6 +98,7 @@ public class Naga : MonoBehaviour {
 
         else
         {
+            NagaDeck.DrawCard(4);
             Action();//Action functions
         }
       
@@ -60,29 +107,42 @@ public class Naga : MonoBehaviour {
     //Count cards on start
     protected void cardCount()
     {
-        for(int i = 0; i <= NagaHand.inHand.Count; i++)
+
+        numEldritchOath = 0;
+        numCrushBlow = 0;
+        numScale = 0;
+        numCotD = 0;
+
+        for (int i = 0; i <= NagaHand.inHand.Count -1; i++)
         {
-            if(enemyHand[i].GetComponent<CardObj>().CardName == "Eldritch Oath")
+            if(NagaHand.inHand[i].GetComponent<CardObj>().CardName == "Eldritch Oath")
             {
                 numEldritchOath++;
+                
             }
-            else if (enemyHand[i].GetComponent<CardObj>().CardName == "Crushing Blow")
+            else if (NagaHand.inHand[i].GetComponent<CardObj>().CardName == "Crushing Blow")
             {
                 numCrushBlow++;
+
             }
-            else if (enemyHand[i].GetComponent<CardObj>().CardName == "Serpent's Scale")
+            else if (NagaHand.inHand[i].GetComponent<CardObj>().CardName == "Serpent's Scale")
             {
                 numScale++;
             }
-            else if (enemyHand[i].GetComponent<CardObj>().CardName == "Call of the Deep")
+            else if (NagaHand.inHand[i].GetComponent<CardObj>().CardName == "Call of the Deep")
             {
                 numCotD++;
             }
         }
+        print("EEO:" + numEldritchOath);
+        print("CB:" + numCrushBlow);
+        print("SS:" + numScale);
+        print("CotD:" + numCotD);
     }
 
     protected void Reaction()
     {
+        cardCount();
         for (int i = NagaHand.inHand.Count -1; i >= 0; i--)
         {
             //Reshuffle if deck empty
@@ -100,7 +160,9 @@ public class Naga : MonoBehaviour {
                
                 if(NagaHand.inHand[i].GetComponent<CardObj>().CardName == "Eldritch Oath")
                 {
+                    print("ELDRITCH OATH");
                     // Play EE
+                    triggerEffects(i);
                     Discard(NagaHand.inHand[i].GetComponent<CardObj>().DiscardCost, i);
                     i = NagaHand.inHand.Count - 1;
                 }
@@ -111,7 +173,9 @@ public class Naga : MonoBehaviour {
             {
                 if(numCotD > 0)
                 {
+                    print("CALL OF THE DEEP");
                     //Play card
+                    triggerEffects(i);
                     Discard(NagaHand.inHand[i].GetComponent<CardObj>().DiscardCost, i);
                     i = NagaHand.inHand.Count - 1;
                     numCotD--;
@@ -121,7 +185,9 @@ public class Naga : MonoBehaviour {
             {
                 if(numScale > 0)
                 {
+                    print("SERPENT SCALE");
                     //Play Card
+                    triggerEffects(i);
                     Discard(NagaHand.inHand[i].GetComponent<CardObj>().DiscardCost, i);
                     i = NagaHand.inHand.Count - 1;
                     damageTaken -= enemyHand[i].GetComponent<CardObj>().Defense;
@@ -136,35 +202,78 @@ public class Naga : MonoBehaviour {
 
     protected void Action()
     {
+        cardCount();
 
-         for (int i = 0; i <= enemyHand.Count; i++)
+         for (int i = 0; i <= NagaHand.inHand.Count - 1; i++)
         {
         if(numEldritchOath > 0)
             {
-                //playcard
-
-                numEldritchOath--;
-            }
-        else   if (numCrushBlow > 0)
-            {
-                //playcard
-               numCrushBlow--;
-                if(enemyHand.Count >= 2)
+                for(int x = 0; x <= NagaHand.inHand.Count -1; x ++)
                 {
-                    for(int k = 0; k < 2; k ++)
+                    if(NagaHand.inHand[x].GetComponent<CardObj>().CardName == "Eldritch Oath")
                     {
+                        print("ELDRITCH OATH");
+                        // Play EE
+                        triggerEffects(x);
+                        //  Discard(NagaHand.inHand[i].GetComponent<CardObj>().DiscardCost, i);
+                        //i = 0;
+
+                        numEldritchOath--;
+                    }
+                }
+               
+            }
+        else   if (numCrushBlow > 0 && NagaHand.inHand.Count >= 2)
+            {
+
+               
+                if(NagaHand.inHand.Count >= 2)
+                {
+                    triggerEffects(i);
+
+
+
+                    //playcard
+                    numCrushBlow--;
+                    for (int k = 0; k <= NagaHand.inHand.Count - 1; k ++)
+                    {
+                        
                         if (hp > 3 && numScale > 0)
                         {
+                           
+                            if (NagaHand.inHand[k].GetComponent<CardObj>().CardName == "Serpent Scale")
+                            {
+                                print("DISCARD");
+                                RemoveCard(k);
+                              //  k = NagaHand.inHand.Count - 1;
+                            }
                             //Discard Serpent scale
                         }
                         else if (numCotD > 0)
                         {
+                            //print("CRUSHING BLOW1");
+                            if (NagaHand.inHand[k].GetComponent<CardObj>().CardName == "Call of the Deep")
+                            {
+                                print("DISCARD");
+                                RemoveCard(k);
+                               // k = NagaHand.inHand.Count - 1;
+                            }
                             //Discard Cotd
+                        }
+                        else
+                        {
+                            print("CRUSHING BLOW2");
+                            if (NagaHand.inHand[k].GetComponent<CardObj>().CardName == "Crushing Blow")
+                            {
+                                print("DISCARD");
+                                RemoveCard(k, true);
+                               // k = NagaHand.inHand.Count - 1;
+                            }
                         }
                     }
                     
                 }
-                
+                i = 0;
             }
 
         }
@@ -195,6 +304,17 @@ public class Naga : MonoBehaviour {
 
     }
 
+    void RemoveCard(int arrPos, bool isDisc)
+    {
+        var removedCard = NagaHand.inHand[arrPos];
+        var dummyCard = removedCard;
+        
+        NagaDeck.discardPile.Add(dummyCard);
+        NagaHand.inHand.RemoveAt(arrPos);
+        // Destroy(removedCard);
+        NagaHand.reOrderHand();
+        dummyCard.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform);
+    }
     public void Discard(int Cost, int index)
     {
         int remainingCost = Cost;
