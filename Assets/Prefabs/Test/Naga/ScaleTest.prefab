@@ -24,9 +24,9 @@ GameObject:
   - component: {fileID: 65852687873118444}
   - component: {fileID: 114133869473677362}
   - component: {fileID: 114759447358576522}
-  - component: {fileID: 114672227888174672}
+  - component: {fileID: 114367396976129918}
   m_Layer: 0
-  m_Name: SkitterTest
+  m_Name: ScaleTest
   m_TagString: EnemyCard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1194213479686936}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.81, z: 7.04}
+  m_LocalPosition: {x: -5, y: -0.81, z: 7.04}
   m_LocalScale: {x: 0.7344204, y: 0.7344204, z: 0.7344204}
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,6 +78,20 @@ MonoBehaviour:
   BurnDeck: []
   WoundDeck: []
   HexDeck: []
+--- !u!114 &114367396976129918
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1194213479686936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36e97f954f13fa14897cbaa62ca39076, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 4
+  targetPos: {fileID: 0}
+  state: 0
 --- !u!114 &114382990941350444
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -97,19 +111,6 @@ MonoBehaviour:
   zShift: 0
   posInHand: 0
   isPlayed: 0
---- !u!114 &114672227888174672
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1194213479686936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36e97f954f13fa14897cbaa62ca39076, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 4
-  targetPos: {fileID: 0}
 --- !u!114 &114759447358576522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -121,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36efb9a2e30f39544b150df38f3d0c65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardName: Skitter
+  CardName: Serpent Scale
   DiscardCost: 0
   BurnCost: 0
   FlavourText: 
