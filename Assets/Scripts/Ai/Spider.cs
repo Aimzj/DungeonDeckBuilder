@@ -8,11 +8,19 @@ public class Spider : MonoBehaviour {
   
     private DeckManager spiderDeck;
     private EnemyHand spiderHand;
+    [SerializeField]
+    private GameObject discardZone;
+    [SerializeField]
+    private GameObject deckZone;
+    [SerializeField]
+    private GameObject board;
 
     [SerializeField]
     private List<GameObject> deck = new List<GameObject>();
     private List<GameObject> inHand = new List<GameObject>();
 
+
+    private GameObject[] clearList;
     // Use this for initialization
 
     private void Start()
@@ -28,14 +36,30 @@ public class Spider : MonoBehaviour {
         if(Input.GetKeyUp(KeyCode.A))
         {
             TurnStart();
+            
         }
 
         if(Input.GetKeyUp(KeyCode.E))
         {
             spiderDeck.DrawCard(4);
         }
+
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            EndTurn();
+        }
     }
 
+
+    public void EndTurn()
+    {
+        clearList = GameObject.FindGameObjectsWithTag("EnemyCard");
+        foreach(var card in clearList)
+        {
+            if (card.GetComponent<EnemyCardMove>().state == 2)
+            card.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform);
+        }
+    }
     //Trigger turn start and then all ohter related functions
     public void TurnStart()
     {
@@ -43,11 +67,12 @@ public class Spider : MonoBehaviour {
         //inHand = spiderHand.inHand;
         // int totalHand = spiderHand.inHand.Count-1;
 
-
+      
         //Loop through each card in hand
         for (int i = spiderHand.inHand.Count -1 ; i >= 0 ; i--)
             //for (int i = 0 ; i <= spiderHand.inHand.Count  ; i++)
         {
+            print("TEST");
             //Reshuffle if deck is empty
             if (spiderDeck.deck.Count <= 0)
             {
@@ -58,9 +83,10 @@ public class Spider : MonoBehaviour {
             }
             if (spiderHand.inHand[i].GetComponent<CardObj>().CardName == "Skitter")
             {
-                print("Skitter Played");
-             
-               
+                // print("Skitter Played");
+                spiderHand.inHand[i].GetComponent<EnemyCardMove>().state = 2;
+                spiderHand.inHand[i].GetComponent<EnemyCardMove>().SetTarget(board.transform);
+                spiderHand.inHand[i].GetComponent<BoxCollider>().enabled = false;
                 RemoveCard(i);
                 spiderDeck.DrawCard(1);
                 // i = 0;
@@ -71,7 +97,11 @@ public class Spider : MonoBehaviour {
             }
             else if (spiderHand.inHand[i].GetComponent<CardObj>().CardName == "Bite")
             {
-                print("Bite Played");
+                //print("Bite Played");
+                spiderHand.inHand[i].GetComponent<EnemyCardMove>().state = 2;
+                spiderHand.inHand[i].GetComponent<EnemyCardMove>().SetTarget(board.transform);
+                spiderHand.inHand[i].GetComponent<BoxCollider>().enabled = false;
+               
                 RemoveCard(i);
                 // i = 0;
                 i = spiderHand.inHand.Count - 1;

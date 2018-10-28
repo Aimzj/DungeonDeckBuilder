@@ -272,6 +272,67 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 62853846}
   m_CullTransparentMesh: 0
+--- !u!1001 &213686671
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4994635445769824, guid: 516a2759ef3981e4b81e7f28b14f1d36, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 516a2759ef3981e4b81e7f28b14f1d36, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -0.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 516a2759ef3981e4b81e7f28b14f1d36, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -1.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 516a2759ef3981e4b81e7f28b14f1d36, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 516a2759ef3981e4b81e7f28b14f1d36, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 516a2759ef3981e4b81e7f28b14f1d36, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 516a2759ef3981e4b81e7f28b14f1d36, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4994635445769824, guid: 516a2759ef3981e4b81e7f28b14f1d36, type: 2}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 114367396976129918, guid: 516a2759ef3981e4b81e7f28b14f1d36,
+        type: 2}
+      propertyPath: targetPos
+      value: 
+      objectReference: {fileID: 1903382119}
+    - target: {fileID: 114382990941350444, guid: 516a2759ef3981e4b81e7f28b14f1d36,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114367396976129918, guid: 516a2759ef3981e4b81e7f28b14f1d36,
+        type: 2}
+      propertyPath: speed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194213479686936, guid: 516a2759ef3981e4b81e7f28b14f1d36, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 516a2759ef3981e4b81e7f28b14f1d36, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &680114545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,6 +1061,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 628158ec921e1614f8b3046212a3857e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  discardZone: {fileID: 1329967808}
+  deckZone: {fileID: 1660818320}
+  board: {fileID: 1770178032}
   deck: []
 --- !u!114 &985650729
 MonoBehaviour:
@@ -2765,8 +2829,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0451a7baf5e5ac49a25a9af23c56638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numUniqueCards: 13
   Card: {fileID: 0}
+  PlayerDeck: []
+  SpiderDeck: []
+  NagaDeck: []
+  GemDeck: []
+  DragonDeck: []
+  PoisonDeck: []
+  BurnDeck: []
+  WoundDeck: []
+  HexDeck: []
 --- !u!1 &2083454193
 GameObject:
   m_ObjectHideFlags: 0
@@ -2888,7 +2960,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardObj: {fileID: 1194213479686936, guid: 7db14e0d90d630645abeef99acd35f71, type: 2}
   TempObj: {fileID: 1099375877924872, guid: 77fd7d81c8342e24d86401421403acb2, type: 2}
-  cardList: []
+  playerDeckList: []
   HandPositions: []
   isHoldingCard: 0
   isExceedingHandSize: 0
