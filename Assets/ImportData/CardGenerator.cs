@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CardGenerator : MonoBehaviour {
     //script loops through excel spreadsheet and seperates cards into their different decks
@@ -17,6 +18,7 @@ public class CardGenerator : MonoBehaviour {
 
     private HandManager handManagerScript;
     private GameManager gameManagerScript;
+    private StatsManager statManagerScript;
     
     //decks
     public List<GameObject> 
@@ -39,49 +41,89 @@ public class CardGenerator : MonoBehaviour {
         enemyDeckTrans = GameObject.Find("EnemyDeck").GetComponent<Transform>();
         poisonDeckTrans = GameObject.Find("PoisonDeck").GetComponent<Transform>();
 
-
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
+        statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+
+        int player_health = 0;
+        int player_cardsInDeck = 0;
+
+        int enemy_health = 0;
+        int enemy_cardsInDeck = 0;
 
         //looping through all unique cards
         for(int i = 1; i < numUniqueCards+1; i++)
         {
-            cardObj = (GameObject)Instantiate(Card, Vector3.zero, Quaternion.identity);
+            tempObj = (GameObject)Instantiate(Card, Vector3.zero, Quaternion.identity);
             //load data onto card
-            cardScript = cardObj.GetComponent<CardObj>();
+            cardScript = tempObj.GetComponent<CardObj>();
             Debug.Log("working: " + i.ToString());
             LoadMyData("card_" + i.ToString());
+
+            int numSigils = cardScript.SigilNum;
+
+            //set stats
+            if(cardScript.CardType == "player_starting")
+            {
+                player_health += cardScript.SigilNum * 5;
+                player_cardsInDeck += cardScript.NumInDeck;
+            }
+            else if(cardScript.CardType == "spider")
+            {
+                enemy_health += cardScript.SigilNum * 5;
+                enemy_cardsInDeck += cardScript.NumInDeck;
+            }
 
             //seperate cards into decks
             for (int j=0; j<cardScript.NumInDeck; j++)
             {
-                tempObj = (GameObject)Instantiate(cardObj);
+                cardObj = (GameObject)Instantiate(tempObj);
                 if (cardScript.CardType == "player_starting")
                 {
-                    tempObj.transform.position = playerDeckTrans.position;
-                    tempObj.transform.rotation = Quaternion.Euler(90, 0, 0);
-                    PlayerDeck.Add(tempObj);
+                    //check for Sigils
+                    if(numSigils>0)
+                    {
+                        //put a sigil on the card
+                        cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
+                    }
+
+                    cardObj.transform.position = playerDeckTrans.position;
+                    cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+                    PlayerDeck.Add(cardObj);
                 }
                 else if(cardScript.CardType == "spider")
                 {
-                    tempObj.transform.position = enemyDeckTrans.position;
-                    tempObj.transform.rotation = Quaternion.Euler(90, 0, 0);
-                    SpiderDeck.Add(tempObj);
+                    //check for Sigils
+                    if (numSigils > 0)
+                    {
+                        //put a sigil on the card
+                        cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
+                    }
+                    
+                    cardObj.transform.position = enemyDeckTrans.position;
+                    cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+                    SpiderDeck.Add(cardObj);
                 }
                 else if(cardScript.CardType == "status")
                 {
                     if(cardScript.CardName == "Poison")
                     {
-                        tempObj.transform.position = poisonDeckTrans.position;
-                        tempObj.transform.rotation = Quaternion.Euler(90, 0, 0);
-                        PoisonDeck.Add(tempObj);
+                        cardObj.transform.position = poisonDeckTrans.position;
+                        cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+                        PoisonDeck.Add(cardObj);
                     }
                 }
             }
 
-            Destroy(cardObj);
+            Destroy(tempObj);
 
         }
+
+        //fill stats
+        statManagerScript.UpdateHealth("player", player_health);
+        statManagerScript.SetTotalCards("player", player_cardsInDeck);
+        statManagerScript.UpdateHealth("enemy", enemy_health);
+        statManagerScript.SetTotalCards("enemy", enemy_cardsInDeck);
 
         //Initialise decks in their respective scripts
         handManagerScript.InitialiseCards();

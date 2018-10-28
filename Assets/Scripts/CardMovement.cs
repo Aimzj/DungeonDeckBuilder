@@ -119,20 +119,15 @@ public class CardMovement : MonoBehaviour {
     {
         gameObject.GetComponent<SpriteRenderer>().sortingOrder = num;
 
-        TextMeshPro tMP = gameObject.transform.Find("Title").GetComponent<TextMeshPro>();
-        tMP.sortingOrder = num+1;
-        tMP = gameObject.transform.Find("DiscardCost").GetComponent<TextMeshPro>();
-        tMP.sortingOrder = num + 1;
-        tMP = gameObject.transform.Find("BurnCost").GetComponent<TextMeshPro>();
-        tMP.sortingOrder = num + 1;
-        tMP = gameObject.transform.Find("DiscardEffect").GetComponent<TextMeshPro>();
-        tMP.sortingOrder = num + 1;
-        tMP = gameObject.transform.Find("BurnEffect").GetComponent<TextMeshPro>();
-        tMP.sortingOrder = num + 1;
-        tMP = gameObject.transform.Find("AttackCost").GetComponent<TextMeshPro>();
-        tMP.sortingOrder = num + 1;
-        tMP = gameObject.transform.Find("DefenseCost").GetComponent<TextMeshPro>();
-        tMP.sortingOrder = num + 1;
+        gameObject.transform.Find("Title").GetComponent<TextMeshPro>().sortingOrder = num + 1;
+        gameObject.transform.Find("DiscardCost").GetComponent<TextMeshPro>().sortingOrder = num + 1;
+        gameObject.transform.Find("BurnCost").GetComponent<TextMeshPro>().sortingOrder = num + 1;
+        gameObject.transform.Find("DiscardEffect").GetComponent<TextMeshPro>().sortingOrder = num + 1;
+        gameObject.transform.Find("BurnEffect").GetComponent<TextMeshPro>().sortingOrder = num + 1;
+        gameObject.transform.Find("AttackCost").GetComponent<TextMeshPro>().sortingOrder = num + 1;
+        gameObject.transform.Find("DefenseCost").GetComponent<TextMeshPro>().sortingOrder = num + 1;
+        gameObject.transform.Find("Sigil").GetComponent<SpriteRenderer>().sortingOrder = num + 1;
+
     }
     private void OnMouseUp()
     {
