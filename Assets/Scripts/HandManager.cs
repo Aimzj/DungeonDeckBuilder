@@ -13,7 +13,6 @@ public class HandManager : MonoBehaviour {
     public GameObject TempObj;
 
     public List<GameObject> playerDeckList;
-    //public List<GameObject> playerHandList;
 
     //list of x positions for the cards in the player's hand
     public List<float> HandPositions;
@@ -114,6 +113,7 @@ public class HandManager : MonoBehaviour {
         newCardPos = 0;
 
         SetCardPositionsInHand();
+        UpdateCardPositionsInHand();
     }
 
     public IEnumerator DrawCards(int numCards)
@@ -146,7 +146,7 @@ public class HandManager : MonoBehaviour {
                 //change the card's layering
                 SetLayeringInHand();
 
-                UpdateCardPositionsInHand();
+                //UpdateCardPositionsInHand();
 
                 yield return new WaitForSecondsRealtime(0.3f);
             }
@@ -246,6 +246,7 @@ public class HandManager : MonoBehaviour {
 
             //check to see that the boundary value hasn't been crossed
             //if it has been crossed, make the distance between cards smaller
+            x = 4;
             newCardPos = multiplier * x;
             while (newCardPos > boundaryValue)
             {

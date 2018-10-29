@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class AreaSensor : MonoBehaviour {
     private HandManager handManagerScript;
-    private GameObject playArea, trashArea, discardArea;
+    private GameObject playArea, trashArea, discardArea, burnArea;
+
+    private ParticleSystem burnParticles;
 
     private Transform trashPile, discardPile;
 
     public bool cardIsPresent;
-    public bool isPlay, isDiscard, isTrash;
+    public bool isPlay, isDiscard, isTrash, isBurn;
 
-    private Color playArea_StartColour;
+    private Color playArea_StartColour, burnArea_StartColour;
 
     Ray ray;
     RaycastHit hit;
@@ -25,16 +27,21 @@ public class AreaSensor : MonoBehaviour {
         playArea.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0f);
 
         trashArea = GameObject.Find("TrashArea");
-       //trashArea.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 0f);
 
         discardArea = GameObject.Find("DiscardArea");
-        //discardArea.GetComponent<SpriteRenderer>().color = new Color(1, 1, 0, 0f);
+
+        burnArea = GameObject.Find("BurnArea");
+        burnArea_StartColour = burnArea.GetComponent<SpriteRenderer>().color;
+        burnArea.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0f);
+
+        burnParticles = GameObject.Find("FireBall").GetComponent<ParticleSystem>();
 
         cardIsPresent = false;
 
         isPlay = false;
         isTrash = false;
         isDiscard = false;
+        isBurn = false;
 	}
 
     // Update is called once per frame
@@ -57,20 +64,23 @@ public class AreaSensor : MonoBehaviour {
                 if (handManagerScript.isHoldingCard)
                 {
                     playArea.GetComponent<SpriteRenderer>().color = playArea_StartColour;
+                    burnArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0f);
                     cardIsPresent = true;
 
                     isPlay = true;
                     isDiscard = false;
                     isTrash = false;
+                    isBurn = false;
                 }
                 else
                 {
                     playArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0f);
+                    burnArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0f);
                     cardIsPresent = false;
 
                     isPlay = false;
                 }
-                    
+                burnParticles.Stop();
             }
             else if (hit.collider.name == "TrashArea")
             {
@@ -84,6 +94,7 @@ public class AreaSensor : MonoBehaviour {
                     isPlay = false;
                     isDiscard = false;
                     isTrash = true;
+                    isBurn = false;
                 }
                 else
                 {
@@ -92,7 +103,7 @@ public class AreaSensor : MonoBehaviour {
 
                     isTrash = false;
                 }
-
+                burnParticles.Stop();
             }
             else if (hit.collider.name == "DiscardArea")
             {
@@ -106,6 +117,7 @@ public class AreaSensor : MonoBehaviour {
                     isPlay = false;
                     isDiscard = true;
                     isTrash = false;
+                    isBurn = false;
                 }
                 else
                 {
@@ -114,14 +126,50 @@ public class AreaSensor : MonoBehaviour {
 
                     isDiscard = false;
                 }
+                burnParticles.Stop();
+            }
+            else if(hit.collider.name == "BurnArea")
+            {
 
+                isFound = true;
+
+                if (handManagerScript.isHoldingCard)
+                {
+                    //need to check if the card has a burn value
+
+                    //play particle effect
+                    if (!burnParticles.isPlaying)
+                        burnParticles.Play();
+                    burnArea.GetComponent<SpriteRenderer>().color = burnArea_StartColour;
+
+                    playArea.GetComponent<SpriteRenderer>().color = playArea_StartColour;
+                    
+                    cardIsPresent = true;
+
+                    isPlay = false;
+                    isDiscard = false;
+                    isTrash = false;
+                    isBurn = true;
+                }
+                else
+                {
+                    playArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0f);
+                    burnArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0f);
+                    cardIsPresent = false;
+
+                    isBurn = false;
+                }
+            
             }
             else if (count==len && !isFound)
             {
                 playArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0f);
+                burnArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0f);
                 trashArea.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
                 discardArea.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
                 cardIsPresent = false;
+
+                burnParticles.Stop();
             }
         }
 

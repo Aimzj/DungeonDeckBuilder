@@ -28,6 +28,7 @@ public class AreaManager : MonoBehaviour {
     private int numCardsInPlay;
 
     private HandManager handManagerScript;
+    private StatsManager statManagerScript;
 
     // Use this for initialization
     void Start () {
@@ -36,6 +37,7 @@ public class AreaManager : MonoBehaviour {
         playerTrash = GameObject.Find("Trash").GetComponent<Transform>();
 
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
+        statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
         numCardsInPlay = 0;
 
@@ -45,6 +47,9 @@ public class AreaManager : MonoBehaviour {
 
     public void DiscardCard(GameObject cardObj)
     {
+        //add 1 to the discard pool
+        statManagerScript.UpdateDiscard("player", 1);
+
         //add card to list of discards
         cardList_Discard.Add(cardObj);
 
@@ -62,6 +67,9 @@ public class AreaManager : MonoBehaviour {
 
     public void TrashCard(GameObject cardObj)
     {
+        //add 1 to the burn pool
+        statManagerScript.UpdateBurn("player", 1);
+
         //add card to list of trashed cards
         cardList_Trash.Add(cardObj);
 
@@ -79,6 +87,7 @@ public class AreaManager : MonoBehaviour {
 
     public void PlayCard(GameObject cardObj)
     {
+
         numCardsInPlay++;
         PlayAreaPositions.Add(0f);
         newCardPos = 0;
@@ -119,7 +128,7 @@ public class AreaManager : MonoBehaviour {
         //assign positions to cards
         for (int i = 0; i < cardList_Play.Count; i++)
         {
-            var obj = (GameObject)Instantiate(TempObj, new Vector3(PlayAreaPositions[i], 0f, 4f), Quaternion.Euler(90,0,0));
+            var obj = (GameObject)Instantiate(TempObj, new Vector3(PlayAreaPositions[i], 0f, 4f), Quaternion.Euler(90, 0, 0));
 
             cardList_Play[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
 
@@ -127,6 +136,8 @@ public class AreaManager : MonoBehaviour {
 
         handManagerScript.SetCardPositionsInHand();
         handManagerScript.UpdateCardPositionsInHand();
+     
+ 
     }
 
     public void DiscardPlayArea()
@@ -137,6 +148,9 @@ public class AreaManager : MonoBehaviour {
             //loop through play area list and add to discard list
             for (int i = 0; i < cardList_Play.Count; i++)
             {
+                //disable burn halos
+                cardList_Play[i].transform.Find("BurnBorder").GetComponent<SpriteRenderer>().enabled = false;
+
                 cardList_Discard.Add(cardList_Play[i]);
 
                 //change target position of each card to the discard pile
