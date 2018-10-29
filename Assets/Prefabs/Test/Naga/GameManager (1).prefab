@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1803811113991580}
+  m_IsPrefabAsset: 1
+--- !u!1 &1803811113991580
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 224551185886263220}
+  - component: {fileID: 114544234948348218}
+  - component: {fileID: 114829068228278848}
+  - component: {fileID: 114151435814744682}
+  - component: {fileID: 114735649109057052}
+  m_Layer: 0
+  m_Name: GameManager (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &114151435814744682
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1803811113991580}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 628158ec921e1614f8b3046212a3857e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  discardZone: {fileID: 0}
+  deckZone: {fileID: 0}
+  board: {fileID: 0}
+  deck: []
+--- !u!114 &114544234948348218
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1803811113991580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dae5b15eb985158409ad05504833b79f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deck:
+  - {fileID: 1194213479686936, guid: 9cd5d67ed0173874886c338bb2dd5968, type: 2}
+  - {fileID: 1194213479686936, guid: da0b9b0e8f127a642a99ab84510cb877, type: 2}
+  - {fileID: 1194213479686936, guid: 8eb5572be1b362c40a11953e50ad6edd, type: 2}
+  - {fileID: 1194213479686936, guid: 8eb5572be1b362c40a11953e50ad6edd, type: 2}
+  - {fileID: 1194213479686936, guid: 8eb5572be1b362c40a11953e50ad6edd, type: 2}
+  - {fileID: 1194213479686936, guid: 8eb5572be1b362c40a11953e50ad6edd, type: 2}
+  - {fileID: 1194213479686936, guid: d4028f6a1f90a3c4ca3865cef0cbd692, type: 2}
+  - {fileID: 1194213479686936, guid: d4028f6a1f90a3c4ca3865cef0cbd692, type: 2}
+  - {fileID: 1194213479686936, guid: d4028f6a1f90a3c4ca3865cef0cbd692, type: 2}
+  - {fileID: 1194213479686936, guid: 9cd5d67ed0173874886c338bb2dd5968, type: 2}
+  - {fileID: 1194213479686936, guid: d4028f6a1f90a3c4ca3865cef0cbd692, type: 2}
+  discardPile: []
+  burnPile: []
+  inHand: []
+  test: 0
+--- !u!114 &114735649109057052
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1803811113991580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1fb0dd89c425c94c9d8a3b3a24196db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deck: []
+  hp: 10
+  sigilCount: 4
+  handSize: 4
+  Numdebuffs: 0
+  discardZone: {fileID: 0}
+  deckZone: {fileID: 0}
+  board: {fileID: 0}
+--- !u!114 &114829068228278848
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1803811113991580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b61f1dabb3537439a63e5493bd785f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyMan: {fileID: 0}
+  inHand: []
+  handRange: 10
+--- !u!224 &224551185886263220
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1803811113991580}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.83}
+  m_LocalScale: {x: 0.25113493, y: 0.35972, z: 0.35972}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0.03}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}

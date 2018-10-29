@@ -82,7 +82,7 @@ public class Naga : MonoBehaviour {
         foreach (var card in clearList)
         {
             if (card.GetComponent<EnemyCardMove>().state == 2)
-                card.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform);
+                card.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform.position);
         }
 
         totalDamage = 0;
@@ -203,14 +203,21 @@ public class Naga : MonoBehaviour {
     protected void Action()
     {
         cardCount();
+        actionDiscard();
+       
+    }
 
-         for (int i = 0; i <= NagaHand.inHand.Count - 1; i++)
+
+    void actionDiscard()
+    {
+        for (int i = 0; i <= NagaHand.inHand.Count - 1; i++)
         {
-        if(numEldritchOath > 0)
+
+            if (numEldritchOath > 0)
             {
-                for(int x = 0; x <= NagaHand.inHand.Count -1; x ++)
+                for (int x = 0; x <= NagaHand.inHand.Count - 1; x++)
                 {
-                    if(NagaHand.inHand[x].GetComponent<CardObj>().CardName == "Eldritch Oath")
+                    if (NagaHand.inHand[x].GetComponent<CardObj>().CardName == "Eldritch Oath")
                     {
                         print("ELDRITCH OATH");
                         // Play EE
@@ -221,13 +228,13 @@ public class Naga : MonoBehaviour {
                         numEldritchOath--;
                     }
                 }
-               
+
             }
-        else   if (numCrushBlow > 0 && NagaHand.inHand.Count >= 2)
+            else if (numCrushBlow > 0 && NagaHand.inHand.Count >= 2)
             {
 
-               
-                if(NagaHand.inHand.Count >= 2)
+
+                if (NagaHand.inHand.Count >= 2)
                 {
                     triggerEffects(i);
 
@@ -235,17 +242,17 @@ public class Naga : MonoBehaviour {
 
                     //playcard
                     numCrushBlow--;
-                    for (int k = 0; k <= NagaHand.inHand.Count - 1; k ++)
+                    for (int k = 0; k <= NagaHand.inHand.Count - 1; k++)
                     {
-                        
+
                         if (hp > 3 && numScale > 0)
                         {
-                           
+
                             if (NagaHand.inHand[k].GetComponent<CardObj>().CardName == "Serpent Scale")
                             {
                                 print("DISCARD");
                                 RemoveCard(k);
-                              //  k = NagaHand.inHand.Count - 1;
+                                //  k = NagaHand.inHand.Count - 1;
                             }
                             //Discard Serpent scale
                         }
@@ -256,7 +263,7 @@ public class Naga : MonoBehaviour {
                             {
                                 print("DISCARD");
                                 RemoveCard(k);
-                               // k = NagaHand.inHand.Count - 1;
+                                // k = NagaHand.inHand.Count - 1;
                             }
                             //Discard Cotd
                         }
@@ -267,11 +274,11 @@ public class Naga : MonoBehaviour {
                             {
                                 print("DISCARD");
                                 RemoveCard(k, true);
-                               // k = NagaHand.inHand.Count - 1;
+                                // k = NagaHand.inHand.Count - 1;
                             }
                         }
                     }
-                    
+
                 }
                 i = 0;
             }
@@ -287,7 +294,7 @@ public class Naga : MonoBehaviour {
     void triggerEffects(int index)
     {
         NagaHand.inHand[index].GetComponent<EnemyCardMove>().state = 2;
-        NagaHand.inHand[index].GetComponent<EnemyCardMove>().SetTarget(board.transform);
+        NagaHand.inHand[index].GetComponent<EnemyCardMove>().SetTarget(board.transform.position);
         NagaHand.inHand[index].GetComponent<BoxCollider>().enabled = false;
         RemoveCard(index);
     }
@@ -313,7 +320,7 @@ public class Naga : MonoBehaviour {
         NagaHand.inHand.RemoveAt(arrPos);
         // Destroy(removedCard);
         NagaHand.reOrderHand();
-        dummyCard.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform);
+        dummyCard.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform.position);
     }
     public void Discard(int Cost, int index)
     {
