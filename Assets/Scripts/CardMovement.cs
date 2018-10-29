@@ -178,7 +178,7 @@ public class CardMovement : MonoBehaviour {
                     }
 
                 }
-                //BURN
+                //PLAY WITH BURN EFFECTS
                 else if (areaSensorScript.isBurn)
                 {
                     //only if the hand size is not exceeded

@@ -152,27 +152,7 @@ public class HandManager : MonoBehaviour {
             }
             else
             {
-                //gain a cycle token
-                statManagerScript.UpdateCycleTokens("player", 1);
-
-                //Need to shuffle the discard pile and reform the playerdeck
-                Shuffle(ref areaManagerScript.cardList_Discard);
-
-                int count = playerDeckList.Count;
-                //add shuffled discard pile to playerDeck
-                for(int j= 0; j< areaManagerScript.cardList_Discard.Count; j++)
-                {
-                    playerDeckList.Add(areaManagerScript.cardList_Discard[j]);
-
-                    //change target position of each card to the player's deck
-                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.Euler(90, 0, 0));
-                    playerDeckList[count].GetComponent<CardMovement>()._targetTransform = obj.transform;
-                    count++;
-                }
-
-                statManagerScript.SetTotalCards("player", playerDeckList.Count);
-                areaManagerScript.cardList_Discard.Clear();
-
+                RemakeDeck();
                 StartCoroutine(DrawCards(1));
             }
 
@@ -187,6 +167,31 @@ public class HandManager : MonoBehaviour {
             limit_halo.enabled = true;
             isExceedingHandSize = true;
         }
+    }
+
+    private void RemakeDeck()
+    {
+        //gain a cycle token
+        statManagerScript.UpdateCycleTokens("player", 1);
+
+        //Need to shuffle the discard pile and reform the playerdeck
+        Shuffle(ref areaManagerScript.cardList_Discard);
+
+        int count = playerDeckList.Count;
+        //add shuffled discard pile to playerDeck
+        for (int j = 0; j < areaManagerScript.cardList_Discard.Count; j++)
+        {
+            playerDeckList.Add(areaManagerScript.cardList_Discard[j]);
+
+            //change target position of each card to the player's deck
+            var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.Euler(90, 0, 0));
+            playerDeckList[count].GetComponent<CardMovement>()._targetTransform = obj.transform;
+            count++;
+        }
+
+        statManagerScript.SetTotalCards("player", playerDeckList.Count);
+        areaManagerScript.cardList_Discard.Clear();
+
     }
 
     //loop through all cards and assign Layers
@@ -242,7 +247,49 @@ public class HandManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            StartCoroutine(DamagePlayer(5));
+        }
+    }
 
+    public IEnumerator DamagePlayer(int value)
+    {
+        int chosenIndex;
+        List<GameObject> tempDeckPileList= new List<GameObject>();
+        //create a new list that contains only the cards in the deck pile
+        //loop through all cards
+        for(int i= 0; i< playerDeckList.Count; i++)
+        {
+            //if the card is not being held and has not been played (in the deck pile)
+            if(!playerDeckList[i].GetComponent<CardMovement>().isInHand
+                && !playerDeckList[i].GetComponent<CardMovement>().isPlayed)
+            {
+                tempDeckPileList.Add(playerDeckList[i]);
+            }
+        }
+        
+        //loop through deck and randomly burn cards
+        for (int i = 0; i < value; i++)
+        {
+            //play burn sound 
+
+            //check that there are cards in the to burn
+            if (tempDeckPileList.Count > 0)
+            {
+                chosenIndex = Random.Range(0, tempDeckPileList.Count);
+                print("index: " + chosenIndex);
+                areaManagerScript.TakeDamage(tempDeckPileList[chosenIndex]);
+                tempDeckPileList.RemoveAt(chosenIndex);
+            }
+            else
+            {
+                RemakeDeck();
+                StartCoroutine(DamagePlayer(1));
+            }
+            yield return new WaitForSecondsRealtime(1.1f);
+
+        }
     }
 
     public void SetCardPositionsInHand()

@@ -67,13 +67,18 @@ public class CardGenerator : MonoBehaviour {
             int numSigils = cardScript.SigilNum;
 
             //set stats
+            
             if(cardScript.CardType == "player_starting")
             {
+                if(numSigils>0)
+                    statManagerScript.UpdateSigils("player", numSigils);
                 player_health += cardScript.SigilNum * 5;
                 player_cardsInDeck += cardScript.NumInDeck;
             }
             else if(cardScript.CardType == "spider")
             {
+                if(numSigils>0)
+                    statManagerScript.UpdateSigils("enemy", numSigils);
                 enemy_health += cardScript.SigilNum * 5;
                 enemy_cardsInDeck += cardScript.NumInDeck;
             }
@@ -89,6 +94,7 @@ public class CardGenerator : MonoBehaviour {
                     {
                         //put a sigil on the card
                         cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
+                        numSigils--;
                     }
 
                     cardObj.transform.position = playerDeckTrans.position;
@@ -105,6 +111,7 @@ public class CardGenerator : MonoBehaviour {
                     {
                         //put a sigil on the card
                         cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
+                        numSigils--;
                     }
                     
                     cardObj.transform.position = enemyDeckTrans.position;

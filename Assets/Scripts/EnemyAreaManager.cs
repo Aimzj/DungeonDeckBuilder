@@ -13,6 +13,8 @@ public class EnemyAreaManager : MonoBehaviour {
     private Transform enemyDiscard;
     private Transform enemyTrash;
 
+    private Transform enemyTempDisplay;
+
     private Transform enemyPlayAreaTrans;
 
     public GameObject TempObj;
@@ -35,6 +37,8 @@ public class EnemyAreaManager : MonoBehaviour {
         enemyDeck = GameObject.Find("EnemyDeck").GetComponent<Transform>();
         enemyDiscard = GameObject.Find("EnemyDiscardPile").GetComponent<Transform>();
         enemyTrash = GameObject.Find("EnemyTrashPile").GetComponent<Transform>();
+
+        enemyTempDisplay = GameObject.Find("EnemyTempDisplay").GetComponent<Transform>();
 
         enemyPlayAreaTrans = GameObject.Find("EnemyPlayArea").GetComponent<Transform>();
 
@@ -67,10 +71,52 @@ public class EnemyAreaManager : MonoBehaviour {
         enemyHandManagerScript.UpdateCardPositionsInHand();
     }
 
+    public void TakeDamage(GameObject cardObj)
+    {
+        //add card to list of trashed cards
+        enemyCardList_Trash.Add(cardObj);
+
+        //subtract from total cards
+        statManagerScript.UpdateTotalCards("enemy", -1);
+        statManagerScript.UpdateCardsInDeck("enemy", -1);
+
+        //add card to list of trashed cards
+        enemyCardList_Trash.Add(cardObj);
+
+        //card has now been played
+        enemyCardList_Trash[enemyCardList_Trash.Count - 1].GetComponent<CardMovement>().isPlayed = true;
+
+        StartCoroutine(TempDisplay(cardObj));
+    }
+
+    IEnumerator TempDisplay(GameObject card)
+    {
+        //move the card's position to player's temp display
+        var obj = (GameObject)Instantiate(TempObj, new Vector3(enemyTempDisplay.position.x, enemyTempDisplay.position.y, enemyTempDisplay.position.z), Quaternion.Euler(90, 0, 0));
+        card.GetComponent<CardMovement>()._targetTransform = obj.transform;
+
+        yield return new WaitForSecondsRealtime(1);
+
+        //move the card's position to player's trash pile
+        obj = (GameObject)Instantiate(TempObj, new Vector3(enemyTrash.position.x, enemyTrash.position.y, enemyTrash.position.z), Quaternion.Euler(90, 0, 0));
+        card.GetComponent<CardMovement>()._targetTransform = obj.transform;
+
+        //damage enemy
+        statManagerScript.UpdateHealth("enemy", -1);
+        //check if burnt card was a Sigil card
+        if (card.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
+        {
+            statManagerScript.UpdateSigils("enemy", -1);
+        }
+    }
+
     public void TrashCard(GameObject cardObj)
     {
         //add 1 to the burn pool
         statManagerScript.UpdateBurn("enemy", 1);
+
+        //subtract from total cards
+        statManagerScript.UpdateTotalCards("enemy", -1);
 
         //add card to list of trashed cards
         enemyCardList_Trash.Add(cardObj);
@@ -81,6 +127,14 @@ public class EnemyAreaManager : MonoBehaviour {
         //move the card's position to trash pile
         var obj = (GameObject)Instantiate(TempObj, new Vector3(enemyTrash.position.x, enemyTrash.position.y, enemyTrash.position.z), Quaternion.Euler(90, 0, 0));
         cardObj.GetComponent<CardMovement>()._targetTransform = obj.transform;
+
+        //damage enemy
+        statManagerScript.UpdateHealth("enemy", -1);
+        //check if burnt card was a Sigil card
+        if (cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
+        {
+            statManagerScript.UpdateSigils("enemy", -1);
+        }
 
         //arrange cards in hand
         enemyHandManagerScript.SetCardPositionsInHand();

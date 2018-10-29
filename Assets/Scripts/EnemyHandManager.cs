@@ -43,6 +43,8 @@ public class EnemyHandManager : MonoBehaviour {
         enemyDiscard = GameObject.Find("EnemyDiscardPile").GetComponent<Transform>();
         enemyTrash = GameObject.Find("EnemyTrashPile").GetComponent<Transform>();
 
+        displayPos = GameObject.Find("EnemyTempDisplay").GetComponent<Transform>();
+
         soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
         cardGenScript = GameObject.Find("GameManager").GetComponent<CardGenerator>();
         enemyAreaManagerScript = GameObject.Find("GameManager").GetComponent<EnemyAreaManager>();
@@ -170,28 +172,8 @@ public class EnemyHandManager : MonoBehaviour {
             }
             else
             {
-                //gain a cycle token
-                statManagerScript.UpdateCycleTokens("enemy", 1);
 
-                Debug.Log("Shuffle discard");
-                //Need to shuffle the discard pile and reform the playerdeck
-                Shuffle(ref enemyAreaManagerScript.enemyCardList_Discard);
-
-                int count = enemyDeckList.Count;
-                //add shuffled discard pile to playerDeck
-                for (int j = 0; j < enemyAreaManagerScript.enemyCardList_Discard.Count; j++)
-                {
-                    enemyDeckList.Add(enemyAreaManagerScript.enemyCardList_Discard[j]);
-
-                    //change target position of each card to the enemy's deck
-                    var obj = (GameObject)Instantiate(TempObj, new Vector3(enemyDeck.position.x, enemyDeck.position.y, enemyDeck.position.z), Quaternion.Euler(90, 0, 0));
-                    enemyDeckList[count].GetComponent<CardMovement>()._targetTransform = obj.transform;
-                    count++;
-                }
-
-                statManagerScript.SetTotalCards("enemy", enemyDeckList.Count);
-                enemyAreaManagerScript.enemyCardList_Discard.Clear();
-
+                RemakeDeck();
                 StartCoroutine(DrawCards(1));
             }
 
@@ -206,6 +188,31 @@ public class EnemyHandManager : MonoBehaviour {
             limit_halo.enabled = true;
             isExceedingHandSize = true;
         }
+    }
+
+    private void RemakeDeck()
+    {
+        //gain a cycle token
+        statManagerScript.UpdateCycleTokens("enemy", 1);
+
+        Debug.Log("Shuffle discard");
+        //Need to shuffle the discard pile and reform the playerdeck
+        Shuffle(ref enemyAreaManagerScript.enemyCardList_Discard);
+
+        int count = enemyDeckList.Count;
+        //add shuffled discard pile to playerDeck
+        for (int j = 0; j < enemyAreaManagerScript.enemyCardList_Discard.Count; j++)
+        {
+            enemyDeckList.Add(enemyAreaManagerScript.enemyCardList_Discard[j]);
+
+            //change target position of each card to the enemy's deck
+            var obj = (GameObject)Instantiate(TempObj, new Vector3(enemyDeck.position.x, enemyDeck.position.y, enemyDeck.position.z), Quaternion.Euler(90, 0, 0));
+            enemyDeckList[count].GetComponent<CardMovement>()._targetTransform = obj.transform;
+            count++;
+        }
+
+        statManagerScript.SetTotalCards("enemy", enemyDeckList.Count);
+        enemyAreaManagerScript.enemyCardList_Discard.Clear();
     }
 
     //loop through all cards and assign Layers
@@ -237,6 +244,45 @@ public class EnemyHandManager : MonoBehaviour {
 
         }
 
+    }
+
+    public IEnumerator DamageEnemy(int value)
+    {
+        int chosenIndex;
+        List<GameObject> tempDeckPileList = new List<GameObject>();
+        //create a new list that contains only the cards in the deck pile
+        //loop through all cards
+        for (int i = 0; i < enemyDeckList.Count; i++)
+        {
+            //if the card is not being held and has not been played (in the deck pile)
+            if (!enemyDeckList[i].GetComponent<CardMovement>().isInHand
+                && !enemyDeckList[i].GetComponent<CardMovement>().isPlayed)
+            {
+                tempDeckPileList.Add(enemyDeckList[i]);
+            }
+        }
+
+        //loop through deck and randomly burn cards
+        for (int i = 0; i < value; i++)
+        {
+            //play burn sound 
+
+            //check that there are cards in the to burn
+            if (tempDeckPileList.Count > 0)
+            {
+                chosenIndex = Random.Range(0, tempDeckPileList.Count);
+                print("index: " + chosenIndex);
+                enemyAreaManagerScript.TakeDamage(tempDeckPileList[chosenIndex]);
+                tempDeckPileList.RemoveAt(chosenIndex);
+            }
+            else
+            {
+                RemakeDeck();
+                StartCoroutine(DamageEnemy(1));
+            }
+            yield return new WaitForSecondsRealtime(1.1f);
+
+        }
     }
 
     public void SetCardPositionsInHand()
@@ -289,6 +335,9 @@ public class EnemyHandManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		
-	}
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            StartCoroutine(DamageEnemy(5));
+        }
+    }
 }

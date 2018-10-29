@@ -14,6 +14,8 @@ public class AreaManager : MonoBehaviour {
     private Transform playerDiscard;
     private Transform playerTrash;
 
+    private Transform playerTempDisplay;
+
     private Transform playAreaTrans;
 
     public GameObject TempObj;
@@ -37,6 +39,8 @@ public class AreaManager : MonoBehaviour {
         playerDeck = GameObject.Find("Deck").GetComponent<Transform>();
         playerDiscard = GameObject.Find("Discard").GetComponent<Transform>();
         playerTrash = GameObject.Find("Trash").GetComponent<Transform>();
+
+        playerTempDisplay = GameObject.Find("PlayerTempDisplay").GetComponent<Transform>();
 
         playAreaTrans = GameObject.Find("PlayArea").GetComponent<Transform>();
 
@@ -69,10 +73,52 @@ public class AreaManager : MonoBehaviour {
         handManagerScript.UpdateCardPositionsInHand();
     }
 
+    public void TakeDamage(GameObject cardObj)
+    {
+        //add card to list of trashed cards
+        cardList_Trash.Add(cardObj);
+
+        //subtract from total cards
+        statManagerScript.UpdateTotalCards("player", -1);
+        statManagerScript.UpdateCardsInDeck("player", -1);
+
+        //add card to list of trashed cards
+        cardList_Trash.Add(cardObj);
+
+        //card has now been played
+        cardList_Trash[cardList_Trash.Count - 1].GetComponent<CardMovement>().isPlayed = true;
+
+        StartCoroutine(TempDisplay(cardObj));
+    }
+
+    IEnumerator TempDisplay(GameObject card)
+    {
+        //move the card's position to player's temp display
+        var obj = (GameObject)Instantiate(TempObj, new Vector3(playerTempDisplay.position.x, playerTempDisplay.position.y, playerTempDisplay.position.z), Quaternion.Euler(90, 0, 0));
+        card.GetComponent<CardMovement>()._targetTransform = obj.transform;
+
+        yield return new WaitForSecondsRealtime(1);
+
+        //move the card's position to player's trash pile
+        obj = (GameObject)Instantiate(TempObj, new Vector3(playerTrash.position.x, playerTrash.position.y, playerTrash.position.z), Quaternion.Euler(90, 0, 0));
+        card.GetComponent<CardMovement>()._targetTransform = obj.transform;
+
+        //damage player
+        statManagerScript.UpdateHealth("player", -1);
+        //check if burnt card was a Sigil card
+        if (card.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
+        {
+            statManagerScript.UpdateSigils("player", -1);
+        }
+    }
+
     public void TrashCard(GameObject cardObj)
     {
         //add 1 to the burn pool
         statManagerScript.UpdateBurn("player", 1);
+
+        //subtract from total cards
+        statManagerScript.UpdateTotalCards("player", -1);
 
         //add card to list of trashed cards
         cardList_Trash.Add(cardObj);
@@ -84,9 +130,19 @@ public class AreaManager : MonoBehaviour {
         var obj = (GameObject)Instantiate(TempObj, new Vector3(playerTrash.position.x, playerTrash.position.y, playerTrash.position.z), Quaternion.Euler(90, 0, 0));
         cardObj.GetComponent<CardMovement>()._targetTransform = obj.transform;
 
+        //damage player
+        statManagerScript.UpdateHealth("player", -1);
+
+        //check if burnt card was a Sigil card
+        if (cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
+        {
+            statManagerScript.UpdateSigils("player", -1);
+        }
+
         //arrange cards in hand
         handManagerScript.SetCardPositionsInHand();
         handManagerScript.UpdateCardPositionsInHand();
+
     }
 
     public void PlayCard(GameObject cardObj)

@@ -5,30 +5,14 @@ using TMPro;
 
 public class StatsManager : MonoBehaviour {
 
-    public TextMeshPro playerHealth, playerDefense, playerAttack, playerEssence, playerCardsInDeck, playerCycleTokens, playerDiscard, playerBurn;
-    public TextMeshPro enemyHealth, enemyDefense, enemyAttack, enemyEssence, enemyCardsInDeck, enemyCycleTokens, enemyDiscard, enemyBurn;
+    public TextMeshPro playerHealth, playerDefense, playerAttack, playerEssence, playerCardsInDeck, playerCycleTokens, playerDiscard, playerBurn, playerSigils;
+    public TextMeshPro enemyHealth, enemyDefense, enemyAttack, enemyEssence, enemyCardsInDeck, enemyCycleTokens, enemyDiscard, enemyBurn, enemySigils;
+    public TextMeshPro endGameText;
 
-    public int totalHealth_player, numHealth_player, numDefense_player, numAttack_player, numEssence_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player;
-    public int totalHealth_enemy, numHealth_enemy, numDefense_enemy, numAttack_enemy, numEssence_enemy, numCardsInDeck_enemy, totalCards_enemy, numCycleTokens_enemy, numDiscard_enemy, numBurn_enemy;
+    public int totalHealth_player, numHealth_player, numDefense_player, numAttack_player, numEssence_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player, numSigilsRemaining_player;
+    public int totalHealth_enemy, numHealth_enemy, numDefense_enemy, numAttack_enemy, numEssence_enemy, numCardsInDeck_enemy, totalCards_enemy, numCycleTokens_enemy, numDiscard_enemy, numBurn_enemy, numSigilsRemaining_enemy;
 
     void Start () {
-        /*playerHealth = GameObject.Find("PlayerHealth").GetComponent<TextMeshPro>();
-        playerDefense = GameObject.Find("PlayerDefense").GetComponent<TextMeshPro>();
-        playerAttack = GameObject.Find("PlayerAttack").GetComponent<TextMeshPro>();
-        playerEssence = GameObject.Find("PlayerEssence").GetComponent<TextMeshPro>();
-        playerCardsInDeck = GameObject.Find("PlayerCardsInDeck").GetComponent<TextMeshPro>();
-        playerCycleTokens = GameObject.Find("PlayerCycleTokens").GetComponent<TextMeshPro>();
-        playerDiscard = GameObject.Find("PlayerDiscard").GetComponent<TextMeshPro>();
-        playerBurn = GameObject.Find("PlayerBurn").GetComponent<TextMeshPro>();
-
-        enemyHealth = GameObject.Find("EnemyHealth").GetComponent<TextMeshPro>();
-        enemyDefense = GameObject.Find("EnemyDefense").GetComponent<TextMeshPro>();
-        enemyAttack = GameObject.Find("EnemyAttack").GetComponent<TextMeshPro>();
-        enemyEssence = GameObject.Find("EnemyEssence").GetComponent<TextMeshPro>();
-        enemyCardsInDeck = GameObject.Find("EnemyCardsInDeck").GetComponent<TextMeshPro>();
-        enemyCycleTokens = GameObject.Find("EnemyCycleTokens").GetComponent<TextMeshPro>();
-        enemyDiscard = GameObject.Find("EnemyDiscard").GetComponent<TextMeshPro>();
-        enemyBurn = GameObject.Find("EnemyBurn").GetComponent<TextMeshPro>();*/
     }
 
     public void SetHealth(string target, int num)
@@ -55,10 +39,22 @@ public class StatsManager : MonoBehaviour {
             numHealth_player += num;
             playerHealth.text = "Health: " + numHealth_player+ "/" +totalHealth_player;
 
-        }else if (target == "enemy")
+            if (numHealth_player <= 0)
+            {
+                //PLAYER LOSES
+                endGameText.text = "YOU LOSE";
+            }
+        }
+        else if (target == "enemy")
         {
             numHealth_enemy += num;
             enemyHealth.text = "Health: " + numHealth_enemy +"/" + totalHealth_enemy;
+
+            if (numHealth_enemy <= 0)
+            {
+                //PLAYER WINS
+                endGameText.text = "PLAYER WINS!";
+            }
         }
     }
 
@@ -123,6 +119,33 @@ public class StatsManager : MonoBehaviour {
         }
     }
 
+    public void UpdateTotalCards(string target, int num)
+    {
+        if (target == "player")
+        {
+            totalCards_player += num;
+            playerCardsInDeck.text = "Cards In Deck: " + numCardsInDeck_player + "/" + totalCards_player;
+
+            if (totalCards_player <= 0)
+            {
+                //PLAYER WINS
+                endGameText.text = "PLAYER WINS!";
+            }
+
+        }
+        else if (target == "enemy")
+        {
+            totalCards_enemy += num;
+            enemyCardsInDeck.text = "Cards In Deck: " + numCardsInDeck_enemy + "/" + totalCards_enemy;
+
+            if (totalCards_enemy <= 0)
+            {
+                //PLAYER WINS
+                endGameText.text = "PLAYER WINS!";
+            }
+        }
+    }
+
     public void UpdateCardsInDeck(string target, int num)
     {
         if (target == "player")
@@ -176,6 +199,33 @@ public class StatsManager : MonoBehaviour {
         {
             numBurn_enemy += num;
             enemyBurn.text = "Burn Pool: " + numBurn_enemy;
+        }
+    }
+
+    public void UpdateSigils(string target, int num)
+    {
+        if (target == "player")
+        {
+            print("playerLosesSigil: "+ numSigilsRemaining_player);
+            numSigilsRemaining_player += num;
+            playerSigils.text = "Sigils Remaining: " + numSigilsRemaining_player;
+
+            if (numSigilsRemaining_player <= 0)
+            {
+                //PLAYER LOSES
+                endGameText.text = "YOU LOSE";
+            }
+        }
+        else if (target == "enemy")
+        {
+            numSigilsRemaining_enemy += num;
+            enemySigils.text = "Sigils Remaining: " + numSigilsRemaining_enemy;
+
+            if (numSigilsRemaining_enemy <= 0)
+            {
+                //PLAYER WINS
+                endGameText.text = "PLAYER WINS!";
+            }
         }
     }
 
