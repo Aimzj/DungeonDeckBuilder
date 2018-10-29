@@ -69,6 +69,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Card: {fileID: 0}
+  PlayerSprite_Front: {fileID: 0}
+  PlayerSprite_Back: {fileID: 0}
+  SpiderSprite_Front: {fileID: 0}
+  SpiderSprite_Back: {fileID: 0}
   PlayerDeck: []
   SpiderDeck: []
   NagaDeck: []
@@ -90,7 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
-  targetPos: {fileID: 0}
+  targetPos: {x: 0, y: 0, z: 0}
   state: 0
 --- !u!114 &114382990941350444
 MonoBehaviour:
@@ -111,6 +115,8 @@ MonoBehaviour:
   zShift: 0
   posInHand: 0
   isPlayed: 0
+  hasBurnEffect: 0
+  isEnemyCard: 0
 --- !u!114 &114759447358576522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -122,8 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36efb9a2e30f39544b150df38f3d0c65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardName: Eldritch Oath
-  DiscardCost: 0
+  CardName: Call of the Deep
+  DiscardCost: 1
   BurnCost: 0
   FlavourText: 
   Attack: 0

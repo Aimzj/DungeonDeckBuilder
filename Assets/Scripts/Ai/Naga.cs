@@ -31,7 +31,7 @@ public class Naga : MonoBehaviour {
     public int hp = 10;
     public int sigilCount = 4;
     public int handSize = 4;
-    public int Numdebuffs = 0;
+    public int Numdebuffs = 10;
     private int damageTaken = 0;
     int totalDamage = 0;
 
@@ -98,7 +98,9 @@ public class Naga : MonoBehaviour {
 
         else
         {
+
             NagaDeck.DrawCard(4);
+            cardCount();
             Action();//Action functions
         }
       
@@ -125,7 +127,7 @@ public class Naga : MonoBehaviour {
                 numCrushBlow++;
 
             }
-            else if (NagaHand.inHand[i].GetComponent<CardObj>().CardName == "Serpent's Scale")
+            else if (NagaHand.inHand[i].GetComponent<CardObj>().CardName == "Serpent Scale")
             {
                 numScale++;
             }
@@ -155,35 +157,56 @@ public class Naga : MonoBehaviour {
             }
 
             //Start of priority queue
+
             if (numEldritchOath > 0)
             {
-               
-                if(NagaHand.inHand[i].GetComponent<CardObj>().CardName == "Eldritch Oath")
+                for (int x = 0; x <= NagaHand.inHand.Count -1; x++)
                 {
-                    print("ELDRITCH OATH");
-                    // Play EE
-                    triggerEffects(i);
-                    Discard(NagaHand.inHand[i].GetComponent<CardObj>().DiscardCost, i);
-                    i = NagaHand.inHand.Count - 1;
+                    if (NagaHand.inHand[x].GetComponent<CardObj>().CardName == "Eldritch Oath")
+                    {
+                        print("ELDRITCH OATH");
+                        // Play EE
+                        triggerEffects(x);
+                        //  Discard(NagaHand.inHand[i].GetComponent<CardObj>().DiscardCost, i);
+                        //i = 0;
+
+                        numEldritchOath--;
+                        print("EE:" + numEldritchOath);
+                       // x = 0;
+                    }
                 }
-                numEldritchOath--;
-                i = NagaHand.inHand.Count - 1;
+                //i = NagaHand.inHand.Count - 1;
             }
-         else if(Numdebuffs  >= 5)
+            /* if (numEldritchOath > 0)
+             {
+
+                 if(NagaHand.inHand[i].GetComponent<CardObj>().CardName == "Eldritch Oath")
+                 {
+                     print("ELDRITCH OATH");
+                     // Play EE
+                     triggerEffects(i);
+                     Discard(NagaHand.inHand[i].GetComponent<CardObj>().DiscardCost, i);
+                     i = NagaHand.inHand.Count - 1;
+                 }
+                 numEldritchOath--;
+                 i = NagaHand.inHand.Count - 1;
+             }*/
+            else if (Numdebuffs >= 5)
             {
-                if(numCotD > 0)
+                print("PURGE");
+                if (numCotD > 0)
                 {
                     print("CALL OF THE DEEP");
                     //Play card
-                    triggerEffects(i);
+                    //triggerEffects(i);
                     Discard(NagaHand.inHand[i].GetComponent<CardObj>().DiscardCost, i);
                     i = NagaHand.inHand.Count - 1;
                     numCotD--;
                 }
             }
-         else if(damageTaken > hp)
+            else if (damageTaken > hp)
             {
-                if(numScale > 0)
+                if (numScale > 0)
                 {
                     print("SERPENT SCALE");
                     //Play Card
@@ -210,6 +233,7 @@ public class Naga : MonoBehaviour {
 
     void actionDiscard()
     {
+        cardCount();
         for (int i = 0; i <= NagaHand.inHand.Count - 1; i++)
         {
 
@@ -226,6 +250,7 @@ public class Naga : MonoBehaviour {
                         //i = 0;
 
                         numEldritchOath--;
+                        print("EE:" + numEldritchOath);
                     }
                 }
 
@@ -337,11 +362,22 @@ public class Naga : MonoBehaviour {
 
                     {
                         foundCard = true;
+                        print("FOUND");
                     }
                     else
                     {
-                        if (NagaHand.inHand[i].GetComponent<CardObj>().name == "Eldritch Oath")
+                        if (NagaHand.inHand[i].GetComponent<CardObj>().name == "Serpent Scale")
                         {
+                            print("DISCARD:" + NagaHand.inHand[i].GetComponent<CardObj>().name);
+                            remainingCost--;
+                            RemoveCard(i);
+                            
+                            //Remove Card
+
+                        }
+                        else if (NagaHand.inHand[i].GetComponent<CardObj>().name == "Eldritch Oath")
+                        {
+                            print("DISCARD:" + NagaHand.inHand[i].GetComponent<CardObj>().name);
                             remainingCost--;
                             RemoveCard(i);
                             //Remove Card
@@ -349,6 +385,7 @@ public class Naga : MonoBehaviour {
                         }
                         else if (NagaHand.inHand[i].GetComponent<CardObj>().name == "Call of the deep")
                         {
+                            print("DISCARD:" + NagaHand.inHand[i].GetComponent<CardObj>().name);
                             remainingCost--;
                             RemoveCard(i);
                             //Remove Card
@@ -356,6 +393,7 @@ public class Naga : MonoBehaviour {
                         }
                         else if (NagaHand.inHand[i].GetComponent<CardObj>().name == "Crushing Blow")
                         {
+                            print("DISCARD:" + NagaHand.inHand[i].GetComponent<CardObj>().name);
                             remainingCost--;
                             RemoveCard(i);
                             //Remove Card
@@ -369,6 +407,8 @@ public class Naga : MonoBehaviour {
         }
         //Discard Cost
 
-        RemoveCard(index);
+        //Play card
+        triggerEffects(index);
+        //RemoveCard(index);
     }
 }
