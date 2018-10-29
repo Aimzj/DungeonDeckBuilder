@@ -57,6 +57,9 @@ public class CardMovement : MonoBehaviour {
     //sound
     private SoundManager soundScript;
 
+    //if the card is an enemy card, it MUST NOT be manipulated by the player
+    public bool isEnemyCard;
+
     // Use this for initialization
     void Start () {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
@@ -75,7 +78,8 @@ public class CardMovement : MonoBehaviour {
         zShift = 0.5f;
 
         isPlayed= false;
-        
+
+       // isEnemyCard = false;
     }
 
 	// Update is called once per frame
@@ -102,19 +106,21 @@ public class CardMovement : MonoBehaviour {
     private void OnMouseDown()
     {
         //check if the card is in the player's hand
-        if (isInHand)
+        if (!isEnemyCard)
         {
-            //play sound
-            soundScript.PlaySound_PickUpCard();
+            if (isInHand)
+            {
+                //play sound
+                soundScript.PlaySound_PickUpCard();
 
-            isFollowing = true;
-            handManagerScript.isHoldingCard = isFollowing;
-            isHovering = false;
+                isFollowing = true;
+                handManagerScript.isHoldingCard = isFollowing;
+                isHovering = false;
 
-            //change the order in layer of card and text
-            ChangeOrder(30);
+                //change the order in layer of card and text
+                ChangeOrder(30);
+            }
         }
- 
     }
 
     private void ChangeOrder(int num)
@@ -133,25 +139,73 @@ public class CardMovement : MonoBehaviour {
     }
     private void OnMouseUp()
     {
-        isFollowing = false;
-        handManagerScript.isHoldingCard = isFollowing;
-
-        ChangeOrder(15);
-
-        //check to see if the card was released in an area of importance 
-        if (areaSensorScript.cardIsPresent)
+        if (!isEnemyCard)
         {
+            isFollowing = false;
+            handManagerScript.isHoldingCard = isFollowing;
 
-            //check which area of importance
-            //PLAY
-            if (areaSensorScript.isPlay)
+            ChangeOrder(15);
+
+            //check to see if the card was released in an area of importance 
+            if (areaSensorScript.cardIsPresent)
             {
-                //place the card on the table
 
-                //only if the hand size is not exceeded
-                //and if the player can "afford" it
-                if (!handManagerScript.isExceedingHandSize 
-                    && gameObject.GetComponent<CardObj>().DiscardCost <= statManagerScript.numDiscard_player)
+                //check which area of importance
+                //PLAY
+                if (areaSensorScript.isPlay)
+                {
+                    //place the card on the table
+
+                    //only if the hand size is not exceeded
+                    //and if the player can "afford" it
+                    if (!handManagerScript.isExceedingHandSize
+                        && gameObject.GetComponent<CardObj>().DiscardCost <= statManagerScript.numDiscard_player)
+                    {
+                        //play sound
+                        soundScript.PlaySound_PlayCard();
+
+                        //remove the card from the Hand List
+                        handManagerScript.RemoveCardFromHand(this.posInHand);
+                        posInHand = -1;
+
+                        isPlayed = true;
+                        isInHand = false;
+
+                        areaManagerScript.PlayCard(this.gameObject);
+
+                        //play card with effects
+                        cardEffectScript.PlayCard(this.gameObject, false);
+                    }
+
+                }
+                //BURN
+                else if (areaSensorScript.isBurn)
+                {
+                    //only if the hand size is not exceeded
+                    //and if the player can "afford" it
+                    if (!handManagerScript.isExceedingHandSize
+                        && gameObject.GetComponent<CardObj>().BurnCost <= statManagerScript.numBurn_player
+                        && gameObject.GetComponent<CardObj>().DiscardCost <= statManagerScript.numDiscard_player)
+                    {
+                        //play burn sound
+
+                        //remove the card from the Hand List
+                        handManagerScript.RemoveCardFromHand(this.posInHand);
+                        posInHand = -1;
+
+                        isPlayed = true;
+                        isInHand = false;
+
+                        areaManagerScript.PlayCard(this.gameObject);
+
+                        //play card with burn effects
+                        cardEffectScript.PlayCard(this.gameObject, true);
+
+
+                    }
+                }
+                //DISCARD
+                else if (areaSensorScript.isDiscard)
                 {
                     //play sound
                     soundScript.PlaySound_PlayCard();
@@ -163,23 +217,13 @@ public class CardMovement : MonoBehaviour {
                     isPlayed = true;
                     isInHand = false;
 
-                    areaManagerScript.PlayCard(this.gameObject);
-
-                    //play card with effects
-                    cardEffectScript.PlayCard(this.gameObject, false);
+                    areaManagerScript.DiscardCard(this.gameObject);
                 }
-                             
-            }
-            //BURN
-            else if (areaSensorScript.isBurn)
-            {
-                //only if the hand size is not exceeded
-                //and if the player can "afford" it
-                if (!handManagerScript.isExceedingHandSize 
-                    && gameObject.GetComponent<CardObj>().BurnCost <= statManagerScript.numBurn_player 
-                    && gameObject.GetComponent<CardObj>().DiscardCost <= statManagerScript.numDiscard_player)
+                //TRASH
+                else if (areaSensorScript.isTrash)
                 {
-                    //play burn sound
+                    //play sound
+                    soundScript.PlaySound_PlayCard();
 
                     //remove the card from the Hand List
                     handManagerScript.RemoveCardFromHand(this.posInHand);
@@ -188,53 +232,19 @@ public class CardMovement : MonoBehaviour {
                     isPlayed = true;
                     isInHand = false;
 
-                    areaManagerScript.PlayCard(this.gameObject);
-
-                    //play card with burn effects
-                    cardEffectScript.PlayCard(this.gameObject, true);
-
-
+                    areaManagerScript.TrashCard(this.gameObject);
                 }
             }
-            //DISCARD
-            else if (areaSensorScript.isDiscard)
+            else
             {
-                //play sound
-                soundScript.PlaySound_PlayCard();
+                if (SceneManager.GetActiveScene().buildIndex == 1)
+                {
+                    isHovering = true;
+                }
 
-                //remove the card from the Hand List
-                handManagerScript.RemoveCardFromHand(this.posInHand);
-                posInHand = -1;
-
-                isPlayed = true;
-                isInHand = false;
-
-                areaManagerScript.DiscardCard(this.gameObject);
-            }
-            //TRASH
-            else if (areaSensorScript.isTrash)
-            {
-                //play sound
-                soundScript.PlaySound_PlayCard();
-
-                //remove the card from the Hand List
-                handManagerScript.RemoveCardFromHand(this.posInHand);
-                posInHand = -1;
-
-                isPlayed = true;
-                isInHand = false;
-
-                areaManagerScript.TrashCard(this.gameObject);
             }
         }
-        else
-        {
-            if(SceneManager.GetActiveScene().buildIndex == 1)
-            {
-                isHovering = true;
-            }
-            
-        }
+        
     }
 
     private void OnMouseEnter()
@@ -242,7 +252,10 @@ public class CardMovement : MonoBehaviour {
         //if the card is in the player's hand and they mouse over it, the card should rise towards the player.
         //player must not be holding the card already
         //card must be in the player's hand
-        if (!handManagerScript.isHoldingCard && isInHand)
+
+        if (!handManagerScript.isHoldingCard 
+            && isInHand
+            && !isEnemyCard)
         {
             //play sound
             soundScript.PlaySound_HoverCard();
@@ -256,7 +269,8 @@ public class CardMovement : MonoBehaviour {
     private void OnMouseExit()
     {
         // move the card to it's original transform only if it is already hovering
-        if (isHovering)
+        if (isHovering
+            && !isEnemyCard)
         {
             isHovering = false;
             _targetTransform.position = new Vector3(_targetTransform.position.x, _targetTransform.position.y-hoverHeight, -0.83f);

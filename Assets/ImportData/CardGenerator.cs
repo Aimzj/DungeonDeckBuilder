@@ -17,8 +17,11 @@ public class CardGenerator : MonoBehaviour {
     private CardObj cardScript;
 
     private HandManager handManagerScript;
+    private EnemyHandManager enemyHandManagerScript;
     private GameManager gameManagerScript;
     private StatsManager statManagerScript;
+
+    public Sprite PlayerSprite_Front, PlayerSprite_Back, SpiderSprite_Front, SpiderSprite_Back;
     
     //decks
     public List<GameObject> 
@@ -44,6 +47,7 @@ public class CardGenerator : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+        enemyHandManagerScript = GameObject.Find("GameManager").GetComponent<EnemyHandManager>();
 
         int player_health = 0;
         int player_cardsInDeck = 0;
@@ -89,6 +93,9 @@ public class CardGenerator : MonoBehaviour {
 
                     cardObj.transform.position = playerDeckTrans.position;
                     cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+                    cardObj.GetComponent<SpriteRenderer>().sprite = PlayerSprite_Front;
+                    cardObj.GetComponent<CardMovement>().isEnemyCard = false;
                     PlayerDeck.Add(cardObj);
                 }
                 else if(cardScript.CardType == "spider")
@@ -102,6 +109,9 @@ public class CardGenerator : MonoBehaviour {
                     
                     cardObj.transform.position = enemyDeckTrans.position;
                     cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+                    cardObj.GetComponent<SpriteRenderer>().sprite = SpiderSprite_Front;
+                    cardObj.GetComponent<CardMovement>().isEnemyCard = true;
                     SpiderDeck.Add(cardObj);
                 }
                 else if(cardScript.CardType == "status")
@@ -110,6 +120,8 @@ public class CardGenerator : MonoBehaviour {
                     {
                         cardObj.transform.position = poisonDeckTrans.position;
                         cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+                        cardObj.GetComponent<CardMovement>().isEnemyCard = false;
                         PoisonDeck.Add(cardObj);
                     }
                 }
@@ -120,13 +132,14 @@ public class CardGenerator : MonoBehaviour {
         }
 
         //fill stats
-        statManagerScript.UpdateHealth("player", player_health);
+        statManagerScript.SetHealth("player", player_health);
         statManagerScript.SetTotalCards("player", player_cardsInDeck);
-        statManagerScript.UpdateHealth("enemy", enemy_health);
+        statManagerScript.SetHealth("enemy", enemy_health);
         statManagerScript.SetTotalCards("enemy", enemy_cardsInDeck);
 
         //Initialise decks in their respective scripts
         handManagerScript.InitialiseCards();
+        enemyHandManagerScript.InitialiseCards();
 
         //start the game
         gameManagerScript.StartGame();

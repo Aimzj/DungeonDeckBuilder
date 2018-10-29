@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
     private AreaManager areaManagerScript;
+    private EnemyAreaManager enemyAreaManagerScript;
     private HandManager handManagerScript;
+    private EnemyHandManager enemyHandManagerScript;
     private Scene_Manager sceneManagerScript;
 
     private bool isActionPhase;
@@ -24,9 +26,13 @@ public class GameManager : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         sceneManagerScript = GameObject.Find("GameManager").GetComponent<Scene_Manager>();
 
+        enemyAreaManagerScript = GameObject.Find("GameManager").GetComponent<EnemyAreaManager>();
+        enemyHandManagerScript = GameObject.Find("GameManager").GetComponent<EnemyHandManager>();
+
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
             StartCoroutine(handManagerScript.DrawCards(3));
+            StartCoroutine(Delay());
         }
 
         cycleTokens = 0;
@@ -37,6 +43,12 @@ public class GameManager : MonoBehaviour {
 
         isActionPhase = true;
         isReactionPhase = true;
+    }
+
+    IEnumerator Delay()
+    {
+        yield return new WaitForSecondsRealtime(1);
+        StartCoroutine(enemyHandManagerScript.DrawCards(3));
     }
 
     public void EndPlayerTurn()

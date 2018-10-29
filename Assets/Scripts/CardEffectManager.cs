@@ -21,7 +21,7 @@ public class CardEffectManager : MonoBehaviour {
         //take off of the discard pool
         statManagerScript.UpdateDiscard("player", -Card.DiscardCost);
 
-        if (isBurn)
+        if (isBurn && Card.BurnCost>0)
         {
             //take off of the burn pool
             statManagerScript.UpdateBurn("player", -Card.BurnCost);

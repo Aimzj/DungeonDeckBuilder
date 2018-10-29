@@ -5,9 +5,9 @@ using TMPro;
 
 public class HandManager : MonoBehaviour {
     //possible target positions
-    private Transform playerDeck, enemyDeck;
-    private Transform playerDiscard, enemyDiscard;
-    private Transform playerTrash, enemyTrash;
+    private Transform playerDeck;
+    private Transform playerDiscard;
+    private Transform playerTrash;
 
     public GameObject CardObj;
     public GameObject TempObj;
@@ -40,6 +40,7 @@ public class HandManager : MonoBehaviour {
 
     private CardGenerator cardGenScript;
     private AreaManager areaManagerScript;
+    private StatsManager statManagerScript;
 
     // Use this for initialization
     void Start () {
@@ -50,6 +51,7 @@ public class HandManager : MonoBehaviour {
         soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
         cardGenScript = GameObject.Find("GameManager").GetComponent<CardGenerator>();
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
+        statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
         limitExceeded_Text = GameObject.Find("HandLimitNotice").GetComponent<TextMeshProUGUI>();
         limitExceeded_Text.enabled = false;
@@ -69,7 +71,6 @@ public class HandManager : MonoBehaviour {
     public void InitialiseCards()
     {
         playerDeckList = cardGenScript.PlayerDeck;
-        Debug.Log(playerDeckList.Count);
 
         //shuffle the card list
         Shuffle(ref playerDeckList);
@@ -103,7 +104,6 @@ public class HandManager : MonoBehaviour {
         SetCardPositionsInHand();
         UpdateCardPositionsInHand();
 
-        Debug.Log("REMOVED! "+numCardsInHand.ToString());
     }
 
     public void AddCardToHand()
@@ -118,18 +118,18 @@ public class HandManager : MonoBehaviour {
 
     public IEnumerator DrawCards(int numCards)
     {
-        Debug.Log("Num cards:" +playerDeckList.Count);
         for(int i =0; i<numCards; i++)
         {
             //check if there are enough cards left in deck
             if (playerDeckList.Count - numCards >= 0)
             {
-                Debug.Log("Play card!");
                 //play sound
                 soundScript.PlaySound_DrawCard();
 
                 //add a card to the hand
                 AddCardToHand();
+
+                statManagerScript.UpdateCardsInDeck("player", -1);
 
                 //instantiate card in deck and add to list
                 // var temp = (GameObject)Instantiate(CardObj, playerDeck.position, Quaternion.Euler(90,0,0));
@@ -152,16 +152,28 @@ public class HandManager : MonoBehaviour {
             }
             else
             {
-                Debug.Log("Shuffle discard");
+                //gain a cycle token
+                statManagerScript.UpdateCycleTokens("player", 1);
+
                 //Need to shuffle the discard pile and reform the playerdeck
                 Shuffle(ref areaManagerScript.cardList_Discard);
 
+                int count = playerDeckList.Count;
                 //add shuffled discard pile to playerDeck
                 for(int j= 0; j< areaManagerScript.cardList_Discard.Count; j++)
                 {
                     playerDeckList.Add(areaManagerScript.cardList_Discard[j]);
+
+                    //change target position of each card to the player's deck
+                    var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.Euler(90, 0, 0));
+                    playerDeckList[count].GetComponent<CardMovement>()._targetTransform = obj.transform;
+                    count++;
                 }
+
+                statManagerScript.SetTotalCards("player", playerDeckList.Count);
                 areaManagerScript.cardList_Discard.Clear();
+
+                StartCoroutine(DrawCards(1));
             }
 
         }
@@ -230,10 +242,6 @@ public class HandManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            StartCoroutine(DrawCards(1));
-        }
 
     }
 

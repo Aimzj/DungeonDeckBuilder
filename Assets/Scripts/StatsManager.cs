@@ -5,14 +5,14 @@ using TMPro;
 
 public class StatsManager : MonoBehaviour {
 
-    private TextMeshPro playerHealth, playerDefense, playerAttack, playerEssence, playerCardsInDeck, playerCycleTokens, playerDiscard, playerBurn;
-    private TextMeshPro enemyHealth, enemyDefense, enemyAttack, enemyEssence, enemyCardsInDeck, enemyCycleTokens, enemyDiscard, enemyBurn;
+    public TextMeshPro playerHealth, playerDefense, playerAttack, playerEssence, playerCardsInDeck, playerCycleTokens, playerDiscard, playerBurn;
+    public TextMeshPro enemyHealth, enemyDefense, enemyAttack, enemyEssence, enemyCardsInDeck, enemyCycleTokens, enemyDiscard, enemyBurn;
 
     public int totalHealth_player, numHealth_player, numDefense_player, numAttack_player, numEssence_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player;
     public int totalHealth_enemy, numHealth_enemy, numDefense_enemy, numAttack_enemy, numEssence_enemy, numCardsInDeck_enemy, totalCards_enemy, numCycleTokens_enemy, numDiscard_enemy, numBurn_enemy;
 
     void Start () {
-        playerHealth = GameObject.Find("PlayerHealth").GetComponent<TextMeshPro>();
+        /*playerHealth = GameObject.Find("PlayerHealth").GetComponent<TextMeshPro>();
         playerDefense = GameObject.Find("PlayerDefense").GetComponent<TextMeshPro>();
         playerAttack = GameObject.Find("PlayerAttack").GetComponent<TextMeshPro>();
         playerEssence = GameObject.Find("PlayerEssence").GetComponent<TextMeshPro>();
@@ -28,7 +28,7 @@ public class StatsManager : MonoBehaviour {
         enemyCardsInDeck = GameObject.Find("EnemyCardsInDeck").GetComponent<TextMeshPro>();
         enemyCycleTokens = GameObject.Find("EnemyCycleTokens").GetComponent<TextMeshPro>();
         enemyDiscard = GameObject.Find("EnemyDiscard").GetComponent<TextMeshPro>();
-        enemyBurn = GameObject.Find("EnemyBurn").GetComponent<TextMeshPro>();
+        enemyBurn = GameObject.Find("EnemyBurn").GetComponent<TextMeshPro>();*/
     }
 
     public void SetHealth(string target, int num)

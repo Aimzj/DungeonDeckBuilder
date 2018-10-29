@@ -10,9 +10,11 @@ public class AreaManager : MonoBehaviour {
     public List<GameObject> cardList_Deck;
 
     //possible target positions
-    private Transform playerDeck, enemyDeck;
-    private Transform playerDiscard, enemyDiscard;
-    private Transform playerTrash, enemyTrash;
+    private Transform playerDeck;
+    private Transform playerDiscard;
+    private Transform playerTrash;
+
+    private Transform playAreaTrans;
 
     public GameObject TempObj;
 
@@ -35,6 +37,8 @@ public class AreaManager : MonoBehaviour {
         playerDeck = GameObject.Find("Deck").GetComponent<Transform>();
         playerDiscard = GameObject.Find("Discard").GetComponent<Transform>();
         playerTrash = GameObject.Find("Trash").GetComponent<Transform>();
+
+        playAreaTrans = GameObject.Find("PlayArea").GetComponent<Transform>();
 
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
@@ -128,7 +132,7 @@ public class AreaManager : MonoBehaviour {
         //assign positions to cards
         for (int i = 0; i < cardList_Play.Count; i++)
         {
-            var obj = (GameObject)Instantiate(TempObj, new Vector3(PlayAreaPositions[i], 0f, 4f), Quaternion.Euler(90, 0, 0));
+            var obj = (GameObject)Instantiate(TempObj, new Vector3(PlayAreaPositions[i], playAreaTrans.position.y, playAreaTrans.position.z), Quaternion.Euler(90, 0, 0));
 
             cardList_Play[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
 
