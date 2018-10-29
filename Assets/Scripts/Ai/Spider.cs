@@ -82,7 +82,7 @@ public class Spider : MonoBehaviour {
             {
                 print("EMPTY");
                 spiderDeck.Reshuffle();
-                //spiderHand.inHand.fin
+             
 
             }
             if (spiderHand.inHand[i].GetComponent<CardObj>().CardName == "Skitter")
