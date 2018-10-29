@@ -18,6 +18,7 @@ public class Spider : MonoBehaviour {
     [SerializeField]
     private List<GameObject> deck = new List<GameObject>();
     private List<GameObject> inHand = new List<GameObject>();
+    private List<GameObject> onBoard = new List<GameObject>( new GameObject[6]);
 
 
     int totalDamage = 0;
@@ -59,7 +60,7 @@ public class Spider : MonoBehaviour {
         foreach(var card in clearList)
         {
             if (card.GetComponent<EnemyCardMove>().state == 2)
-            card.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform);
+            card.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform.position);
         }
 
         totalDamage = 0;
@@ -82,7 +83,7 @@ public class Spider : MonoBehaviour {
             {
                 print("EMPTY");
                 spiderDeck.Reshuffle();
-                //spiderHand.inHand.fin
+             
 
             }
             if (spiderHand.inHand[i].GetComponent<CardObj>().CardName == "Skitter")
@@ -113,13 +114,32 @@ public class Spider : MonoBehaviour {
     void triggerEffects(int index)
     {
         spiderHand.inHand[index].GetComponent<EnemyCardMove>().state = 2;
-        spiderHand.inHand[index].GetComponent<EnemyCardMove>().SetTarget(board.transform);
+       
         spiderHand.inHand[index].GetComponent<BoxCollider>().enabled = false;
+        setBoard(spiderHand.inHand[index]);
         RemoveCard(index);
+       
     }
 
+    void setBoard(GameObject CurrentCard)
+    {
+       
+        onBoard.Add(CurrentCard);
+        int numcards = onBoard.Count;
+        // CurrentCard.GetComponent<EnemyCardMove>().SetTarget(board.transform.position);
 
+        while (numcards >= 0)
+        {
+            CurrentCard.GetComponent<EnemyCardMove>().SetTarget(board.transform.position);
+            if (onBoard[(onBoard.Count -1)/2])
+            {
+               
+            }
+            numcards--;
+        }
+    }
 
+    //Add to discard list
     void RemoveCard(int arrPos)
     {
         var removedCard = spiderHand.inHand[arrPos];

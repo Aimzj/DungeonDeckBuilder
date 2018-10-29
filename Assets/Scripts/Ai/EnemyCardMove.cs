@@ -6,13 +6,13 @@ public class EnemyCardMove : MonoBehaviour {
 
 
     public float speed = 4f;
-    public Transform targetPos;
+    public Vector3 targetPos ;
     bool isMoving = false;
 
     //Use states to determine which pile to be deposited into : 0 - Deck, 1 - hand, 2 - discard, 3 - burn
     public int state = 0;
 
-	public void SetTarget(Transform target)
+	public void SetTarget(Vector3 target)
     {
         targetPos = target;
         isMoving = true;
@@ -23,8 +23,8 @@ public class EnemyCardMove : MonoBehaviour {
         if(isMoving)
         {
             float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, targetPos.position, step);
-            if(transform.position == targetPos.position)
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, step);
+            if(transform.position == targetPos)
             {
                 isMoving = false;
             }
