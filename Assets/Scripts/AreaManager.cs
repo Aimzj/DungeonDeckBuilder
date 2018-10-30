@@ -65,7 +65,7 @@ public class AreaManager : MonoBehaviour {
         cardObj.GetComponent<CardMovement>().isPlayed = true;
 
         //move the card's position to discard pile
-        var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDiscard.position.x, playerDiscard.position.y, playerDiscard.position.z), Quaternion.Euler(90, 90, 0));
+        var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDiscard.position.x, playerDiscard.position.y, playerDiscard.position.z), Quaternion.Euler(90, 0, 0));
         cardObj.GetComponent<CardMovement>()._targetTransform = obj.transform;
 
         //arrange cards in hand
@@ -103,7 +103,7 @@ public class AreaManager : MonoBehaviour {
         yield return new WaitForSecondsRealtime(1);
 
         //move the card's position to player's trash pile
-        obj = (GameObject)Instantiate(TempObj, new Vector3(playerTrash.position.x, playerTrash.position.y, playerTrash.position.z), Quaternion.Euler(90, 90, 0));
+        obj = (GameObject)Instantiate(TempObj, new Vector3(playerTrash.position.x, playerTrash.position.y, playerTrash.position.z), Quaternion.Euler(90, 0, 0));
         card.GetComponent<CardMovement>()._targetTransform = obj.transform;       
 
         //damage player
@@ -133,7 +133,7 @@ public class AreaManager : MonoBehaviour {
         cardList_Trash[cardList_Trash.Count - 1].GetComponent<CardMovement>().isPlayed = true;
 
         //move the card's position to trash pile
-        var obj = (GameObject)Instantiate(TempObj, new Vector3(playerTrash.position.x, playerTrash.position.y, playerTrash.position.z), Quaternion.Euler(90, 90, 0));
+        var obj = (GameObject)Instantiate(TempObj, new Vector3(playerTrash.position.x, playerTrash.position.y, playerTrash.position.z), Quaternion.Euler(90, 0, 0));
         cardObj.GetComponent<CardMovement>()._targetTransform = obj.transform;
 
         //damage player
@@ -220,7 +220,7 @@ public class AreaManager : MonoBehaviour {
                 cardList_Discard.Add(cardList_Play[i]);
 
                 //change target position of each card to the discard pile
-                var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDiscard.position.x, playerDiscard.position.y, playerDiscard.position.z), Quaternion.Euler(90, 90, 0));
+                var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDiscard.position.x, playerDiscard.position.y, playerDiscard.position.z), Quaternion.Euler(90, 0, 0));
                 cardList_Play[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
             }
             //clear play list
