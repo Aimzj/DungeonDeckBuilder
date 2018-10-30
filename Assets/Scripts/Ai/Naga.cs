@@ -1,6 +1,4 @@
-﻿//TODO: [] Discard Properly
-//      [] Play Correct order
-//      [] Repond to player input
+﻿
 
 
 using System.Collections;
@@ -276,7 +274,7 @@ public class Naga : MonoBehaviour {
                             if (NagaHand.inHand[k].GetComponent<CardObj>().CardName == "Serpent Scale")
                             {
                                 print("DISCARD");
-                                RemoveCard(k);
+                                RemoveCard(k, true);
                                 //  k = NagaHand.inHand.Count - 1;
                             }
                             //Discard Serpent scale
@@ -287,7 +285,7 @@ public class Naga : MonoBehaviour {
                             if (NagaHand.inHand[k].GetComponent<CardObj>().CardName == "Call of the Deep")
                             {
                                 print("DISCARD");
-                                RemoveCard(k);
+                                RemoveCard(k, true);
                                 // k = NagaHand.inHand.Count - 1;
                             }
                             //Discard Cotd
@@ -347,68 +345,66 @@ public class Naga : MonoBehaviour {
         NagaHand.reOrderHand();
         dummyCard.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform.position);
     }
+
+    //CHANGE TO USE NESTED FOR LOOPS
     public void Discard(int Cost, int index)
     {
         int remainingCost = Cost;
         int i = 0;
-        bool foundCard = false;
+        //bool foundCard = false;
+
+       
         while(remainingCost > 0)
         {
-            if(numCotD > 0)
+           
+            print("remaining cost is" + remainingCost);
+
+            if (i!= index)
             {
-                while (!foundCard)
+                print(i);
+                if (NagaHand.inHand[i].GetComponent<CardObj>().name == "Serpent Scale")
                 {
-                    if(remainingCost == 0)
+                    print("DISCARD:" + NagaHand.inHand[i].GetComponent<CardObj>().name);
+                    remainingCost--;
+                    RemoveCard(i, true);
 
-                    {
-                        foundCard = true;
-                        print("FOUND");
-                    }
-                    else
-                    {
-                        if (NagaHand.inHand[i].GetComponent<CardObj>().name == "Serpent Scale")
-                        {
-                            print("DISCARD:" + NagaHand.inHand[i].GetComponent<CardObj>().name);
-                            remainingCost--;
-                            RemoveCard(i);
-                            
-                            //Remove Card
+                    //Remove Card
 
-                        }
-                        else if (NagaHand.inHand[i].GetComponent<CardObj>().name == "Eldritch Oath")
-                        {
-                            print("DISCARD:" + NagaHand.inHand[i].GetComponent<CardObj>().name);
-                            remainingCost--;
-                            RemoveCard(i);
-                            //Remove Card
-
-                        }
-                        else if (NagaHand.inHand[i].GetComponent<CardObj>().name == "Call of the deep")
-                        {
-                            print("DISCARD:" + NagaHand.inHand[i].GetComponent<CardObj>().name);
-                            remainingCost--;
-                            RemoveCard(i);
-                            //Remove Card
-
-                        }
-                        else if (NagaHand.inHand[i].GetComponent<CardObj>().name == "Crushing Blow")
-                        {
-                            print("DISCARD:" + NagaHand.inHand[i].GetComponent<CardObj>().name);
-                            remainingCost--;
-                            RemoveCard(i);
-                            //Remove Card
-
-                        }
-                    }
-                   
                 }
-            }
-            
-        }
-        //Discard Cost
+                else if (NagaHand.inHand[i].GetComponent<CardObj>().name == "Eldritch Oath")
+                {
+                    print("DISCARD:" + NagaHand.inHand[i].GetComponent<CardObj>().name);
+                    remainingCost--;
+                    RemoveCard(i, true);
+                    //Remove Card
 
-        //Play card
+                }
+                else if (NagaHand.inHand[i].GetComponent<CardObj>().name == "Call of the deep")
+                {
+                    print("DISCARD:" + NagaHand.inHand[i].GetComponent<CardObj>().name);
+                    remainingCost--;
+                    RemoveCard(i, true);
+                    //Remove Card
+
+                }
+                else if (NagaHand.inHand[i].GetComponent<CardObj>().name == "Crushing Blow")
+                {
+                    print("DISCARD:" + NagaHand.inHand[i].GetComponent<CardObj>().name);
+                    remainingCost--;
+                    RemoveCard(i, true);
+                    //Remove Card
+
+                }
+
+              
+            }
+
+            i++;
+
+
+        }
+      
         triggerEffects(index);
-        //RemoveCard(index);
+      
     }
 }
