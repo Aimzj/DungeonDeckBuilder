@@ -5,11 +5,9 @@ using UnityEngine;
 public class Spider : MonoBehaviour {
 
 
-    //List of scripts
+  
     private DeckManager spiderDeck;
     private EnemyHand spiderHand;
-    private EnemyHandManager spiderHandManager;
-    private EnemyAreaManager spiderAreaManger;
     [SerializeField]
     private GameObject discardZone;
     [SerializeField]
@@ -23,8 +21,6 @@ public class Spider : MonoBehaviour {
     private List<GameObject> onBoard = new List<GameObject>( new GameObject[6]);
 
 
-
-
     int totalDamage = 0;
 
     private GameObject[] clearList;
@@ -35,30 +31,26 @@ public class Spider : MonoBehaviour {
 
         spiderDeck = gameObject.GetComponent<DeckManager>();
         spiderHand = GetComponent<EnemyHand>();
-        spiderHandManager = GetComponent<EnemyHandManager>();
-        spiderAreaManger = GetComponent<EnemyAreaManager>();
     }
 
     //Just to test functionality
     private void Update()
     {
-
-        if (Input.GetKeyUp(KeyCode.A))
+        if(Input.GetKeyUp(KeyCode.A))
         {
             TurnStart();
-
+            
         }
-        /*
 
-          if(Input.GetKeyUp(KeyCode.E))
-          {
-              spiderDeck.DrawCard(4);
-          }
+        if(Input.GetKeyUp(KeyCode.E))
+        {
+            spiderDeck.DrawCard(4);
+        }
 
-          if (Input.GetKeyUp(KeyCode.W))
-          {
-              EndTurn();
-          }*/
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            EndTurn();
+        }
     }
 
 
@@ -102,12 +94,7 @@ public class Spider : MonoBehaviour {
                 spiderDeck.DrawCard(1);
                 // i = 0;
                 i = spiderHand.inHand.Count - 1;
-
-
                 totalDamage++;
-
-                //Newcode
-               
 
 
 
@@ -126,12 +113,10 @@ public class Spider : MonoBehaviour {
 
     void triggerEffects(int index)
     {
-        //spiderHand.inHand[index].GetComponent<EnemyCardMove>().state = 2;
-
-        //spiderHand.inHand[index].GetComponent<BoxCollider>().enabled = false;
-        // setBoard(spiderHand.inHand[index]);
-
-        spiderAreaManger.PlayCard(spiderHand.inHand[index]);
+        spiderHand.inHand[index].GetComponent<EnemyCardMove>().state = 2;
+       
+        spiderHand.inHand[index].GetComponent<BoxCollider>().enabled = false;
+        setBoard(spiderHand.inHand[index]);
         RemoveCard(index);
        
     }
@@ -163,7 +148,7 @@ public class Spider : MonoBehaviour {
         spiderDeck.discardPile.Add(dummyCard);
         spiderHand.inHand.RemoveAt(arrPos);
        // Destroy(removedCard);
-       // spiderHand.reOrderHand();
+        spiderHand.reOrderHand();
 
     }
 
