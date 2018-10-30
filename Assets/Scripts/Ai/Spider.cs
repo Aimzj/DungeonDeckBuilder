@@ -20,6 +20,7 @@ public class Spider : MonoBehaviour {
     private List<GameObject> inHand = new List<GameObject>();
     private List<GameObject> onBoard = new List<GameObject>( new GameObject[6]);
 
+    //Check Phase
     bool isReaction = false;
 
 
@@ -55,7 +56,7 @@ public class Spider : MonoBehaviour {
         }
     }
 
-
+    //End turn , clear board and total damage/Defence
     public void EndTurn()
     {
         clearList = GameObject.FindGameObjectsWithTag("EnemyCard");
@@ -160,6 +161,8 @@ public class Spider : MonoBehaviour {
     
     }
 
+
+    //Sets card to be a board card
     void triggerEffects(int index)
     {
         spiderHand.inHand[index].GetComponent<EnemyCardMove>().state = 2;
@@ -170,6 +173,7 @@ public class Spider : MonoBehaviour {
        
     }
 
+    //Places card on board
     void setBoard(GameObject CurrentCard)
     {
        
