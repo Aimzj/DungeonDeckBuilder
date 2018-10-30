@@ -621,6 +621,7 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 62853846}
   m_CullTransparentMesh: 0
+<<<<<<< HEAD
 --- !u!1 &100739621
 GameObject:
   m_ObjectHideFlags: 0
@@ -808,6 +809,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+=======
+>>>>>>> parent of b8a8116... Testing
 --- !u!1 &319797081
 GameObject:
   m_ObjectHideFlags: 0
