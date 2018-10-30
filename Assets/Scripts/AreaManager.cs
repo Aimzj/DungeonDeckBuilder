@@ -93,6 +93,9 @@ public class AreaManager : MonoBehaviour {
 
     IEnumerator TempDisplay(GameObject card)
     {
+        //change the card's order in layer
+        card.GetComponent<CardMovement>().ChangeOrder(100);
+
         //move the card's position to player's temp display
         var obj = (GameObject)Instantiate(TempObj, new Vector3(playerTempDisplay.position.x, playerTempDisplay.position.y, playerTempDisplay.position.z), Quaternion.Euler(90, 0, 0));
         card.GetComponent<CardMovement>()._targetTransform = obj.transform;
@@ -101,7 +104,7 @@ public class AreaManager : MonoBehaviour {
 
         //move the card's position to player's trash pile
         obj = (GameObject)Instantiate(TempObj, new Vector3(playerTrash.position.x, playerTrash.position.y, playerTrash.position.z), Quaternion.Euler(90, 0, 0));
-        card.GetComponent<CardMovement>()._targetTransform = obj.transform;
+        card.GetComponent<CardMovement>()._targetTransform = obj.transform;       
 
         //damage player
         statManagerScript.UpdateHealth("player", -1);
@@ -110,6 +113,9 @@ public class AreaManager : MonoBehaviour {
         {
             statManagerScript.UpdateSigils("player", -1);
         }
+
+        yield return new WaitForSecondsRealtime(0.5f);
+        card.GetComponent<CardMovement>().ChangeOrder(15);
     }
 
     public void TrashCard(GameObject cardObj)

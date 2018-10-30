@@ -123,7 +123,7 @@ public class CardMovement : MonoBehaviour {
         }
     }
 
-    private void ChangeOrder(int num)
+    public void ChangeOrder(int num)
     {
         gameObject.GetComponent<SpriteRenderer>().sortingOrder = num;
 

@@ -285,6 +285,7 @@ public class HandManager : MonoBehaviour {
             else
             {
                 RemakeDeck();
+                yield return new WaitForSecondsRealtime(0.2f);
                 StartCoroutine(DamagePlayer(1));
             }
             yield return new WaitForSecondsRealtime(1.1f);
