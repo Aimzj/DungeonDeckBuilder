@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 15
-  productGUID: 3c8074e746e6e554ea82bed725ec4c16
+  productGUID: 00000000000000000000000000000000
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -726,7 +726,7 @@ PlayerSettings:
   facebookSdkVersion: 7.9.1
   apiCompatibilityLevel: 2
   cloudProjectId: 309dbee4-7ea4-46f6-85f2-867e4e77847a
-  projectName: DungeonDeckBuilder (1)
+  projectName: EffectsExamples
   organizationId: quanticnova
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
