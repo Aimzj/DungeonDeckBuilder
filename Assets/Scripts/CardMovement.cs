@@ -118,7 +118,7 @@ public class CardMovement : MonoBehaviour {
                 isHovering = false;
 
                 //change the order in layer of card and text
-                ChangeOrder(30);
+                ChangeOrder(100);
             }
         }
     }
@@ -143,6 +143,7 @@ public class CardMovement : MonoBehaviour {
         {
             isFollowing = false;
             handManagerScript.isHoldingCard = isFollowing;
+            isHovering = false;
 
             ChangeOrder(15);
 
@@ -237,9 +238,10 @@ public class CardMovement : MonoBehaviour {
             }
             else
             {
-                if (SceneManager.GetActiveScene().buildIndex == 1)
+                if (SceneManager.GetActiveScene().name == "BetaScene")
                 {
                     isHovering = true;
+                    _targetTransform.position = new Vector3(_targetTransform.position.x, _targetTransform.position.y, -0.83f);
                 }
 
             }
