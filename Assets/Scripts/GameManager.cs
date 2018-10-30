@@ -22,8 +22,6 @@ public class GameManager : MonoBehaviour {
 
     public void StartGame()
     {
-        print("hi");
-
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         sceneManagerScript = GameObject.Find("GameManager").GetComponent<Scene_Manager>();
@@ -31,7 +29,7 @@ public class GameManager : MonoBehaviour {
         enemyAreaManagerScript = GameObject.Find("GameManager").GetComponent<EnemyAreaManager>();
         enemyHandManagerScript = GameObject.Find("GameManager").GetComponent<EnemyHandManager>();
 
-        if (SceneManager.GetActiveScene().name == "BetaScene")
+        if (SceneManager.GetActiveScene().buildIndex == 1)
         {
             StartCoroutine(handManagerScript.DrawCards(3));
             StartCoroutine(Delay());
