@@ -20,6 +20,8 @@ public class Spider : MonoBehaviour {
     private List<GameObject> inHand = new List<GameObject>();
     private List<GameObject> onBoard = new List<GameObject>( new GameObject[6]);
 
+    bool isReaction = false;
+
 
     int totalDamage = 0;
 
@@ -65,17 +67,12 @@ public class Spider : MonoBehaviour {
 
         totalDamage = 0;
     }
-    //Trigger turn start and then all ohter related functions
-    public void TurnStart()
+    
+    //For reaction phase
+    void reaction()
     {
-        // deck = spiderDeck.deck;
-        //inHand = spiderHand.inHand;
-        // int totalHand = spiderHand.inHand.Count-1;
-
-      
-        //Loop through each card in hand
-        for (int i = spiderHand.inHand.Count -1 ; i >= 0 ; i--)
-            //for (int i = 0 ; i <= spiderHand.inHand.Count  ; i++)
+        for (int i = spiderHand.inHand.Count - 1; i >= 0; i--)
+        //for (int i = 0 ; i <= spiderHand.inHand.Count  ; i++)
         {
             print("TEST");
             //Reshuffle if deck is empty
@@ -83,14 +80,46 @@ public class Spider : MonoBehaviour {
             {
                 print("EMPTY");
                 spiderDeck.Reshuffle();
-             
+
 
             }
             if (spiderHand.inHand[i].GetComponent<CardObj>().CardName == "Skitter")
             {
                 // print("Skitter Played");
                 triggerEffects(i);
-                
+
+                spiderDeck.DrawCard(1);
+                // i = 0;
+                i = spiderHand.inHand.Count - 1;
+                totalDamage++;
+
+
+
+            }
+           
+        }
+    }
+
+    //For action phase
+    void action()
+    {
+        for (int i = spiderHand.inHand.Count - 1; i >= 0; i--)
+        //for (int i = 0 ; i <= spiderHand.inHand.Count  ; i++)
+        {
+            print("TEST");
+            //Reshuffle if deck is empty
+            if (spiderDeck.deck.Count <= 0)
+            {
+                print("EMPTY");
+                spiderDeck.Reshuffle();
+
+
+            }
+            if (spiderHand.inHand[i].GetComponent<CardObj>().CardName == "Skitter")
+            {
+                // print("Skitter Played");
+                triggerEffects(i);
+
                 spiderDeck.DrawCard(1);
                 // i = 0;
                 i = spiderHand.inHand.Count - 1;
@@ -107,6 +136,26 @@ public class Spider : MonoBehaviour {
                 i = spiderHand.inHand.Count - 1;
             }
         }
+    }
+    public void TurnStart()
+    {
+        if(isReaction)
+        {
+            reaction();
+        }
+        else
+        {
+            action();
+        }
+       
+       
+        // deck = spiderDeck.deck;
+        //inHand = spiderHand.inHand;
+        // int totalHand = spiderHand.inHand.Count-1;
+
+      
+        //Loop through each card in hand
+       
 
     
     }
