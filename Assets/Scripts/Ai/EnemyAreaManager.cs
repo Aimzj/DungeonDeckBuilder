@@ -143,7 +143,7 @@ public class EnemyAreaManager : MonoBehaviour {
 
     public void PlayCard(GameObject cardObj)
     {
-
+        
         numCardsInPlay++;
         EnemyPlayAreaPositions.Add(0f);
         newCardPos = 0;
@@ -177,7 +177,7 @@ public class EnemyAreaManager : MonoBehaviour {
 
         //add the card to list
         enemyCardList_Play.Add(cardObj);
-
+        print("PLAY");
         //card has now been played
         enemyCardList_Play[enemyCardList_Play.Count - 1].GetComponent<CardMovement>().isPlayed = true;
 
