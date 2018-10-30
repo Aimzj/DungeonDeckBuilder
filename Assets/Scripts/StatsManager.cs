@@ -5,14 +5,46 @@ using TMPro;
 
 public class StatsManager : MonoBehaviour {
 
-    public TextMeshPro playerHealth, playerDefense, playerAttack, playerEssence, playerCardsInDeck, playerCycleTokens, playerDiscard, playerBurn, playerSigils;
-    public TextMeshPro enemyHealth, enemyDefense, enemyAttack, enemyEssence, enemyCardsInDeck, enemyCycleTokens, enemyDiscard, enemyBurn, enemySigils;
-    public TextMeshPro endGameText;
+    public TextMeshPro playerPhase, playerHealth, playerDefense, playerAttack, playerEssence, playerCardsInDeck, playerCycleTokens, playerDiscard, playerBurn, playerSigils;
+    public TextMeshPro enemyPhase, enemyHealth, enemyDefense, enemyAttack, enemyEssence, enemyCardsInDeck, enemyCycleTokens, enemyDiscard, enemyBurn, enemySigils;
+    public TextMeshPro endGameText, buttonText;
 
     public int totalHealth_player, numHealth_player, numDefense_player, numAttack_player, numEssence_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player, numSigilsRemaining_player;
     public int totalHealth_enemy, numHealth_enemy, numDefense_enemy, numAttack_enemy, numEssence_enemy, numCardsInDeck_enemy, totalCards_enemy, numCycleTokens_enemy, numDiscard_enemy, numBurn_enemy, numSigilsRemaining_enemy;
 
+    public string phase_player, phase_enemy;
+
     void Start () {
+    }
+
+    public void SetPhase(string target, string phase)
+    {
+        if (target == "player")
+        {
+            phase_player = phase;
+
+            if(phase == "waiting")
+                playerPhase.text = phase.ToUpper();
+            else
+                playerPhase.text = phase.ToUpper() + " phase";
+
+            if (phase == "action")
+                buttonText.text = "End Turn";
+            else if(phase == "reaction")
+                buttonText.text = "REACT";
+            else
+                buttonText.text = "waiting...";
+
+        }
+        else if (target == "enemy")
+        {
+            phase_enemy = phase;
+
+            if (phase == "waiting")
+                enemyPhase.text = phase.ToUpper();
+            else
+                enemyPhase.text = phase.ToUpper() + " phase";
+        }
     }
 
     public void SetHealth(string target, int num)
