@@ -17,6 +17,21 @@ public class StatsManager : MonoBehaviour {
     void Start () {
     }
 
+    public void ClearAttack()
+    {
+        numAttack_player = 0;
+        numAttack_enemy = 0;
+        enemyAttack.text = "Attack: 0";
+        playerAttack.text = "Attack: 0";
+    }
+    public void ClearDefense()
+    {
+        numDefense_player = 0;
+        numDefense_enemy = 0;
+        enemyDefense.text = "Defense: 0";
+        playerDefense.text = "Defense: 0";
+    }
+
     public void SetPhase(string target, string phase)
     {
         if (target == "player")

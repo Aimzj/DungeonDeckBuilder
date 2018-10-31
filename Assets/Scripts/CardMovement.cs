@@ -168,7 +168,7 @@ public class CardMovement : MonoBehaviour {
         enemyAreaManagerScript.PlayCard(this.gameObject);
 
         //play card with effects
-        cardEffectScript.PlayCard(this.gameObject, false);
+       // cardEffectScript.PlayCard(this.gameObject, false);
     }
 
     private void OnMouseUp()

@@ -37,15 +37,15 @@ public class CardEffectManager : MonoBehaviour {
         //check if action or reaction phase
 
         //ATTACK
-        if (Card.Attack > 0)
+        if (Card.Attack > 0 && statManagerScript.phase_player == "action")
         {
             statManagerScript.UpdateAttack("player", Card.Attack);
         }
 
         //DEFEND
-        if (Card.Defense > 0)
+        if (Card.Defense > 0 && statManagerScript.phase_player=="reaction")
         {
-            statManagerScript.UpdateDefense("enemy", Card.Defense);
+            statManagerScript.UpdateDefense("player", Card.Defense);
         }
     }
 

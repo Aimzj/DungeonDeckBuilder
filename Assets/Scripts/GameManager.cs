@@ -109,7 +109,15 @@ public class GameManager : MonoBehaviour {
     public void EndPlayerReact()
     {
         //resolve attack and defense values and other effects
-
+        int DamageDealt_toPlayer = statManagerScript.numAttack_enemy - statManagerScript.numDefense_player;
+        if (DamageDealt_toPlayer > 0)
+        {
+            statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
+            //StartCoroutine(handManagerScript.DamagePlayer(DamageDealt_toPlayer));
+        }
+        //clear attack and defense values
+        statManagerScript.ClearAttack();
+        statManagerScript.ClearDefense();
         //play areas cleared after enemy reacts
         areaManagerScript.DiscardPlayArea();
         enemyAreaManagerScript.DiscardPlayArea();
@@ -136,7 +144,16 @@ public class GameManager : MonoBehaviour {
         //after the enemy reacts to player's cards, it is the enemy's turn
 
         //resolve attack and defense values and other effects
+        int DamageDealt_toEnemy = statManagerScript.numAttack_player - statManagerScript.numDefense_enemy;
+        if (DamageDealt_toEnemy > 0)
+        {
+            statManagerScript.UpdateHealth("enemy", -DamageDealt_toEnemy);
+           // StartCoroutine(enemyHandManagerScript.DamageEnemy(DamageDealt_toEnemy));
+        }
 
+        //clear attack and defense values
+        statManagerScript.ClearAttack();
+        statManagerScript.ClearDefense();
         //play areas cleared after enemy reacts
         areaManagerScript.DiscardPlayArea();
         enemyAreaManagerScript.DiscardPlayArea();

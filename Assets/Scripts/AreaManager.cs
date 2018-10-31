@@ -164,6 +164,7 @@ public class AreaManager : MonoBehaviour {
 
             //check to see that the boundary value hasn't been crossed
             //if it has been crossed, make the distance between cards smaller
+            x = 4;
             newCardPos = multiplier * x;
             while (newCardPos > boundaryValue)
             {

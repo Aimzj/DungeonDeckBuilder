@@ -247,10 +247,10 @@ public class HandManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown(KeyCode.K))
+       /* if (Input.GetKeyDown(KeyCode.K))
         {
             StartCoroutine(DamagePlayer(5));
-        }
+        }*/
     }
 
     public IEnumerator DamagePlayer(int value)

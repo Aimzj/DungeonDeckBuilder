@@ -292,11 +292,13 @@ public class EnemyHandManager : MonoBehaviour {
             else
             {
                 RemakeDeck();
+                yield return new WaitForSecondsRealtime(0.2f);
                 StartCoroutine(DamageEnemy(1));
             }
             yield return new WaitForSecondsRealtime(1.1f);
 
         }
+
     }
 
     public void SetCardPositionsInHand()
@@ -349,9 +351,9 @@ public class EnemyHandManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown(KeyCode.L))
+       /* if (Input.GetKeyDown(KeyCode.L))
         {
             StartCoroutine(DamageEnemy(5));
-        }
+        }*/
     }
 }

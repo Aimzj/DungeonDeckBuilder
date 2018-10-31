@@ -91,7 +91,8 @@ public class Spider : MonoBehaviour {
                 spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
                 //enemyAreaManagerScript.PlayCard(spiderHand[i]);
                 //enemyHandManagerScript.RemoveCardFromHand(i);
-                Skitter();
+                //Skitter();
+                statsManagerScript.UpdateDefense("enemy", 1);
 
                 yield return new WaitForSecondsRealtime(1);
             }
@@ -141,8 +142,9 @@ public class Spider : MonoBehaviour {
     //played as it arrives in enemy's hand
     public void Lethargy()
     {
-        upperBound--;
-        statsManagerScript.UpdateDefense("enemy", 1);
+       // upperBound--;
+        if(statsManagerScript.phase_enemy=="reaction")
+            statsManagerScript.UpdateDefense("enemy", 1);
 
     }
 
@@ -166,9 +168,10 @@ public class Spider : MonoBehaviour {
                 spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
                 //upperBound++;
                 //enemyAreaManagerScript.PlayCard(spiderHand[i]);
-               // yield return new WaitForSecondsRealtime(1);
+                // yield return new WaitForSecondsRealtime(1);
                 //enemyHandManagerScript.RemoveCardFromHand(i);
-                Skitter();
+                //Skitter();
+                statsManagerScript.UpdateAttack("enemy",1);
 
                 yield return new WaitForSecondsRealtime(2);
                 //check number of cards in hand after skitter
@@ -189,7 +192,8 @@ public class Spider : MonoBehaviour {
                 //enemyAreaManagerScript.PlayCard(spiderHand[i]);
                 // yield return new WaitForSecondsRealtime(1);
                 //enemyHandManagerScript.RemoveCardFromHand(i);
-                Bite();
+                //Bite();
+                statsManagerScript.UpdateAttack("enemy", 1);
 
                 yield return new WaitForSecondsRealtime(2);
             }
