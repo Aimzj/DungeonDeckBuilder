@@ -54,6 +54,9 @@ public class CardMovement : MonoBehaviour {
     private CardEffectManager cardEffectScript;
     private StatsManager statManagerScript;
 
+    private EnemyHandManager enemyHandManagerScript;
+    private EnemyAreaManager enemyAreaManagerScript;
+
     //sound
     private SoundManager soundScript;
 
@@ -67,6 +70,9 @@ public class CardMovement : MonoBehaviour {
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         cardEffectScript = GameObject.Find("GameManager").GetComponent<CardEffectManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+
+        enemyAreaManagerScript = GameObject.Find("GameManager").GetComponent<EnemyAreaManager>();
+        enemyHandManagerScript = GameObject.Find("GameManager").GetComponent<EnemyHandManager>();
 
         soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
 
@@ -137,6 +143,25 @@ public class CardMovement : MonoBehaviour {
         gameObject.transform.Find("Sigil").GetComponent<SpriteRenderer>().sortingOrder = num + 1;
 
     }
+
+    public void PlayEnemyCard()
+    {
+        //play sound
+        soundScript.PlaySound_PlayCard();
+
+        //remove the card from the Hand List
+        enemyHandManagerScript.RemoveCardFromHand(this.posInHand);
+        posInHand = -1;
+
+        isPlayed = true;
+        isInHand = false;
+
+        enemyAreaManagerScript.PlayCard(this.gameObject);
+
+        //play card with effects
+        cardEffectScript.PlayCard(this.gameObject, false);
+    }
+
     private void OnMouseUp()
     {
         if (!isEnemyCard)

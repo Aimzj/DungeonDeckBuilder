@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Spider : MonoBehaviour {
 
+    private List<GameObject> spiderHand = new List<GameObject>();
+   // private List<GameObject> spiderDeck = new List<GameObject>();
 
-  
-    private DeckManager spiderDeck;
-    private EnemyHand spiderHand;
-    [SerializeField]
+    //private DeckManager spiderDeck;
+    //private EnemyHand spiderHand;
+    //[SerializeField]
     private GameObject discardZone;
     [SerializeField]
     private GameObject deckZone;
@@ -27,19 +28,27 @@ public class Spider : MonoBehaviour {
     int totalDamage = 0;
 
     private GameObject[] clearList;
-    // Use this for initialization
 
+    private EnemyAreaManager enemyAreaManagerScript;
+    private EnemyHandManager enemyHandManagerScript;
+    private StatsManager statsManagerScript;
+    private GameManager gameManagerScript;
+
+    private int upperBound;
     private void Start()
     {
-
-        spiderDeck = gameObject.GetComponent<DeckManager>();
-        spiderHand = GetComponent<EnemyHand>();
+        enemyAreaManagerScript = GameObject.Find("GameManager").GetComponent<EnemyAreaManager>();
+        enemyHandManagerScript = GameObject.Find("GameManager").GetComponent<EnemyHandManager>();
+        statsManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
+        //spiderDeck = gameObject.GetComponent<DeckManager>();
+       // spiderHand = GetComponent<EnemyHand>();
     }
 
     //Just to test functionality
     private void Update()
     {
-        if(Input.GetKeyUp(KeyCode.A))
+      /*  if(Input.GetKeyUp(KeyCode.A))
         {
             TurnStart();
             
@@ -47,162 +56,174 @@ public class Spider : MonoBehaviour {
 
         if(Input.GetKeyUp(KeyCode.E))
         {
-            spiderDeck.DrawCard(4);
+            //spiderDeck.DrawCard(4);
         }
 
         if (Input.GetKeyUp(KeyCode.W))
         {
             EndTurn();
-        }
+        }*/
     }
 
     //End turn , clear board and total damage/Defence
-    public void EndTurn()
+   /* public void EndTurn()
     {
         clearList = GameObject.FindGameObjectsWithTag("EnemyCard");
         foreach(var card in clearList)
         {
             if (card.GetComponent<EnemyCardMove>().state == 2)
-            card.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform.position);
+                card.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform.position);
         }
 
         totalDamage = 0;
-    }
+    }*/
     
     //For reaction phase
-    void reaction()
+    public IEnumerator Reaction()
     {
-        for (int i = spiderHand.inHand.Count - 1; i >= 0; i--)
-        //for (int i = 0 ; i <= spiderHand.inHand.Count  ; i++)
+        UpdateEnemyHand();
+
+        for (int i = 0; i < spiderHand.Count; i++)
         {
-            print("TEST");
-            //Reshuffle if deck is empty
-            if (spiderDeck.deck.Count <= 0)
+            if (spiderHand[i].GetComponent<CardObj>().CardName == "Skitter")
             {
-                print("EMPTY");
-                spiderDeck.Reshuffle();
+                //play skitter
+                spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
+                //enemyAreaManagerScript.PlayCard(spiderHand[i]);
+                //enemyHandManagerScript.RemoveCardFromHand(i);
+                Skitter();
 
-
-            }
-            if (spiderHand.inHand[i].GetComponent<CardObj>().CardName == "Skitter")
-            {
-                // print("Skitter Played");
-                triggerEffects(i);
-
-                spiderDeck.DrawCard(1);
-                // i = 0;
-                i = spiderHand.inHand.Count - 1;
-                totalDamage++;
-
-
-
-            }
-           
-        }
-    }
-
-    //For action phase
-    void action()
-    {
-        for (int i = spiderHand.inHand.Count - 1; i >= 0; i--)
-        //for (int i = 0 ; i <= spiderHand.inHand.Count  ; i++)
-        {
-            print("TEST");
-            //Reshuffle if deck is empty
-            if (spiderDeck.deck.Count <= 0)
-            {
-                print("EMPTY");
-                spiderDeck.Reshuffle();
-
-
-            }
-            if (spiderHand.inHand[i].GetComponent<CardObj>().CardName == "Skitter")
-            {
-                // print("Skitter Played");
-                triggerEffects(i);
-
-                spiderDeck.DrawCard(1);
-                // i = 0;
-                i = spiderHand.inHand.Count - 1;
-                totalDamage++;
-
-
-
-            }
-            else if (spiderHand.inHand[i].GetComponent<CardObj>().CardName == "Bite")
-            {
-                //print("Bite Played");
-                triggerEffects(i);
-                // i = 0;
-                i = spiderHand.inHand.Count - 1;
+                yield return new WaitForSecondsRealtime(1);
             }
         }
-    }
-    public void TurnStart()
-    {
-        if(isReaction)
+        UpdateEnemyHand();
+        //loop through to check for a Skitter card
+        bool isFound = false;
+        for (int i = 0; i < spiderHand.Count; i++)
         {
-            reaction();
+            if (spiderHand[i].GetComponent<CardObj>().CardName == "Skitter")
+            {
+                isFound = true;
+
+            }
+        }
+
+        //call reaction function again if Skitter was found
+        if (isFound)
+        {
+            Reaction();
         }
         else
         {
-            action();
+            //call end of enemy reaction function
+            print("DONE WITH ENEMY REACTION");
+            gameManagerScript.EndEnemyReact();
         }
-       
-       
-        // deck = spiderDeck.deck;
-        //inHand = spiderHand.inHand;
-        // int totalHand = spiderHand.inHand.Count-1;
+    }
 
-      
-        //Loop through each card in hand
-       
+    private void Skitter()
+    {
+        statsManagerScript.UpdateAttack("enemy", 1);
+        statsManagerScript.UpdateDefense("enemy", 1);
 
-    
+      //  StartCoroutine(enemyHandManagerScript.DrawCards(1));
+    }
+
+    private void Bite()
+    {
+        statsManagerScript.UpdateAttack("enemy", 1);
+        statsManagerScript.UpdateDefense("enemy", 1);
+
+        //ADD POISON TO PLAYER DECK
+
+    }
+
+    //played as it arrives in enemy's hand
+    public void Lethargy()
+    {
+        upperBound--;
+        statsManagerScript.UpdateDefense("enemy", 1);
+
     }
 
 
-    //Sets card to be a board card
-    void triggerEffects(int index)
+    //For action phase
+    public IEnumerator Action()
     {
-        spiderHand.inHand[index].GetComponent<EnemyCardMove>().state = 2;
-       
-        spiderHand.inHand[index].GetComponent<BoxCollider>().enabled = false;
-        setBoard(spiderHand.inHand[index]);
-        RemoveCard(index);
-       
-    }
 
-    //Places card on board
-    void setBoard(GameObject CurrentCard)
-    {
-       
-        onBoard.Add(CurrentCard);
-        int numcards = onBoard.Count;
-        // CurrentCard.GetComponent<EnemyCardMove>().SetTarget(board.transform.position);
-
-        while (numcards >= 0)
+        UpdateEnemyHand();
+        print("Action #cards in hand: " + spiderHand.Count);
+        //looping through hand of enemy hand
+        int upperBound = spiderHand.Count;
+        for (int i = 0; i<upperBound;i++)
         {
-            CurrentCard.GetComponent<EnemyCardMove>().SetTarget(board.transform.position);
-            if (onBoard[(onBoard.Count -1)/2])
+            if (spiderHand[i].GetComponent<CardObj>().CardName == "Skitter")
             {
-               
+                //check number of cards before Skitter
+                int numInHand_before = enemyHandManagerScript.numCardsInHand;
+
+                //play skitter card
+                spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
+                //upperBound++;
+                //enemyAreaManagerScript.PlayCard(spiderHand[i]);
+               // yield return new WaitForSecondsRealtime(1);
+                //enemyHandManagerScript.RemoveCardFromHand(i);
+                Skitter();
+
+                yield return new WaitForSecondsRealtime(2);
+                //check number of cards in hand after skitter
+               /* int numInHand_after = enemyHandManagerScript.numCardsInHand;
+                print("before: " + numInHand_before + "    after: " + numInHand_after);
+                if (numInHand_after - numInHand_before == 0)
+                {
+                    //skitter added card
+                    print("SKITTER ADDED CARD");
+                    upperBound++;
+                }*/
+                //upperBound += numInHand_after - numInHand_before;
             }
-            numcards--;
+            else if (spiderHand[i].GetComponent<CardObj>().CardName == "Bite")
+            {
+                //play bite card
+                spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
+                //enemyAreaManagerScript.PlayCard(spiderHand[i]);
+                // yield return new WaitForSecondsRealtime(1);
+                //enemyHandManagerScript.RemoveCardFromHand(i);
+                Bite();
+
+                yield return new WaitForSecondsRealtime(2);
+            }
+          /*  i = 0;
+            UpdateEnemyHand();
+            upperBound = spiderHand.Count;
+            print("upper bound: " + spiderHand.Count);*/
         }
+        print("DONE WITH ENEMY ACTION");
+        gameManagerScript.EndEnemyTurn();
+        /*UpdateEnemyHand();
+        //check if more cards are in the enemy's hand
+        //if so, call action function again
+        if (spiderHand.Count > 0)
+        {
+            Action();
+        }
+        else
+        {
+            print("DONE WITH ENEMY ACTION");
+            gameManagerScript.EndEnemyTurn();
+        }*/
+
     }
 
-    //Add to discard list
-    void RemoveCard(int arrPos)
+    private void UpdateEnemyHand()
     {
-        var removedCard = spiderHand.inHand[arrPos];
-        var dummyCard = removedCard;
-        
-        spiderDeck.discardPile.Add(dummyCard);
-        spiderHand.inHand.RemoveAt(arrPos);
-       // Destroy(removedCard);
-        spiderHand.reOrderHand();
-
+        spiderHand.Clear();
+        //create a list of the current cards existing in the enemy's hand
+        for (int i = 0; i < enemyHandManagerScript.enemyDeckList.Count; i++)
+        {
+            if (enemyHandManagerScript.enemyDeckList[i].GetComponent<CardMovement>().isInHand)
+                spiderHand.Add(enemyHandManagerScript.enemyDeckList[i]);
+        }
     }
 
 	

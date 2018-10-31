@@ -19,7 +19,7 @@ public class AreaSensor : MonoBehaviour {
     RaycastHit hit;
     RaycastHit[] hits;
     // Use this for initialization
-    void Start () {
+    void Start() {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
 
         playArea = GameObject.Find("PlayArea");
@@ -42,10 +42,16 @@ public class AreaSensor : MonoBehaviour {
         isTrash = false;
         isDiscard = false;
         isBurn = false;
-	}
+    }
 
-    // Update is called once per frame
-    void Update () {
+    private void OnMouseUp()
+    { 
+        if(burnParticles.isPlaying)
+            burnParticles.Stop();
+    }
+
+        // Update is called once per frame
+        void Update () {
 
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         hits = Physics.RaycastAll(ray, 200);

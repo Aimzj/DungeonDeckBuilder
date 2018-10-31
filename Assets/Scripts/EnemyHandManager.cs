@@ -20,7 +20,7 @@ public class EnemyHandManager : MonoBehaviour {
     //the x value that the cards should not cross. The distance between cards is made smaller when this value is crossed
     private float boundaryValue;
 
-    private int numCardsInHand;
+    public int numCardsInHand;
 
     private float newCardPos, multiplier;
 
@@ -38,10 +38,14 @@ public class EnemyHandManager : MonoBehaviour {
     private EnemyAreaManager enemyAreaManagerScript;
     public StatsManager statManagerScript;
 
+    private Spider spiderScript;
+
     void Start () {
         enemyDeck = GameObject.Find("EnemyDeck").GetComponent<Transform>();
         enemyDiscard = GameObject.Find("EnemyDiscardPile").GetComponent<Transform>();
         enemyTrash = GameObject.Find("EnemyTrashPile").GetComponent<Transform>();
+
+        spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
 
         displayPos = GameObject.Find("EnemyTempDisplay").GetComponent<Transform>();
 
@@ -166,6 +170,16 @@ public class EnemyHandManager : MonoBehaviour {
                 //change the card's layering
                 SetLayeringInHand();
 
+                //ON ARRIVAL
+                if(enemyDeckList[numCardsInHand - 1].GetComponent<CardObj>().CardName == "Lethargy")
+                {
+                    print("LETHARGY");
+                    spiderScript.Lethargy();
+
+                    enemyDeckList[numCardsInHand - 1].GetComponent<CardMovement>().PlayEnemyCard();
+
+                }
+
                 //UpdateCardPositionsInHand();
 
                 yield return new WaitForSecondsRealtime(0.3f);
@@ -190,7 +204,7 @@ public class EnemyHandManager : MonoBehaviour {
         }
     }
 
-    private void RemakeDeck()
+    public void RemakeDeck()
     {
         //gain a cycle token
         statManagerScript.UpdateCycleTokens("enemy", 1);

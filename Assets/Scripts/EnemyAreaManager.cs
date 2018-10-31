@@ -86,17 +86,19 @@ public class EnemyAreaManager : MonoBehaviour {
         //card has now been played
         enemyCardList_Trash[enemyCardList_Trash.Count - 1].GetComponent<CardMovement>().isPlayed = true;
 
-        StartCoroutine(TempDisplay(cardObj));
+        StartCoroutine(TempDisplayDamage(cardObj));
     }
 
-    IEnumerator TempDisplay(GameObject card)
+    IEnumerator TempDisplayDamage(GameObject card)
     {
         //move the card's position to enemy's temp display
+       // int origOrder = card.GetComponent<SpriteRenderer>().sortingOrder;
+        card.GetComponent<CardMovement>().ChangeOrder(100);
         var obj = (GameObject)Instantiate(TempObj, new Vector3(enemyTempDisplay.position.x, enemyTempDisplay.position.y, enemyTempDisplay.position.z), Quaternion.Euler(90, 0, 0));
         card.GetComponent<CardMovement>()._targetTransform = obj.transform;
 
         yield return new WaitForSecondsRealtime(1);
-
+        
         //move the card's position to enemy's trash pile
         obj = (GameObject)Instantiate(TempObj, new Vector3(enemyTrash.position.x, enemyTrash.position.y, enemyTrash.position.z), Quaternion.Euler(90, 90, 0));
         card.GetComponent<CardMovement>()._targetTransform = obj.transform;
@@ -108,6 +110,19 @@ public class EnemyAreaManager : MonoBehaviour {
         {
             statManagerScript.UpdateSigils("enemy", -1);
         }
+    }
+
+    IEnumerator TempDisplayPlay(GameObject card)
+    {
+        print("Enemy Play temp display working");
+        //move the card's position to enemy's temp display
+        var obj = (GameObject)Instantiate(TempObj, new Vector3(enemyTempDisplay.position.x, enemyTempDisplay.position.y, enemyTempDisplay.position.z), Quaternion.Euler(90, 0, 0));
+        card.GetComponent<CardMovement>()._targetTransform = obj.transform;
+
+        yield return new WaitForSecondsRealtime(1);
+
+        
+
     }
 
     public void TrashCard(GameObject cardObj)
@@ -181,13 +196,14 @@ public class EnemyAreaManager : MonoBehaviour {
         //card has now been played
         enemyCardList_Play[enemyCardList_Play.Count - 1].GetComponent<CardMovement>().isPlayed = true;
 
+        //move the card's position to enemy's playArea
         //assign positions to cards
         for (int i = 0; i < enemyCardList_Play.Count; i++)
         {
             var obj = (GameObject)Instantiate(TempObj, new Vector3(EnemyPlayAreaPositions[i], enemyPlayAreaTrans.position.y, enemyPlayAreaTrans.position.z), Quaternion.Euler(90, 0, 0));
 
             enemyCardList_Play[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
-
+            print("move to target!");
         }
 
         enemyHandManagerScript.SetCardPositionsInHand();

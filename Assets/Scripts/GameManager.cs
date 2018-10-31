@@ -17,21 +17,20 @@ public class GameManager : MonoBehaviour {
     private int discardBank, trashBank;
     private int attackVal, defenseVal;
 
-    private int turnCounter;
-
     private Button endTurnButton;
 
     private StatsManager statManagerScript;
+
+    private Spider spiderScript;
 
     // Use this for initialization
     void Start () {
 
         endTurnButton = GameObject.Find("EndTurn").GetComponent<Button>();
 
-        //odd turn number means it is the player's turn, even is enemy's turn
-        turnCounter = 1;
-
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+
+        spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
     }
 
     public void StartGame()
@@ -78,7 +77,7 @@ public class GameManager : MonoBehaviour {
     {
         //PLAYER REACT
         statManagerScript.SetPhase("player", "reaction");
-        statManagerScript.SetPhase("enemy", "action");
+        statManagerScript.SetPhase("enemy", "waiting");
 
         endTurnButton.enabled = true;
     }
@@ -91,48 +90,61 @@ public class GameManager : MonoBehaviour {
         areaManagerScript.DiscardPlayArea();
         enemyAreaManagerScript.DiscardPlayArea();
 
-        //player draws 1 card
-        StartCoroutine(handManagerScript.DrawCards(1));
+        //enemy draws 1 card
+        StartCoroutine(enemyHandManagerScript.DrawCards(1));
+        //end of enemy's turn
 
-        //enemy draws 2
-        StartCoroutine(Delay(3, "enemy"));
+        //player draws 3
+        StartCoroutine(Delay(3, "player"));
 
-        //ENEMY ACTS
-        statManagerScript.SetPhase("player", "waiting");
-        statManagerScript.SetPhase("enemy", "action");
+        //PLAYER ACTS
+        statManagerScript.SetPhase("player", "action");
+        statManagerScript.SetPhase("enemy", "waiting");
 
+        
 
         //disable the card interactions until it is the player's turn
 
-        //disable the button until the enemy's turn is done
-        endTurnButton.enabled = false;
+        //enable the button until the player's turn is done
+        endTurnButton.enabled = true;
     }
 
     //called by enemy script
     public void EndEnemyReact()
     {
+        //after the enemy reacts to player's cards, it is the enemy's turn
+
         //resolve attack and defense values and other effects
 
         //play areas cleared after enemy reacts
         areaManagerScript.DiscardPlayArea();
         enemyAreaManagerScript.DiscardPlayArea();
 
+        //player draws 1 card
+        StartCoroutine(handManagerScript.DrawCards(1));
+        //END OF PLAYER TURN
 
-        //enemy draws 1 card
-        StartCoroutine(enemyHandManagerScript.DrawCards(1));
-
-        //player draws 2
+        //enemy draws 3
         StartCoroutine(Delay(3, "enemy"));
 
-        //PLAYER ACTS
-        statManagerScript.SetPhase("player", "action");
-        statManagerScript.SetPhase("enemy", "waiting");
+
+        StartCoroutine(EnemyWaitToAct());
+        
 
 
-        //enable the card interactions until it is the enemy's turn
+        //disable the card interactions until it is the player's turn
 
-        //enable the button
-        endTurnButton.enabled = true;
+        //disable the button
+        endTurnButton.enabled = false;
+    }
+
+    IEnumerator EnemyWaitToAct()
+    {
+        yield return new WaitForSeconds(3f);
+        //ENEMY ACTS
+        statManagerScript.SetPhase("player", "waiting");
+        statManagerScript.SetPhase("enemy", "action");
+        StartCoroutine(spiderScript.Action());
     }
 
     //called when the player CLICKS the button 
@@ -145,8 +157,9 @@ public class GameManager : MonoBehaviour {
         else
         {
             //ENEMY REACTS
-            statManagerScript.SetPhase("player", "action");
+            statManagerScript.SetPhase("player", "waiting");
             statManagerScript.SetPhase("enemy", "reaction");
+            StartCoroutine(spiderScript.Reaction());
         }
         
     
