@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour {
     private AreaManager areaManagerScript;
@@ -23,8 +24,14 @@ public class GameManager : MonoBehaviour {
 
     private Spider spiderScript;
 
+    private TextMeshPro gamePhaseText;
+    private GameObject gamePhaseDisplay;
+
     // Use this for initialization
     void Start () {
+
+        gamePhaseDisplay = GameObject.Find("GamePhase");
+        gamePhaseText = GameObject.Find("GamePhaseText").GetComponent<TextMeshPro>();
 
         endTurnButton = GameObject.Find("EndTurn").GetComponent<Button>();
 
@@ -46,6 +53,8 @@ public class GameManager : MonoBehaviour {
 
         if (SceneManager.GetActiveScene().name == "BetaScene")
         {
+            StartCoroutine(DisplayPhase("Player Goes First"));
+
             statManagerScript.SetPhase("player", "action");
             statManagerScript.SetPhase("enemy", "waiting");
 
@@ -75,11 +84,20 @@ public class GameManager : MonoBehaviour {
     //called by the Enemy when they are finished playing cards
     public void EndEnemyTurn()
     {
+        StartCoroutine(DisplayPhase("Player Reaction"));
         //PLAYER REACT
         statManagerScript.SetPhase("player", "reaction");
         statManagerScript.SetPhase("enemy", "waiting");
 
         endTurnButton.enabled = true;
+    }
+
+    IEnumerator DisplayPhase(string phase)
+    {
+        gamePhaseDisplay.SetActive(true);
+        gamePhaseText.text = phase;
+        yield return new WaitForSecondsRealtime(2);
+        gamePhaseDisplay.SetActive(false);
     }
 
     public void EndPlayerReact()
@@ -94,6 +112,7 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(enemyHandManagerScript.DrawCards(1));
         //end of enemy's turn
 
+        StartCoroutine(DisplayPhase("Player's Turn"));
         //player draws 3
         StartCoroutine(Delay(3, "player"));
 
@@ -124,6 +143,7 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(handManagerScript.DrawCards(1));
         //END OF PLAYER TURN
 
+        StartCoroutine(DisplayPhase("Enemy's Turn"));
         //enemy draws 3
         StartCoroutine(Delay(3, "enemy"));
 
@@ -156,6 +176,7 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
+            StartCoroutine(DisplayPhase("Enemy Reaction"));
             //ENEMY REACTS
             statManagerScript.SetPhase("player", "waiting");
             statManagerScript.SetPhase("enemy", "reaction");
