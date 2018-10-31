@@ -84,6 +84,12 @@ public class GameManager : MonoBehaviour {
     //called by the Enemy when they are finished playing cards
     public void EndEnemyTurn()
     {
+        //enable the card interactions until it is the enemy's turn
+        for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
+        {
+            handManagerScript.playerDeckList[i].GetComponent<CardMovement>().isFrozen = false;
+        }
+
         StartCoroutine(DisplayPhase("Player Reaction"));
         //PLAYER REACT
         statManagerScript.SetPhase("player", "reaction");
@@ -120,10 +126,6 @@ public class GameManager : MonoBehaviour {
         statManagerScript.SetPhase("player", "action");
         statManagerScript.SetPhase("enemy", "waiting");
 
-        
-
-        //disable the card interactions until it is the player's turn
-
         //enable the button until the player's turn is done
         endTurnButton.enabled = true;
     }
@@ -149,11 +151,14 @@ public class GameManager : MonoBehaviour {
 
 
         StartCoroutine(EnemyWaitToAct());
-        
+
 
 
         //disable the card interactions until it is the player's turn
-
+        for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
+        {
+            handManagerScript.playerDeckList[i].GetComponent<CardMovement>().isFrozen = true;
+        }
         //disable the button
         endTurnButton.enabled = false;
     }

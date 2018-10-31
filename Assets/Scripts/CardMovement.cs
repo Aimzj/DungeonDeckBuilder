@@ -63,6 +63,9 @@ public class CardMovement : MonoBehaviour {
     //if the card is an enemy card, it MUST NOT be manipulated by the player
     public bool isEnemyCard;
 
+    //bool is used to prevent player from interacting with scripts when they shouldn't
+    public bool isFrozen;
+
     // Use this for initialization
     void Start () {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
@@ -84,6 +87,8 @@ public class CardMovement : MonoBehaviour {
         zShift = 0.5f;
 
         isPlayed= false;
+
+        isFrozen = false;
 
        // isEnemyCard = false;
     }
@@ -111,22 +116,26 @@ public class CardMovement : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        //check if the card is in the player's hand
-        if (!isEnemyCard)
+        if (!isFrozen)
         {
-            if (isInHand)
+            //check if the card is in the player's hand
+            if (!isEnemyCard)
             {
-                //play sound
-                soundScript.PlaySound_PickUpCard();
+                if (isInHand)
+                {
+                    //play sound
+                    soundScript.PlaySound_PickUpCard();
 
-                isFollowing = true;
-                handManagerScript.isHoldingCard = isFollowing;
-                isHovering = false;
+                    isFollowing = true;
+                    handManagerScript.isHoldingCard = isFollowing;
+                    isHovering = false;
 
-                //change the order in layer of card and text
-                ChangeOrder(100);
+                    //change the order in layer of card and text
+                    ChangeOrder(100);
+                }
             }
         }
+       
     }
 
     public void ChangeOrder(int num)
@@ -164,7 +173,8 @@ public class CardMovement : MonoBehaviour {
 
     private void OnMouseUp()
     {
-        if (!isEnemyCard)
+        if (!isEnemyCard
+            && !isFrozen)
         {
             isFollowing = false;
             handManagerScript.isHoldingCard = isFollowing;
@@ -282,7 +292,8 @@ public class CardMovement : MonoBehaviour {
 
         if (!handManagerScript.isHoldingCard 
             && isInHand
-            && !isEnemyCard)
+            && !isEnemyCard
+            && !isFrozen)
         {
             //play sound
             soundScript.PlaySound_HoverCard();
@@ -297,7 +308,8 @@ public class CardMovement : MonoBehaviour {
     {
         // move the card to it's original transform only if it is already hovering
         if (isHovering
-            && !isEnemyCard)
+            && !isEnemyCard
+            && !isFrozen)
         {
             isHovering = false;
             _targetTransform.position = new Vector3(_targetTransform.position.x, _targetTransform.position.y-hoverHeight, -0.83f);
