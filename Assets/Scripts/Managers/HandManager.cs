@@ -45,6 +45,8 @@ public class HandManager : MonoBehaviour {
     private AreaManager areaManagerScript;
     private StatsManager statManagerScript;
 
+    private Spider spiderScript;
+
     // Use this for initialization
     void Start () {
         playerDeck = GameObject.Find("Deck").GetComponent<Transform>();
@@ -58,6 +60,8 @@ public class HandManager : MonoBehaviour {
         cardGenScript = GameObject.Find("GameManager").GetComponent<CardGenerator>();
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+
+        spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
 
         limitExceeded_Text = GameObject.Find("HandLimitNotice").GetComponent<TextMeshProUGUI>();
         limitExceeded_Text.enabled = false;
@@ -209,6 +213,21 @@ public class HandManager : MonoBehaviour {
 
         //change the card's layering
         SetLayeringInHand(ref deckList);
+
+        //ON ARRIVAL
+        if(target == "enemy")
+        {
+            if (enemyDeckList[numCardsInHand - 1].GetComponent<CardObj>().CardName == "Lethargy")
+            {
+                print("LETHARGY");
+                spiderScript.Lethargy();
+
+                enemyDeckList[numCardsInHand - 1].GetComponent<CardMovement>().PlayEnemyCard();
+
+            }
+        }
+        
+
 
         //check if card hand size is exceeded
         if (numCardsInHand > maxHandSize)
