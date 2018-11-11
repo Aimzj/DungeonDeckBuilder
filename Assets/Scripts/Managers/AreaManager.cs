@@ -4,32 +4,32 @@ using UnityEngine;
 
 public class AreaManager : MonoBehaviour {
 
-    public List<GameObject> cardList_Play;
-    public List<GameObject> cardList_Discard;
-    public List<GameObject> cardList_Trash;
-    public List<GameObject> cardList_Deck;
+    public List<GameObject> player_PlayCardList, enemy_PlayCardList;
+    public List<GameObject> player_DiscardCardList, enemy_DiscardCardList;
+    public List<GameObject> player_TrashCardList, enemy_TrashCardList;
+    public List<GameObject> player_DeckCardList, enemy_DeckCardList;
 
     //possible target positions
-    private Transform playerDeck;
-    private Transform playerDiscard;
-    private Transform playerTrash;
+    private Transform playerDeck, enemyDeck;
+    private Transform playerDiscard, enemyDiscard;
+    private Transform playerTrash, enemyTrash;
 
-    private Transform playerTempDisplay;
+    private Transform playerTempDisplay, enemyTempDisplay;
 
-    private Transform playAreaTrans;
+    private Transform player_playAreaTrans, enemy_playAreaTrans;
 
     public GameObject TempObj;
 
     //list of x positions for the cards in the play area
-    public List<float> PlayAreaPositions;
-    //distance between the cards in the player's hand.
-    private float x;
+    public List<float> player_PlayAreaPositions, enemy_PlayAreaPositions;
+    //distance between the cards in the play area.
+    private float player_x, enemy_x;
     //the x value that the cards should not cross. The distance between cards is made smaller when this value is crossed
     private float boundaryValue;
 
     private float newCardPos, multiplier;
 
-    private int numCardsInPlay;
+    private int player_numCardsInPlay, enemy_numCardsInPlay;
 
     private HandManager handManagerScript;
     private StatsManager statManagerScript;
@@ -39,123 +39,178 @@ public class AreaManager : MonoBehaviour {
         playerDeck = GameObject.Find("Deck").GetComponent<Transform>();
         playerDiscard = GameObject.Find("Discard").GetComponent<Transform>();
         playerTrash = GameObject.Find("Trash").GetComponent<Transform>();
+        enemyDeck = GameObject.Find("EnemyDeck").GetComponent<Transform>();
+        enemyDiscard = GameObject.Find("EnemyDiscard").GetComponent<Transform>();
+        enemyTrash = GameObject.Find("EnemyTrashPile").GetComponent<Transform>();
 
         playerTempDisplay = GameObject.Find("PlayerTempDisplay").GetComponent<Transform>();
+        enemyTempDisplay = GameObject.Find("EnemyTempDisplay").GetComponent<Transform>();
 
-        playAreaTrans = GameObject.Find("PlayArea").GetComponent<Transform>();
+        player_playAreaTrans = GameObject.Find("PlayArea").GetComponent<Transform>();
+        enemy_playAreaTrans = GameObject.Find("EnemyPlayArea").GetComponent<Transform>();
 
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
-        numCardsInPlay = 0;
+        player_numCardsInPlay = 0;
+        enemy_numCardsInPlay = 0;
 
-        x = 4;
+        player_x = 4;
+        enemy_x = 4;
+
         boundaryValue = 5;
     }
 
-    public void DiscardCard(GameObject cardObj)
+    public void Call_DiscardCard(GameObject cardObj, string target)
+    {
+        if (target == "player")
+        {
+            DiscardCard(cardObj, target, ref player_DiscardCardList, playerDiscard);
+        }
+        else if(target == "enemy")
+        {
+            DiscardCard(cardObj, target, ref enemy_DiscardCardList, enemyDiscard);
+        }
+    }
+
+    private void DiscardCard(GameObject cardObj, string target, ref List<GameObject> discardList, Transform discardTrans)
     {
         //add 1 to the discard pool
-        statManagerScript.UpdateDiscard("player", 1);
+        statManagerScript.UpdateDiscard(target, 1);
 
         //add card to list of discards
-        cardList_Discard.Add(cardObj);
+        discardList.Add(cardObj);
 
         //card has now been played
         cardObj.GetComponent<CardMovement>().isPlayed = true;
 
         //move the card's position to discard pile
-        var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDiscard.position.x, playerDiscard.position.y, playerDiscard.position.z), Quaternion.Euler(90, 90, 0));
+        var obj = (GameObject)Instantiate(TempObj, new Vector3(discardTrans.position.x, discardTrans.position.y, discardTrans.position.z), Quaternion.Euler(90, 90, 0));
         cardObj.GetComponent<CardMovement>()._targetTransform = obj.transform;
 
         //arrange cards in hand
-        handManagerScript.SetCardPositionsInHand();
-        handManagerScript.UpdateCardPositionsInHand();
+        handManagerScript.Call_SetPositionsInHand(target);
+        handManagerScript.Call_UpdateCardPositionsInHand(target);
     }
 
-    public void TakeDamage(GameObject cardObj)
+    public void Call_TakeDamage(GameObject cardObj, string target)
+    {
+        if(target == "player")
+        {
+            TakeDamage(cardObj, target, ref player_TrashCardList, playerTempDisplay, playerTrash);
+        }
+        else if(target == "enemy")
+        {
+            TakeDamage(cardObj, target, ref enemy_TrashCardList, enemyTempDisplay, enemyTrash);
+        }
+    }
+
+    private void TakeDamage(GameObject cardObj, string target, ref List<GameObject> trashList, Transform tempDisplay, Transform trashTrans)
     {
         //add card to list of trashed cards
-        cardList_Trash.Add(cardObj);
+        trashList.Add(cardObj);
 
         //subtract from total cards
-        statManagerScript.UpdateTotalCards("player", -1);
-        statManagerScript.UpdateCardsInDeck("player", -1);
+        statManagerScript.UpdateTotalCards(target, -1);
+        statManagerScript.UpdateCardsInDeck(target, -1);
 
         //add card to list of trashed cards
-        cardList_Trash.Add(cardObj);
+        trashList.Add(cardObj);
 
         //card has now been played
-        cardList_Trash[cardList_Trash.Count - 1].GetComponent<CardMovement>().isPlayed = true;
+        trashList[trashList.Count - 1].GetComponent<CardMovement>().isPlayed = true;
 
-        StartCoroutine(TempDisplay(cardObj));
+        StartCoroutine(TempDisplay(cardObj, tempDisplay, trashTrans, target));
     }
 
-    IEnumerator TempDisplay(GameObject card)
+    IEnumerator TempDisplay(GameObject card, Transform tempDisplay, Transform trashTrans, string target)
     {
         //change the card's order in layer
         card.GetComponent<CardMovement>().ChangeOrder(100);
 
         //move the card's position to player's temp display
-        var obj = (GameObject)Instantiate(TempObj, new Vector3(playerTempDisplay.position.x, playerTempDisplay.position.y, playerTempDisplay.position.z), Quaternion.Euler(90, 0, 0));
+        var obj = (GameObject)Instantiate(TempObj, new Vector3(tempDisplay.position.x, tempDisplay.position.y, tempDisplay.position.z), Quaternion.Euler(90, 0, 0));
         card.GetComponent<CardMovement>()._targetTransform = obj.transform;
 
         yield return new WaitForSecondsRealtime(1);
 
         //move the card's position to player's trash pile
-        obj = (GameObject)Instantiate(TempObj, new Vector3(playerTrash.position.x, playerTrash.position.y, playerTrash.position.z), Quaternion.Euler(90, 90, 0));
+        obj = (GameObject)Instantiate(TempObj, new Vector3(trashTrans.position.x, trashTrans.position.y, trashTrans.position.z), Quaternion.Euler(90, 90, 0));
         card.GetComponent<CardMovement>()._targetTransform = obj.transform;       
 
         //damage player
-        statManagerScript.UpdateHealth("player", -1);
+        statManagerScript.UpdateHealth(target, -1);
         //check if burnt card was a Sigil card
         if (card.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
         {
-            statManagerScript.UpdateSigils("player", -1);
+            statManagerScript.UpdateSigils(target, -1);
         }
 
         yield return new WaitForSecondsRealtime(0.5f);
         card.GetComponent<CardMovement>().ChangeOrder(15);
     }
 
-    public void TrashCard(GameObject cardObj)
+    public void Call_TrashCard(GameObject cardObj, string target)
+    {
+        if(target == "player")
+        {
+            TrashCard(cardObj, target, ref player_TrashCardList, playerTrash);
+        }
+        else if(target == "enemy")
+        {
+            TrashCard(cardObj, target, ref enemy_TrashCardList, enemyTrash);
+        }
+    }
+
+    public void TrashCard(GameObject cardObj, string target, ref List<GameObject> trashList, Transform trashTrans)
     {
         //add 1 to the burn pool
-        statManagerScript.UpdateBurn("player", 1);
+        statManagerScript.UpdateBurn(target, 1);
 
         //subtract from total cards
-        statManagerScript.UpdateTotalCards("player", -1);
+        statManagerScript.UpdateTotalCards(target, -1);
 
         //add card to list of trashed cards
-        cardList_Trash.Add(cardObj);
+        trashList.Add(cardObj);
 
         //card has now been played
-        cardList_Trash[cardList_Trash.Count - 1].GetComponent<CardMovement>().isPlayed = true;
+        trashList[trashList.Count - 1].GetComponent<CardMovement>().isPlayed = true;
 
         //move the card's position to trash pile
-        var obj = (GameObject)Instantiate(TempObj, new Vector3(playerTrash.position.x, playerTrash.position.y, playerTrash.position.z), Quaternion.Euler(90, 90, 0));
+        var obj = (GameObject)Instantiate(TempObj, new Vector3(trashTrans.position.x, trashTrans.position.y, trashTrans.position.z), Quaternion.Euler(90, 90, 0));
         cardObj.GetComponent<CardMovement>()._targetTransform = obj.transform;
 
         //damage player
-        statManagerScript.UpdateHealth("player", -1);
+        statManagerScript.UpdateHealth(target, -1);
 
         //check if burnt card was a Sigil card
         if (cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
         {
-            statManagerScript.UpdateSigils("player", -1);
+            statManagerScript.UpdateSigils(target, -1);
         }
 
         //arrange cards in hand
-        handManagerScript.SetCardPositionsInHand();
-        handManagerScript.UpdateCardPositionsInHand();
+        handManagerScript.Call_SetPositionsInHand(target);
+        handManagerScript.Call_UpdateCardPositionsInHand(target);
 
     }
 
-    public void PlayCard(GameObject cardObj)
+    public void Call_PlayCard(GameObject cardObj, string target)
     {
+        if (target == "player")
+        {
+            PlayCard(cardObj, ref player_numCardsInPlay, ref player_PlayAreaPositions, ref player_x, ref player_PlayCardList, "player", player_playAreaTrans);
+        }
+        else if (target == "enemy")
+        {
+            PlayCard(cardObj, ref enemy_numCardsInPlay, ref enemy_PlayAreaPositions, ref enemy_x, ref enemy_PlayCardList, "enemy", enemy_playAreaTrans);
+        }
+    }
 
+    private void PlayCard(GameObject cardObj, ref int numCardsInPlay, ref List<float> playAreaPositions, ref float x, ref List<GameObject> playList, string target, Transform playAreaTrans)
+    {
         numCardsInPlay++;
-        PlayAreaPositions.Add(0f);
+        playAreaPositions.Add(0f);
         newCardPos = 0;
         //check if number of cards is odd or even
         if (numCardsInPlay > 1)
@@ -177,75 +232,98 @@ public class AreaManager : MonoBehaviour {
             for (int i = 0; i < numCardsInPlay; i++)
             {
                 newCardPos = multiplier * x;
-                PlayAreaPositions[i] = newCardPos;
+                playAreaPositions[i] = newCardPos;
                 multiplier -= 1f;
             }
         }
         else
         {
-            PlayAreaPositions[0] = 0;
+            playAreaPositions[0] = 0;
         }
 
         //add the card to list
-        cardList_Play.Add(cardObj);
+        playList.Add(cardObj);
 
         //card has now been played
-        cardList_Play[cardList_Play.Count - 1].GetComponent<CardMovement>().isPlayed = true;
+        playList[playList.Count - 1].GetComponent<CardMovement>().isPlayed = true;
 
         //assign positions to cards
-        for (int i = 0; i < cardList_Play.Count; i++)
+        for (int i = 0; i < playList.Count; i++)
         {
-            var obj = (GameObject)Instantiate(TempObj, new Vector3(PlayAreaPositions[i], playAreaTrans.position.y, playAreaTrans.position.z), Quaternion.Euler(90, 0, 0));
+            var obj = (GameObject)Instantiate(TempObj, new Vector3(playAreaPositions[i], playAreaTrans.position.y, playAreaTrans.position.z), Quaternion.Euler(90, 0, 0));
 
-            cardList_Play[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
+            playList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
 
         }
 
-        handManagerScript.SetCardPositionsInHand();
-        handManagerScript.UpdateCardPositionsInHand();
-     
- 
+        handManagerScript.Call_SetPositionsInHand(target);
+        handManagerScript.Call_UpdateCardPositionsInHand(target);
+
+
     }
 
-    public void DiscardPlayArea()
+    public void Call_DiscardPlayArea(string target)
+    {
+        if(target == "player")
+        {
+            DiscardPlayArea(ref player_numCardsInPlay, ref player_PlayCardList, ref player_DiscardCardList, playerDiscard);
+        }
+        else if(target == "enemy")
+        {
+            DiscardPlayArea(ref enemy_numCardsInPlay, ref enemy_PlayCardList, ref enemy_DiscardCardList, enemyDiscard);
+        }
+    }
+
+    private void DiscardPlayArea(ref int numCardsInPlay, ref List<GameObject> playList, ref List<GameObject> discardList, Transform discardTrans)
     {
         //check if there are cards present in the play area
         if (numCardsInPlay > 0)
         {
             //loop through play area list and add to discard list
-            for (int i = 0; i < cardList_Play.Count; i++)
+            for (int i = 0; i < playList.Count; i++)
             {
                 //disable burn halos
-                cardList_Play[i].transform.Find("BurnBorder").GetComponent<SpriteRenderer>().enabled = false;
+                playList[i].transform.Find("BurnBorder").GetComponent<SpriteRenderer>().enabled = false;
 
-                cardList_Discard.Add(cardList_Play[i]);
+                discardList.Add(playList[i]);
 
                 //change target position of each card to the discard pile
-                var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDiscard.position.x, playerDiscard.position.y, playerDiscard.position.z), Quaternion.Euler(90, 90, 0));
-                cardList_Play[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
+                var obj = (GameObject)Instantiate(TempObj, new Vector3(discardTrans.position.x, discardTrans.position.y, discardTrans.position.z), Quaternion.Euler(90, 90, 0));
+                playList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
             }
             //clear play list
-            cardList_Play.Clear();
+            playList.Clear();
             numCardsInPlay = 0;
         }
     }
 
-    public void RenewDeck()
+    public void Call_RenewDeck(string target)
+    {
+        if(target == "player")
+        {
+            RenewDeck(ref player_DiscardCardList, playerDeck, ref player_DeckCardList);
+        }else if(target == "enemy")
+        {
+            RenewDeck(ref enemy_DiscardCardList, enemyDeck, ref enemy_DeckCardList);
+        }
+    }
+
+    private void RenewDeck(ref List<GameObject> discardList, Transform deckTrans, ref List<GameObject> deckList)
     {
         //check if there are cards present in the discard pile
-        if (cardList_Discard.Count > 0)
+        if (discardList.Count > 0)
         {
             //loop through play area list and add to deck list
-            for (int i = 0; i < cardList_Discard.Count; i++)
+            for (int i = 0; i < discardList.Count; i++)
             {
-                cardList_Deck.Add(cardList_Discard[i]);
+                deckList.Add(discardList[i]);
 
                 //change target position of each card to the deck
-                var obj = (GameObject)Instantiate(TempObj, new Vector3(playerDeck.position.x, playerDeck.position.y, playerDeck.position.z), Quaternion.Euler(90, 0, 0));
-                cardList_Discard[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
+                var obj = (GameObject)Instantiate(TempObj, new Vector3(deckTrans.position.x, deckTrans.position.y, deckTrans.position.z), Quaternion.Euler(90, 0, 0));
+                discardList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
             }
             //clear play list
-            cardList_Discard.Clear();
+            discardList.Clear();
         }
     }
 

@@ -5,78 +5,26 @@ using UnityEngine;
 public class Spider : MonoBehaviour {
 
     private List<GameObject> spiderHand = new List<GameObject>();
-   // private List<GameObject> spiderDeck = new List<GameObject>();
 
-    //private DeckManager spiderDeck;
-    //private EnemyHand spiderHand;
-    //[SerializeField]
-    private GameObject discardZone;
-    [SerializeField]
-    private GameObject deckZone;
-    [SerializeField]
-    private GameObject board;
-
-    [SerializeField]
-    private List<GameObject> deck = new List<GameObject>();
-    private List<GameObject> inHand = new List<GameObject>();
-    private List<GameObject> onBoard = new List<GameObject>( new GameObject[6]);
-
-    //Check Phase
-    bool isReaction = false;
-
-
-    int totalDamage = 0;
-
-    private GameObject[] clearList;
-
-    private EnemyAreaManager enemyAreaManagerScript;
-    private EnemyHandManager enemyHandManagerScript;
+    private AreaManager areaManagerScript;
+    private HandManager handManagerScript;
     private StatsManager statsManagerScript;
     private GameManager gameManagerScript;
 
     private int upperBound;
     private void Start()
     {
-        enemyAreaManagerScript = GameObject.Find("GameManager").GetComponent<EnemyAreaManager>();
-        enemyHandManagerScript = GameObject.Find("GameManager").GetComponent<EnemyHandManager>();
+        areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
+        handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         statsManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
-        //spiderDeck = gameObject.GetComponent<DeckManager>();
-       // spiderHand = GetComponent<EnemyHand>();
+
     }
 
-    //Just to test functionality
     private void Update()
     {
-      /*  if(Input.GetKeyUp(KeyCode.A))
-        {
-            TurnStart();
-            
-        }
-
-        if(Input.GetKeyUp(KeyCode.E))
-        {
-            //spiderDeck.DrawCard(4);
-        }
-
-        if (Input.GetKeyUp(KeyCode.W))
-        {
-            EndTurn();
-        }*/
+ 
     }
-
-    //End turn , clear board and total damage/Defence
-   /* public void EndTurn()
-    {
-        clearList = GameObject.FindGameObjectsWithTag("EnemyCard");
-        foreach(var card in clearList)
-        {
-            if (card.GetComponent<EnemyCardMove>().state == 2)
-                card.GetComponent<EnemyCardMove>().SetTarget(discardZone.transform.position);
-        }
-
-        totalDamage = 0;
-    }*/
     
     //For reaction phase
     public IEnumerator Reaction()
@@ -162,7 +110,7 @@ public class Spider : MonoBehaviour {
             if (spiderHand[i].GetComponent<CardObj>().CardName == "Skitter")
             {
                 //check number of cards before Skitter
-                int numInHand_before = enemyHandManagerScript.numCardsInHand;
+                int numInHand_before = handManagerScript.numCardsInEnemyHand;
 
                 //play skitter card
                 spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
@@ -223,10 +171,10 @@ public class Spider : MonoBehaviour {
     {
         spiderHand.Clear();
         //create a list of the current cards existing in the enemy's hand
-        for (int i = 0; i < enemyHandManagerScript.enemyDeckList.Count; i++)
+        for (int i = 0; i < handManagerScript.enemyDeckList.Count; i++)
         {
-            if (enemyHandManagerScript.enemyDeckList[i].GetComponent<CardMovement>().isInHand)
-                spiderHand.Add(enemyHandManagerScript.enemyDeckList[i]);
+            if (handManagerScript.enemyDeckList[i].GetComponent<CardMovement>().isInHand)
+                spiderHand.Add(handManagerScript.enemyDeckList[i]);
         }
     }
 

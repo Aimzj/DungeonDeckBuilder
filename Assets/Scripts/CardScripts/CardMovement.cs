@@ -54,9 +54,6 @@ public class CardMovement : MonoBehaviour {
     private CardEffectManager cardEffectScript;
     private StatsManager statManagerScript;
 
-    private EnemyHandManager enemyHandManagerScript;
-    private EnemyAreaManager enemyAreaManagerScript;
-
     //sound
     private SoundManager soundScript;
 
@@ -73,9 +70,6 @@ public class CardMovement : MonoBehaviour {
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         cardEffectScript = GameObject.Find("GameManager").GetComponent<CardEffectManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
-
-        enemyAreaManagerScript = GameObject.Find("GameManager").GetComponent<EnemyAreaManager>();
-        enemyHandManagerScript = GameObject.Find("GameManager").GetComponent<EnemyHandManager>();
 
         soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
 
@@ -127,7 +121,7 @@ public class CardMovement : MonoBehaviour {
                     soundScript.PlaySound_PickUpCard();
 
                     isFollowing = true;
-                    handManagerScript.isHoldingCard = isFollowing;
+                    handManagerScript.isPlayerHoldingCard = isFollowing;
                     isHovering = false;
 
                     //change the order in layer of card and text
@@ -159,13 +153,13 @@ public class CardMovement : MonoBehaviour {
         soundScript.PlaySound_PlayCard();
 
         //remove the card from the Hand List
-        enemyHandManagerScript.RemoveCardFromHand(this.posInHand);
+        handManagerScript.Call_RemoveCardFromHand(this.posInHand, "enemy");
         posInHand = -1;
 
         isPlayed = true;
         isInHand = false;
 
-        enemyAreaManagerScript.PlayCard(this.gameObject);
+        areaManagerScript.Call_PlayCard(this.gameObject, "enemy");
 
         //play card with effects
        // cardEffectScript.PlayCard(this.gameObject, false);
@@ -177,7 +171,7 @@ public class CardMovement : MonoBehaviour {
             && !isFrozen)
         {
             isFollowing = false;
-            handManagerScript.isHoldingCard = isFollowing;
+            handManagerScript.isPlayerHoldingCard = isFollowing;
             isHovering = false;
 
             ChangeOrder(15);
@@ -201,13 +195,13 @@ public class CardMovement : MonoBehaviour {
                         soundScript.PlaySound_PlayCard();
 
                         //remove the card from the Hand List
-                        handManagerScript.RemoveCardFromHand(this.posInHand);
+                        handManagerScript.Call_RemoveCardFromHand(this.posInHand, "player");
                         posInHand = -1;
 
                         isPlayed = true;
                         isInHand = false;
 
-                        areaManagerScript.PlayCard(this.gameObject);
+                        areaManagerScript.Call_PlayCard(this.gameObject, "player");
 
                         //play card with effects
                         cardEffectScript.PlayCard(this.gameObject, false);
@@ -226,13 +220,13 @@ public class CardMovement : MonoBehaviour {
                         //play burn sound
 
                         //remove the card from the Hand List
-                        handManagerScript.RemoveCardFromHand(this.posInHand);
+                        handManagerScript.Call_RemoveCardFromHand(this.posInHand, "player");
                         posInHand = -1;
 
                         isPlayed = true;
                         isInHand = false;
 
-                        areaManagerScript.PlayCard(this.gameObject);
+                        areaManagerScript.Call_PlayCard(this.gameObject, "player");
 
                         //play card with burn effects
                         cardEffectScript.PlayCard(this.gameObject, true);
@@ -247,13 +241,13 @@ public class CardMovement : MonoBehaviour {
                     soundScript.PlaySound_PlayCard();
 
                     //remove the card from the Hand List
-                    handManagerScript.RemoveCardFromHand(this.posInHand);
+                    handManagerScript.Call_RemoveCardFromHand(this.posInHand,"player");
                     posInHand = -1;
 
                     isPlayed = true;
                     isInHand = false;
 
-                    areaManagerScript.DiscardCard(this.gameObject);
+                    areaManagerScript.Call_DiscardCard(this.gameObject, "player");
                 }
                 //TRASH
                 else if (areaSensorScript.isTrash)
@@ -262,13 +256,13 @@ public class CardMovement : MonoBehaviour {
                     soundScript.PlaySound_PlayCard();
 
                     //remove the card from the Hand List
-                    handManagerScript.RemoveCardFromHand(this.posInHand);
+                    handManagerScript.Call_RemoveCardFromHand(this.posInHand, "player");
                     posInHand = -1;
 
                     isPlayed = true;
                     isInHand = false;
 
-                    areaManagerScript.TrashCard(this.gameObject);
+                    areaManagerScript.Call_TrashCard(this.gameObject, "player");
                 }
             }
             else
@@ -290,7 +284,7 @@ public class CardMovement : MonoBehaviour {
         //player must not be holding the card already
         //card must be in the player's hand
 
-        if (!handManagerScript.isHoldingCard 
+        if (!handManagerScript.isPlayerHoldingCard 
             && isInHand
             && !isEnemyCard
             && !isFrozen)

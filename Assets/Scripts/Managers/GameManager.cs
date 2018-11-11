@@ -7,9 +7,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour {
     private AreaManager areaManagerScript;
-    private EnemyAreaManager enemyAreaManagerScript;
     private HandManager handManagerScript;
-    private EnemyHandManager enemyHandManagerScript;
     private Scene_Manager sceneManagerScript;
 
     private bool isActionPhase;
@@ -42,14 +40,9 @@ public class GameManager : MonoBehaviour {
 
     public void StartGame()
     {
-        print("hi");
-
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         sceneManagerScript = GameObject.Find("GameManager").GetComponent<Scene_Manager>();
-
-        enemyAreaManagerScript = GameObject.Find("GameManager").GetComponent<EnemyAreaManager>();
-        enemyHandManagerScript = GameObject.Find("GameManager").GetComponent<EnemyHandManager>();
 
         if (SceneManager.GetActiveScene().name == "BetaScene")
         {
@@ -58,7 +51,7 @@ public class GameManager : MonoBehaviour {
             statManagerScript.SetPhase("player", "action");
             statManagerScript.SetPhase("enemy", "waiting");
 
-            StartCoroutine(handManagerScript.DrawCards(2));
+            StartCoroutine(handManagerScript.DrawCards(2, "player"));
             StartCoroutine(Delay(3, "enemy"));
         }
 
@@ -76,9 +69,9 @@ public class GameManager : MonoBehaviour {
     {
         yield return new WaitForSecondsRealtime(1);
         if(target=="player")
-            StartCoroutine(handManagerScript.DrawCards(numCards));
+            StartCoroutine(handManagerScript.DrawCards(numCards,"player"));
         else if(target=="enemy")
-            StartCoroutine(enemyHandManagerScript.DrawCards(numCards));
+            StartCoroutine(handManagerScript.DrawCards(numCards, "enemy"));
     }
 
     //called by the Enemy when they are finished playing cards
@@ -119,11 +112,11 @@ public class GameManager : MonoBehaviour {
         statManagerScript.ClearAttack();
         statManagerScript.ClearDefense();
         //play areas cleared after enemy reacts
-        areaManagerScript.DiscardPlayArea();
-        enemyAreaManagerScript.DiscardPlayArea();
+        areaManagerScript.Call_DiscardPlayArea("player");
+        areaManagerScript.Call_DiscardPlayArea("enemy");
 
         //enemy draws 1 card
-        StartCoroutine(enemyHandManagerScript.DrawCards(1));
+        StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
         //end of enemy's turn
 
         StartCoroutine(DisplayPhase("Player's Turn"));
@@ -155,11 +148,11 @@ public class GameManager : MonoBehaviour {
         statManagerScript.ClearAttack();
         statManagerScript.ClearDefense();
         //play areas cleared after enemy reacts
-        areaManagerScript.DiscardPlayArea();
-        enemyAreaManagerScript.DiscardPlayArea();
+        areaManagerScript.Call_DiscardPlayArea("player");
+        areaManagerScript.Call_DiscardPlayArea("enemy");
 
         //player draws 1 card
-        StartCoroutine(handManagerScript.DrawCards(1));
+        StartCoroutine(handManagerScript.DrawCards(1, "player"));
         //END OF PLAYER TURN
 
         StartCoroutine(DisplayPhase("Enemy's Turn"));
@@ -212,12 +205,12 @@ public class GameManager : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            areaManagerScript.DiscardPlayArea();
+            areaManagerScript.Call_DiscardPlayArea("player");
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            areaManagerScript.RenewDeck();
+            areaManagerScript.Call_RenewDeck("player");
         }
     
     }
