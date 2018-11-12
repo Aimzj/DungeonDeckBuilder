@@ -216,7 +216,7 @@ public class Spider : MonoBehaviour {
             print("DONE WITH ENEMY ACTION");
             gameManagerScript.EndEnemyTurn();
         }*/
-
+        
     }
 
     private void UpdateEnemyHand()
