@@ -15,37 +15,11 @@ public class CardObj : MonoBehaviour {
     public int Defense;
 
     public int SigilNum;
-
-    public int IsOnArrival;
-    public int OA_IsChoice;
-    public int OA_NumDeckDrawTop;
-    public int OA_TempDefenseIncrease;
-
-    public int IsUndying;
-    public int IsStack;
-    public int IsUntapped;
+    public int Kindling;
 
     public string DiscardEffect;
-    public int DE_NumDeckDrawRandom;
-    public int DE_NumFree;
-    public int DE_IsHighestValAttack;
-    public int DE_NumPoisons;
-    public int DE_NumDiscardDrawChoice;
-    public int DE_NumDeckDrawTop;
-    public int DE_AddAttack;
-    public int DE_SelectDiscardAddAttack;
 
     public string BurnEffect;
-    public int BE_NumDeckDrawChoice;
-    public int BE_RegainSigil;
-    public int BE_NumWoundsDiscard;
-    public int BE_NumPoisons;
-    public int BE_NumDeckDrawTop;
-    public int BE_IsOption;
-    public int BE_AddDefense;
-    public int BE_DrawAttackValOfBurnt;
-    public int BE_HasReaction;
-    public int BE_DrawDefenseValOfBurnt;
 
     public string Image_Name;
     public int NumInDeck;

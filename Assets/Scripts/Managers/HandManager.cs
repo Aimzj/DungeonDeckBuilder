@@ -324,22 +324,22 @@ public class HandManager : MonoBehaviour {
         }*/
     }
 
-   /* public IEnumerator TakeDamage(int value)
+    public IEnumerator Call_TakeDamage(int value, string target)
     {
         int chosenIndex;
-        List<GameObject> tempDeckPileList= new List<GameObject>();
+        List<GameObject> tempDeckPileList = new List<GameObject>();
         //create a new list that contains only the cards in the deck pile
         //loop through all cards
-        for(int i= 0; i< playerDeckList.Count; i++)
+        for (int i = 0; i < playerDeckList.Count; i++)
         {
             //if the card is not being held and has not been played (in the deck pile)
-            if(!playerDeckList[i].GetComponent<CardMovement>().isInHand
+            if (!playerDeckList[i].GetComponent<CardMovement>().isInHand
                 && !playerDeckList[i].GetComponent<CardMovement>().isPlayed)
             {
                 tempDeckPileList.Add(playerDeckList[i]);
             }
         }
-        
+
         //loop through deck and randomly burn cards
         for (int i = 0; i < value; i++)
         {
@@ -362,7 +362,13 @@ public class HandManager : MonoBehaviour {
             yield return new WaitForSecondsRealtime(1.1f);
 
         }
-    }*/
+
+    }
+
+    private void TakeDamage(int value)
+    {
+        
+    }
 
         //called by the area manager
     public void Call_SetPositionsInHand(string target)
