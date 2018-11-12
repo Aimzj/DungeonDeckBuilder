@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour {
 
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
-         spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
+         //spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
         nagaScript = GameObject.Find("GameManager").GetComponent<Naga>(); ;
     }
 
@@ -181,7 +181,8 @@ public class GameManager : MonoBehaviour {
     {
         yield return new WaitForSeconds(3f);
         //ENEMY ACTS      
-        StartCoroutine(spiderScript.Action());
+        StartCoroutine(nagaScript.Action());
+        //StartCoroutine(spiderScript.Action());
     }
 
     //called when the player CLICKS the button 
@@ -197,7 +198,8 @@ public class GameManager : MonoBehaviour {
             //ENEMY REACTS
             statManagerScript.SetPhase("player", "waiting");
             statManagerScript.SetPhase("enemy", "reaction");
-            StartCoroutine(spiderScript.Reaction());
+            StartCoroutine(nagaScript.Reaction());
+            //StartCoroutine(spiderScript.Reaction());
         }
         
     

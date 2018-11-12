@@ -47,7 +47,8 @@ public class Naga : MonoBehaviour {
 
     public IEnumerator Reaction()
     {
-        HP = statsManagerScript.enemyHealth;
+        print("START ENEMY REACTION");
+        HP = statsManagerScript.numHealth_enemy;
         UpdateEnemyHand();
         for (int i = NagaHand.Count -1; i >= 0; i--)
         {
@@ -103,27 +104,26 @@ public class Naga : MonoBehaviour {
                 }
             }
         }
+
+        print("DONE WITH ENEMY REACTION");
+        gameManagerScript.EndEnemyReact();
     }
 
+
+
+  
 
 
     public IEnumerator Action()
     {
+        print("ENEMY ACTION");
         UpdateEnemyHand();
-        actionDiscard();
-        yield return new WaitForSecondsRealtime(1);
-
-    }
-
-
-    IEnumerator actionDiscard()
-    {
-        HP = statsManagerScript.enemyHealth;
+        HP = statsManagerScript.numHealth_enemy;
         UpdateEnemyHand();
         for (int i = 0; i <= NagaHand.Count - 1; i++)
         {
 
-            if (numEldritchOath > 0)
+            if (numEldritchOath > 0 && NagaHand.Count >= 2)
             {
                 for (int x = 0; x <= NagaHand.Count - 1; x++)
                 {
@@ -143,11 +143,13 @@ public class Naga : MonoBehaviour {
                 }
 
             }
-            else if (numCrushBlow > 0 && NagaHand.Count >= 2)
+            else if (numCrushBlow > 0)
             {
-
-
-                if (NagaHand.Count >= 2)
+                NagaHand[i].GetComponent<CardMovement>().PlayEnemyCard();
+                statsManagerScript.UpdateAttack("enemy", NagaHand[i].GetComponent<CardObj>().Attack);
+                numCrushBlow--;
+                yield return new WaitForSecondsRealtime(1);
+                /*if (NagaHand.Count >= 2)
                 {
                     NagaHand[i].GetComponent<CardMovement>().PlayEnemyCard();
                     statsManagerScript.UpdateAttack("enemy", NagaHand[i].GetComponent<CardObj>().Attack);
@@ -155,7 +157,7 @@ public class Naga : MonoBehaviour {
 
 
                     //playcard
-                    numCrushBlow--;
+                  
                     for (int k = 0; k <= NagaHand.Count - 1; k++)
                     {
 
@@ -179,6 +181,7 @@ public class Naga : MonoBehaviour {
                             if (NagaHand[k].GetComponent<CardObj>().CardName == "Call of the Deep")
                             {
                                 areaManagerScript.enemy_DiscardCardList.Add(NagaHand[k]);
+                                areaManagerScript.Call_DiscardCard(NagaHand[k], "player");
                                 NagaHand.RemoveAt(k);
                                 k = NagaHand.Count - 1;
                                 print("DISCARD");
@@ -192,6 +195,7 @@ public class Naga : MonoBehaviour {
                             if (NagaHand[k].GetComponent<CardObj>().CardName == "Crushing Blow")
                             {
                                 areaManagerScript.enemy_DiscardCardList.Add(NagaHand[k]);
+                                areaManagerScript.Call_DiscardCard(NagaHand[k], "player");
                                 NagaHand.RemoveAt(k);
                                 k = NagaHand.Count - 1;
                                 print("DISCARD");
@@ -200,12 +204,16 @@ public class Naga : MonoBehaviour {
                         }
                     }
 
-                }
+                }*/
                 i = 0;
             }
-
+            print("END ENEMY ACTION");
+            gameManagerScript.EndEnemyTurn();
         }
+       
     }
+
+
 
     //CHANGE TO USE NESTED FOR LOOPS
     public void Discard(int Cost, int index)
@@ -264,18 +272,19 @@ public class Naga : MonoBehaviour {
 
 
         }
-
-        NagaHand[index].GetComponent<CardMovement>().PlayEnemyCard();
+      
 
     }
 
 
     private void UpdateEnemyHand()
     {
+        print("GETCARD");
         NagaHand.Clear();
         //create a list of the current cards existing in the enemy's hand
         for (int i = 0; i < handManagerScript.enemyDeckList.Count; i++)
         {
+           
             if (handManagerScript.enemyDeckList[i].GetComponent<CardMovement>().isInHand)
                 NagaHand.Add(handManagerScript.enemyDeckList[i]);
                 
@@ -299,7 +308,7 @@ public class Naga : MonoBehaviour {
                 numCrushBlow++;
 
             }
-            else if (NagaHand[i].GetComponent<CardObj>().CardName == "Serpent Scale")
+            else if (NagaHand[i].GetComponent<CardObj>().CardName == "Serpent's Scale")
             {
                 numScale++;
             }
