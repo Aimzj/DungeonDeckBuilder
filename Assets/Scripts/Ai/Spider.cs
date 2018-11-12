@@ -90,7 +90,8 @@ public class Spider : MonoBehaviour {
     //played as it arrives in enemy's hand
     public void Lethargy()
     {
-       // upperBound--;
+        // upperBound--;
+        print("enemy phase: " + statsManagerScript.phase_enemy);
         if(statsManagerScript.phase_enemy=="reaction")
             statsManagerScript.UpdateDefense("enemy", 1);
 

@@ -169,7 +169,7 @@ public class HandManager : MonoBehaviour {
                 }
                 else
                 {
-                    RemakeDeck("player",ref areaManagerScript.player_DeckCardList,ref playerDeckList, playerDeck);
+                    RemakeDeck("player",ref areaManagerScript.player_DiscardCardList,ref playerDeckList, playerDeck);
                     yield return new WaitForSecondsRealtime(0.3f);
                     i--;
                 }
@@ -182,7 +182,7 @@ public class HandManager : MonoBehaviour {
                 }
                 else
                 {
-                    RemakeDeck("enemy", ref areaManagerScript.enemy_DeckCardList, ref enemyDeckList, enemyDeck);
+                    RemakeDeck("enemy", ref areaManagerScript.enemy_DiscardCardList, ref enemyDeckList, enemyDeck);
                     yield return new WaitForSecondsRealtime(0.3f);
                     i--;
                 }

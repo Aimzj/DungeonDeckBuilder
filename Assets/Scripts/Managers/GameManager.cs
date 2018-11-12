@@ -157,6 +157,8 @@ public class GameManager : MonoBehaviour {
 
         StartCoroutine(DisplayPhase("Enemy's Turn"));
         //enemy draws 3
+        statManagerScript.SetPhase("player", "waiting");
+        statManagerScript.SetPhase("enemy", "action");
         StartCoroutine(Delay(3, "enemy"));
 
 
@@ -176,9 +178,7 @@ public class GameManager : MonoBehaviour {
     IEnumerator EnemyWaitToAct()
     {
         yield return new WaitForSeconds(3f);
-        //ENEMY ACTS
-        statManagerScript.SetPhase("player", "waiting");
-        statManagerScript.SetPhase("enemy", "action");
+        //ENEMY ACTS      
         StartCoroutine(spiderScript.Action());
     }
 
