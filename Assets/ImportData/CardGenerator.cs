@@ -45,7 +45,7 @@ public class CardGenerator : MonoBehaviour {
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
-        InitialiseLevel(1);
+        InitialiseLevel(2);
        
     }
 
@@ -161,6 +161,11 @@ public class CardGenerator : MonoBehaviour {
                         cardObj.GetComponent<CardMovement>().isEnemyCard = false;
                         PoisonDeck.Add(cardObj);
                     }
+                }
+                else
+                {
+                    cardObj.transform.position = new Vector3(1000,1000,1000);
+                    cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
                 }
             }
 

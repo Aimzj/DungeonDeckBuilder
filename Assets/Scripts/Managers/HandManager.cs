@@ -89,9 +89,9 @@ public class HandManager : MonoBehaviour {
     //the enemyDeckList changes according to the level - spider or level 1 and Naga for level 2
     public void InitialiseCards(int level)
     {
-        if (level < 2)
+        playerDeckList = cardGenScript.PlayerDeck;
+        if (level == 1)
         {
-            playerDeckList = cardGenScript.PlayerDeck;
             enemyDeckList = cardGenScript.SpiderDeck;
         } else if (level == 2)
         {
