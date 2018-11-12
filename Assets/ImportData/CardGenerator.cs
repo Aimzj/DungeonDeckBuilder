@@ -72,6 +72,7 @@ public class CardGenerator : MonoBehaviour {
             //set stats
             if (cardScript.CardType == "player_starting")
             {
+            
                 if (numSigils > 0)
                     statManagerScript.UpdateSigils("player", numSigils);
                 player_health += cardScript.SigilNum * 5;
@@ -80,6 +81,7 @@ public class CardGenerator : MonoBehaviour {
             else if (level == 1
                 && cardScript.CardType == "spider")
             {
+            
                 if (numSigils > 0)
                     statManagerScript.UpdateSigils("enemy", numSigils);
                 enemy_health += cardScript.SigilNum * 5;
@@ -88,6 +90,7 @@ public class CardGenerator : MonoBehaviour {
             else if (level == 2
                 && cardScript.CardType == "naga")
             {
+               
                 if (numSigils > 0)
                     statManagerScript.UpdateSigils("enemy", numSigils);
                 enemy_health += cardScript.SigilNum * 5;

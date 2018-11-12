@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
     private StatsManager statManagerScript;
 
     private Spider spiderScript;
+    private Naga nagaScript;
 
     private TextMeshPro gamePhaseText;
     private GameObject gamePhaseDisplay;
@@ -35,7 +36,8 @@ public class GameManager : MonoBehaviour {
 
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
-        spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
+         spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
+        nagaScript = GameObject.Find("GameManager").GetComponent<Naga>(); ;
     }
 
     public void StartGame()

@@ -3283,7 +3283,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 39.4, y: -0.9}
+  m_AnchoredPosition: {x: -37.9, y: -0.9}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &891586654
@@ -4025,7 +4025,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 282.91, y: -2.6059}
+  m_AnchoredPosition: {x: -280, y: -2.6059}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1114093729
@@ -9378,12 +9378,8 @@ MonoBehaviour:
   PlayerDeck: []
   SpiderDeck: []
   NagaDeck: []
-  GemDeck: []
-  DragonDeck: []
   PoisonDeck: []
-  BurnDeck: []
   WoundDeck: []
-  HexDeck: []
 --- !u!114 &2134202305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9447,7 +9443,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2134202296}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1fb0dd89c425c94c9d8a3b3a24196db, type: 3}
   m_Name: 
@@ -9466,7 +9462,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2134202296}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 628158ec921e1614f8b3046212a3857e, type: 3}
   m_Name: 
