@@ -324,28 +324,27 @@ public class HandManager : MonoBehaviour {
         }*/
     }
 
-    public IEnumerator Call_TakeDamage(int value, string target)
+   /* public IEnumerator Call_TakeDamage(int value, string target)
     {
         int chosenIndex;
         List<GameObject> tempDeckPileList = new List<GameObject>();
-        //create a new list that contains only the cards in the deck pile
-        //loop through all cards
-        for (int i = 0; i < playerDeckList.Count; i++)
+
+        if (target == "player")
         {
-            //if the card is not being held and has not been played (in the deck pile)
-            if (!playerDeckList[i].GetComponent<CardMovement>().isInHand
-                && !playerDeckList[i].GetComponent<CardMovement>().isPlayed)
-            {
-                tempDeckPileList.Add(playerDeckList[i]);
-            }
+            InitialiseDeck(ref tempDeckPileList, playerDeckList);
         }
+        else if(target == "enemy")
+        {
+            InitialiseDeck(ref tempDeckPileList, playerDeckList);
+        }
+        
 
         //loop through deck and randomly burn cards
         for (int i = 0; i < value; i++)
         {
             //play burn sound 
 
-            //check that there are cards in the to burn
+            //check that there are cards in the deck to burn
             if (tempDeckPileList.Count > 0)
             {
                 chosenIndex = Random.Range(0, tempDeckPileList.Count);
@@ -365,10 +364,25 @@ public class HandManager : MonoBehaviour {
 
     }
 
+    private void InitialiseDeck(ref List<GameObject> tempDeckList, List<GameObject> deckList)
+    {
+        //create a new list that contains only the cards in the deck pile
+        //loop through all cards
+        for (int i = 0; i < deckList.Count; i++)
+        {
+            //if the card is not being held and has not been played (in the deck pile)
+            if (!deckList[i].GetComponent<CardMovement>().isInHand
+                && !deckList[i].GetComponent<CardMovement>().isPlayed)
+            {
+                tempDeckList.Add(deckList[i]);
+            }
+        }
+    }
+
     private void TakeDamage(int value)
     {
         
-    }
+    }*/
 
         //called by the area manager
     public void Call_SetPositionsInHand(string target)

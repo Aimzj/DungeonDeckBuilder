@@ -22,21 +22,18 @@ public class CardGenerator : MonoBehaviour {
     private StatsManager statManagerScript;
 
     public Sprite PlayerSprite_Front, PlayerSprite_Back, SpiderSprite_Front, SpiderSprite_Back;
-    
+
     //decks
-    public List<GameObject> 
+    public List<GameObject>
         //player deck
         PlayerDeck,
         //enemy decks
         SpiderDeck,
         NagaDeck,
-        GemDeck,
-        DragonDeck,
         //status effect decks
         PoisonDeck,
-        BurnDeck,
-        WoundDeck,
-        HexDeck;
+        WoundDeck;
+
 
     // Use this for initialization
     void Start () {
@@ -48,6 +45,13 @@ public class CardGenerator : MonoBehaviour {
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
+        InitialiseLevel(1);
+       
+    }
+
+
+    public void InitialiseLevel(int level)
+    {
         int player_health = 0;
         int player_cardsInDeck = 0;
 
@@ -55,7 +59,7 @@ public class CardGenerator : MonoBehaviour {
         int enemy_cardsInDeck = 0;
 
         //looping through all unique cards
-        for(int i = 1; i < numUniqueCards+1; i++)
+        for (int i = 1; i < numUniqueCards + 1; i++)
         {
             tempObj = (GameObject)Instantiate(Card, Vector3.zero, Quaternion.identity);
             //load data onto card
@@ -66,29 +70,38 @@ public class CardGenerator : MonoBehaviour {
             int numSigils = cardScript.SigilNum;
 
             //set stats
-            if(cardScript.CardType == "player_starting")
+            if (cardScript.CardType == "player_starting")
             {
-                if(numSigils>0)
+                if (numSigils > 0)
                     statManagerScript.UpdateSigils("player", numSigils);
                 player_health += cardScript.SigilNum * 5;
                 player_cardsInDeck += cardScript.NumInDeck;
             }
-            else if(cardScript.CardType == "spider")
+            else if (level == 1
+                && cardScript.CardType == "spider")
             {
-                if(numSigils>0)
+                if (numSigils > 0)
+                    statManagerScript.UpdateSigils("enemy", numSigils);
+                enemy_health += cardScript.SigilNum * 5;
+                enemy_cardsInDeck += cardScript.NumInDeck;
+            }
+            else if (level == 2
+                && cardScript.CardType == "naga")
+            {
+                if (numSigils > 0)
                     statManagerScript.UpdateSigils("enemy", numSigils);
                 enemy_health += cardScript.SigilNum * 5;
                 enemy_cardsInDeck += cardScript.NumInDeck;
             }
 
             //seperate cards into decks
-            for (int j=0; j<cardScript.NumInDeck; j++)
+            for (int j = 0; j < cardScript.NumInDeck; j++)
             {
                 cardObj = (GameObject)Instantiate(tempObj);
                 if (cardScript.CardType == "player_starting")
                 {
                     //check for Sigils
-                    if(numSigils>0)
+                    if (numSigils > 0)
                     {
                         //put a sigil on the card
                         cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
@@ -102,7 +115,8 @@ public class CardGenerator : MonoBehaviour {
                     cardObj.GetComponent<CardMovement>().isEnemyCard = false;
                     PlayerDeck.Add(cardObj);
                 }
-                else if(cardScript.CardType == "spider")
+                else if (level == 1
+                    && cardScript.CardType == "spider")
                 {
                     //check for Sigils
                     if (numSigils > 0)
@@ -111,7 +125,7 @@ public class CardGenerator : MonoBehaviour {
                         cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
                         numSigils--;
                     }
-                    
+
                     cardObj.transform.position = enemyDeckTrans.position;
                     cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
 
@@ -119,9 +133,27 @@ public class CardGenerator : MonoBehaviour {
                     cardObj.GetComponent<CardMovement>().isEnemyCard = true;
                     SpiderDeck.Add(cardObj);
                 }
-                else if(cardScript.CardType == "status")
+                else if(level==2
+                    && cardScript.CardType == "naga")
                 {
-                    if(cardScript.CardName == "Poison")
+                    //check for Sigils
+                    if (numSigils > 0)
+                    {
+                        //put a sigil on the card
+                        cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
+                        numSigils--;
+                    }
+
+                    cardObj.transform.position = enemyDeckTrans.position;
+                    cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+                    cardObj.GetComponent<SpriteRenderer>().sprite = SpiderSprite_Front;
+                    cardObj.GetComponent<CardMovement>().isEnemyCard = true;
+                    NagaDeck.Add(cardObj);
+                }
+                else if (cardScript.CardType == "status")
+                {
+                    if (cardScript.CardName == "Poison")
                     {
                         cardObj.transform.position = poisonDeckTrans.position;
                         cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
@@ -143,12 +175,11 @@ public class CardGenerator : MonoBehaviour {
         statManagerScript.SetTotalCards("enemy", enemy_cardsInDeck);
 
         //Initialise decks in their respective scripts
-        handManagerScript.InitialiseCards(1);
+        handManagerScript.InitialiseCards(level);
 
         //start the game
         gameManagerScript.StartGame();
     }
-
 
 
     public void LoadMyData(string cardReference)
