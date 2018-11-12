@@ -67,7 +67,7 @@ public class AreaSensor : MonoBehaviour {
             {
                 isFound = true;
 
-                if (handManagerScript.isHoldingCard)
+                if (handManagerScript.isPlayerHoldingCard)
                 {
                     playArea.GetComponent<SpriteRenderer>().color = playArea_StartColour;
                     burnArea.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0.35f, 0f);
@@ -92,7 +92,7 @@ public class AreaSensor : MonoBehaviour {
             {
                 isFound = true;
 
-                if (handManagerScript.isHoldingCard)
+                if (handManagerScript.isPlayerHoldingCard)
                 {
                     trashArea.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 0.5f);
                     cardIsPresent = true;
@@ -115,7 +115,7 @@ public class AreaSensor : MonoBehaviour {
             {
                 isFound = true;
 
-                if (handManagerScript.isHoldingCard)
+                if (handManagerScript.isPlayerHoldingCard)
                 {
                     discardArea.GetComponent<SpriteRenderer>().color = new Color(1, 1, 0, 0.5f);
                     cardIsPresent = true;
@@ -139,7 +139,7 @@ public class AreaSensor : MonoBehaviour {
 
                 isFound = true;
 
-                if (handManagerScript.isHoldingCard)
+                if (handManagerScript.isPlayerHoldingCard)
                 {
                     //need to check if the card has a burn value
 

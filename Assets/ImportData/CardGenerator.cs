@@ -17,7 +17,7 @@ public class CardGenerator : MonoBehaviour {
     private CardObj cardScript;
 
     private HandManager handManagerScript;
-    private EnemyHandManager enemyHandManagerScript;
+
     private GameManager gameManagerScript;
     private StatsManager statManagerScript;
 
@@ -47,7 +47,6 @@ public class CardGenerator : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
-        enemyHandManagerScript = GameObject.Find("GameManager").GetComponent<EnemyHandManager>();
 
         int player_health = 0;
         int player_cardsInDeck = 0;
@@ -67,7 +66,6 @@ public class CardGenerator : MonoBehaviour {
             int numSigils = cardScript.SigilNum;
 
             //set stats
-            
             if(cardScript.CardType == "player_starting")
             {
                 if(numSigils>0)
@@ -145,8 +143,7 @@ public class CardGenerator : MonoBehaviour {
         statManagerScript.SetTotalCards("enemy", enemy_cardsInDeck);
 
         //Initialise decks in their respective scripts
-        handManagerScript.InitialiseCards();
-        enemyHandManagerScript.InitialiseCards();
+        handManagerScript.InitialiseCards(1);
 
         //start the game
         gameManagerScript.StartGame();

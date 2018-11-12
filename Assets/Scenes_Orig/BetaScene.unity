@@ -5088,27 +5088,27 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4209731392266258, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 4209731392266258, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1.07
       objectReference: {fileID: 0}
     - target: {fileID: 4209731392266258, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.4
       objectReference: {fileID: 0}
     - target: {fileID: 4209731392266258, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4209731392266258, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4209731392266258, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4209731392266258, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
       propertyPath: m_LocalRotation.w
@@ -5120,15 +5120,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4209731392266258, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
       propertyPath: m_LocalScale.x
-      value: 1.17
+      value: 0.2226793
       objectReference: {fileID: 0}
     - target: {fileID: 4209731392266258, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
       propertyPath: m_LocalScale.y
-      value: 1.17
+      value: 0.2226793
       objectReference: {fileID: 0}
     - target: {fileID: 4209731392266258, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
       propertyPath: m_LocalScale.z
-      value: 1.17
+      value: 0.2226793
       objectReference: {fileID: 0}
     - target: {fileID: 198086061384069858, guid: a990e3ac1318b834488c784d851f42a9,
         type: 2}
@@ -5139,6 +5139,77 @@ Prefab:
         type: 2}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198706150799401992, guid: a990e3ac1318b834488c784d851f42a9,
+        type: 2}
+      propertyPath: simulationSpeed
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4209731392266258, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 198086061384069858, guid: a990e3ac1318b834488c784d851f42a9,
+        type: 2}
+      propertyPath: simulationSpeed
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4577187839491108, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
+      propertyPath: m_LocalScale.x
+      value: -0.5021932
+      objectReference: {fileID: 0}
+    - target: {fileID: 4577187839491108, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
+      propertyPath: m_LocalScale.y
+      value: -0.5021932
+      objectReference: {fileID: 0}
+    - target: {fileID: 4577187839491108, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
+      propertyPath: m_LocalScale.z
+      value: -0.5021932
+      objectReference: {fileID: 0}
+    - target: {fileID: 198706150799401992, guid: a990e3ac1318b834488c784d851f42a9,
+        type: 2}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198706150799401992, guid: a990e3ac1318b834488c784d851f42a9,
+        type: 2}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198706150799401992, guid: a990e3ac1318b834488c784d851f42a9,
+        type: 2}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198086061384069858, guid: a990e3ac1318b834488c784d851f42a9,
+        type: 2}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198086061384069858, guid: a990e3ac1318b834488c784d851f42a9,
+        type: 2}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.34599155
+      objectReference: {fileID: 0}
+    - target: {fileID: 198086061384069858, guid: a990e3ac1318b834488c784d851f42a9,
+        type: 2}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198086061384069858, guid: a990e3ac1318b834488c784d851f42a9,
+        type: 2}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 198086061384069858, guid: a990e3ac1318b834488c784d851f42a9,
+        type: 2}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 198086061384069858, guid: a990e3ac1318b834488c784d851f42a9,
+        type: 2}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a990e3ac1318b834488c784d851f42a9, type: 2}
@@ -9168,8 +9239,6 @@ GameObject:
   - component: {fileID: 2134202303}
   - component: {fileID: 2134202304}
   - component: {fileID: 2134202305}
-  - component: {fileID: 2134202307}
-  - component: {fileID: 2134202306}
   - component: {fileID: 2134202308}
   m_Layer: 0
   m_Name: GameManager
@@ -9192,8 +9261,13 @@ MonoBehaviour:
   CardObj: {fileID: 1194213479686936, guid: 7db14e0d90d630645abeef99acd35f71, type: 2}
   TempObj: {fileID: 1099375877924872, guid: 77fd7d81c8342e24d86401421403acb2, type: 2}
   playerDeckList: []
-  HandPositions: []
-  isHoldingCard: 0
+  enemyDeckList: []
+  Player_HandPositions: []
+  Enemy_HandPositions: []
+  numCardsInPlayerHand: 0
+  numCardsInEnemyHand: 0
+  isPlayerHoldingCard: 0
+  isEnemyHoldingCard: 0
   isExceedingHandSize: 0
 --- !u!224 &2134202298
 RectTransform:
@@ -9224,12 +9298,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c6ee0144e62e2148904ec8f7b941083, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardList_Play: []
-  cardList_Discard: []
-  cardList_Trash: []
-  cardList_Deck: []
+  player_PlayCardList: []
+  enemy_PlayCardList: []
+  player_DiscardCardList: []
+  enemy_DiscardCardList: []
+  player_TrashCardList: []
+  enemy_TrashCardList: []
+  player_DeckCardList: []
+  enemy_DeckCardList: []
   TempObj: {fileID: 1099375877924872, guid: 77fd7d81c8342e24d86401421403acb2, type: 2}
-  PlayAreaPositions: []
+  player_PlayAreaPositions: []
+  enemy_PlayAreaPositions: []
 --- !u!114 &2134202300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9361,43 +9440,6 @@ MonoBehaviour:
   numSigilsRemaining_enemy: 0
   phase_player: 
   phase_enemy: 
---- !u!114 &2134202306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2134202296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7f2f3f6e4a5fc241aa514caf3e627bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CardObj: {fileID: 1194213479686936, guid: 7db14e0d90d630645abeef99acd35f71, type: 2}
-  TempObj: {fileID: 1099375877924872, guid: 77fd7d81c8342e24d86401421403acb2, type: 2}
-  enemyDeckList: []
-  HandPositions: []
-  numCardsInHand: 0
-  soundScript: {fileID: 1581453868}
-  isExceedingHandSize: 0
-  cardGenScript: {fileID: 2134202304}
-  statManagerScript: {fileID: 2134202305}
---- !u!114 &2134202307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2134202296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8310d7aca4d5c964abee1048dfa97a28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyCardList_Play: []
-  enemyCardList_Discard: []
-  enemyCardList_Trash: []
-  enemyCardList_Deck: []
-  TempObj: {fileID: 1099375877924872, guid: 77fd7d81c8342e24d86401421403acb2, type: 2}
-  EnemyPlayAreaPositions: []
 --- !u!114 &2134202308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9409,6 +9451,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 628158ec921e1614f8b3046212a3857e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckZone: {fileID: 329649403}
-  board: {fileID: 1873317592}
-  deck: []
