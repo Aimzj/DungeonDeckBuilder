@@ -324,18 +324,19 @@ public class HandManager : MonoBehaviour {
         }*/
     }
 
-   /* public IEnumerator Call_TakeDamage(int value, string target)
+    public IEnumerator Call_TakeDamage(int value, string target)
     {
         int chosenIndex;
         List<GameObject> tempDeckPileList = new List<GameObject>();
+        List<GameObject> tempHandList = new List<GameObject>();
 
         if (target == "player")
         {
-            InitialiseDeck(ref tempDeckPileList, playerDeckList);
+            InitialiseDeck(ref tempDeckPileList,ref tempHandList, playerDeckList);
         }
         else if(target == "enemy")
         {
-            InitialiseDeck(ref tempDeckPileList, playerDeckList);
+            InitialiseDeck(ref tempDeckPileList, ref tempHandList, enemyDeckList);
         }
         
 
@@ -349,14 +350,42 @@ public class HandManager : MonoBehaviour {
             {
                 chosenIndex = Random.Range(0, tempDeckPileList.Count);
                 print("index: " + chosenIndex);
-                areaManagerScript.TakeDamage(tempDeckPileList[chosenIndex]);
+                if (target == "player")
+                    areaManagerScript.Call_TakeDamage(tempDeckPileList[chosenIndex], "player");
+                else if(target == "enemy")
+                    areaManagerScript.Call_TakeDamage(tempDeckPileList[chosenIndex], "enemy");
                 tempDeckPileList.RemoveAt(chosenIndex);
+            }
+            else if (tempHandList.Count > 0)
+            {
+                //check if there are cards in the player's hand
+                //burn them
+                chosenIndex = Random.Range(0, tempHandList.Count);
+                print("index: " + chosenIndex);
+                if (target == "player")
+                    areaManagerScript.Call_TakeDamage(tempHandList[chosenIndex], "player");
+                else if (target == "enemy")
+                    areaManagerScript.Call_TakeDamage(tempHandList[chosenIndex], "enemy");
+                tempHandList.RemoveAt(chosenIndex);
             }
             else
             {
-                RemakeDeck();
-                yield return new WaitForSecondsRealtime(0.2f);
-                StartCoroutine(TakeDamage(1));
+                //reshuffle the discard pile
+                if (target == "player")
+                {
+                    RemakeDeck(target, ref areaManagerScript.player_DiscardCardList, ref playerDeckList, playerDeck);
+                    yield return new WaitForSecondsRealtime(0.2f);
+                    InitialiseDeck(ref tempDeckPileList, ref tempHandList, playerDeckList);
+                    i--;
+                }
+                else if (target == "enemy")
+                {
+                    RemakeDeck(target, ref areaManagerScript.enemy_DiscardCardList, ref enemyDeckList, enemyDeck);
+                    yield return new WaitForSecondsRealtime(0.2f);
+                    InitialiseDeck(ref tempDeckPileList, ref tempHandList, enemyDeckList);
+                    i--;
+                }
+                
             }
             yield return new WaitForSecondsRealtime(1.1f);
 
@@ -364,9 +393,10 @@ public class HandManager : MonoBehaviour {
 
     }
 
-    private void InitialiseDeck(ref List<GameObject> tempDeckList, List<GameObject> deckList)
+    private void InitialiseDeck(ref List<GameObject> tempDeckList,ref List<GameObject> tempHandList, List<GameObject> deckList)
     {
         //create a new list that contains only the cards in the deck pile
+        //create a new list that contains only cards in the player's hand
         //loop through all cards
         for (int i = 0; i < deckList.Count; i++)
         {
@@ -376,13 +406,21 @@ public class HandManager : MonoBehaviour {
             {
                 tempDeckList.Add(deckList[i]);
             }
+
+            //if the card is being held and has not been played
+            if (deckList[i].GetComponent<CardMovement>().isInHand
+                && !deckList[i].GetComponent<CardMovement>().isPlayed)
+            {
+                tempHandList.Add(deckList[i]);
+            }
         }
+
     }
 
     private void TakeDamage(int value)
     {
         
-    }*/
+    }
 
         //called by the area manager
     public void Call_SetPositionsInHand(string target)

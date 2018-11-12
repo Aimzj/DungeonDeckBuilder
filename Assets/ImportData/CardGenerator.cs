@@ -9,7 +9,7 @@ public class CardGenerator : MonoBehaviour {
     //transforms of decks
     private Transform playerDeckTrans, enemyDeckTrans, poisonDeckTrans;
 
-    private int numUniqueCards=11;
+    private int numUniqueCards=20;
 
     public GameObject Card;
 
