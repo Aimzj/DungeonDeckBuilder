@@ -118,8 +118,7 @@ public class CardGenerator : MonoBehaviour {
                     cardObj.GetComponent<CardMovement>().isEnemyCard = false;
                     PlayerDeck.Add(cardObj);
                 }
-                else if (level == 1
-                    && cardScript.CardType == "spider")
+                else if (level == 1 && cardScript.CardType == "spider")
                 {
                     //check for Sigils
                     if (numSigils > 0)
@@ -136,8 +135,7 @@ public class CardGenerator : MonoBehaviour {
                     cardObj.GetComponent<CardMovement>().isEnemyCard = true;
                     SpiderDeck.Add(cardObj);
                 }
-                else if(level==2
-                    && cardScript.CardType == "naga")
+                else if(level==2 && cardScript.CardType.Contains("naga"))
                 {
                     //check for Sigils
                     if (numSigils > 0)
@@ -167,6 +165,7 @@ public class CardGenerator : MonoBehaviour {
                 }
                 else
                 {
+                    print(cardScript.CardName+ " :" + cardScript.CardType+" :" +level.ToString());
                     cardObj.transform.position = new Vector3(1000,1000,1000);
                     cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
                 }
