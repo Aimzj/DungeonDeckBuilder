@@ -225,7 +225,7 @@ public class EnemyHandManager : MonoBehaviour {
             count++;
         }
 
-        statManagerScript.SetTotalCards("enemy", enemyDeckList.Count);
+       // statManagerScript.SetTotalCards("enemy", enemyDeckList.Count);
         enemyAreaManagerScript.enemyCardList_Discard.Clear();
     }
 

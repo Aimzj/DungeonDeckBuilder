@@ -111,7 +111,7 @@ public class Spider : MonoBehaviour {
             if (spiderHand[i].GetComponent<CardObj>().CardName == "Skitter")
             {
                 //check number of cards before Skitter
-                int numInHand_before = handManagerScript.numCardsInEnemyHand;
+                int numInHand_before = handManagerScript.enemyHandlist.Count;
 
                 //play skitter card
                 spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();

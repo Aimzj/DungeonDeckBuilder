@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour {
     private TextMeshPro gamePhaseText;
     private GameObject gamePhaseDisplay;
 
+    private int level;
+
     // Use this for initialization
     void Start () {
 
@@ -36,12 +38,14 @@ public class GameManager : MonoBehaviour {
 
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
-         //spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
+        spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
         nagaScript = GameObject.Find("GameManager").GetComponent<Naga>(); ;
     }
 
-    public void StartGame()
+    public void StartGame(int lvl)
     {
+        level = lvl;
+
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         sceneManagerScript = GameObject.Find("GameManager").GetComponent<Scene_Manager>();
@@ -181,8 +185,11 @@ public class GameManager : MonoBehaviour {
     {
         yield return new WaitForSeconds(3f);
         //ENEMY ACTS      
-        StartCoroutine(nagaScript.Action());
-        //StartCoroutine(spiderScript.Action());
+        if(level==1)
+            StartCoroutine(spiderScript.Action());
+        else if(level==2)
+            StartCoroutine(nagaScript.Action());
+        
     }
 
     //called when the player CLICKS the button 
@@ -198,8 +205,11 @@ public class GameManager : MonoBehaviour {
             //ENEMY REACTS
             statManagerScript.SetPhase("player", "waiting");
             statManagerScript.SetPhase("enemy", "reaction");
-            StartCoroutine(nagaScript.Reaction());
-            //StartCoroutine(spiderScript.Reaction());
+            if(level==1)
+                StartCoroutine(spiderScript.Reaction());
+            else if(level==2)
+                StartCoroutine(nagaScript.Reaction());
+            
         }
         
     

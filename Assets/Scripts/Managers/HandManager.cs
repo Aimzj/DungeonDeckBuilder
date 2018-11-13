@@ -12,7 +12,11 @@ public class HandManager : MonoBehaviour {
     public GameObject CardObj;
     public GameObject TempObj;
 
+    //only contains card in the deck (NOT in play, hand, discard or trash)
     public List<GameObject> playerDeckList, enemyDeckList;
+    //only contains cards in the hand
+    public List<GameObject> playerHandList = new List<GameObject>();
+    public List<GameObject> enemyHandlist = new List<GameObject>();
 
     //list of x positions for the cards in the player/enemy hand
     public List<float> Player_HandPositions, Enemy_HandPositions;
@@ -21,7 +25,9 @@ public class HandManager : MonoBehaviour {
     //the x value that the cards should not cross. The distance between cards is made smaller when this value is crossed
     private float boundaryValue;
 
-    public int numCardsInPlayerHand, numCardsInEnemyHand;
+    //public int numCardsInPlayerHand, numCardsInEnemyHand;
+    //replace by the length of the handList
+
 
     private float newCardPos, multiplier;
 
@@ -68,8 +74,8 @@ public class HandManager : MonoBehaviour {
         limit_halo = GameObject.Find("HandLimit_Halo").GetComponent<SpriteRenderer>();
         limit_halo.enabled = false;
 
-        numCardsInPlayerHand = 0;
-        numCardsInEnemyHand = 0;
+      //  numCardsInPlayerHand = 0;
+       // numCardsInEnemyHand = 0;
 
         player_x = 4;
         enemy_x = 4;
@@ -97,8 +103,6 @@ public class HandManager : MonoBehaviour {
         {
             enemyDeckList = cardGenScript.NagaDeck;
         }
-        
-        
 
         //shuffle the card lists
         Shuffle(ref playerDeckList);
@@ -109,32 +113,25 @@ public class HandManager : MonoBehaviour {
     {
         if (target == "player")
         {
-            RemoveCardFromHand(pos, ref numCardsInPlayerHand, ref Player_HandPositions, ref playerDeckList, ref player_x, player_yPos);
+            RemoveCardFromHand(pos, ref Player_HandPositions, ref playerDeckList, ref player_x, player_yPos, ref playerHandList);
         }
         else if(target == "enemy")
         {
-            RemoveCardFromHand(pos, ref numCardsInEnemyHand, ref Enemy_HandPositions, ref enemyDeckList, ref enemy_x, enemy_yPos);
+            RemoveCardFromHand(pos, ref Enemy_HandPositions, ref enemyDeckList, ref enemy_x, enemy_yPos, ref enemyHandlist);
         }
     }
 
-    private void RemoveCardFromHand(int pos, ref int numCardsInHand, ref List<float> handPositions, ref List<GameObject> deckList, ref float x, float yPos)
+    private void RemoveCardFromHand(int pos, ref List<float> handPositions, ref List<GameObject> deckList, ref float x, float yPos, ref List<GameObject> handList)
     {
-        numCardsInHand--;
+        handList.RemoveAt(pos);
         handPositions.RemoveAt(pos);
-        deckList.RemoveAt(pos);
+        //deckList.RemoveAt(pos);
 
         //loop through all cards after the removed card and change their pos value
-        //check if the card removed was the last card
-        if(pos != deckList.Count)
-        {
-            for (int i = pos; i < deckList.Count; i++)
-            {
-                deckList[i].GetComponent<CardMovement>().posInHand = i;
-            }
-        }
+        UpdatePosInHand(ref handList);
 
-        //check if card hand size is below the limit
-        if (numCardsInHand < maxHandSize)
+        //check if card hand size is equal to or below the limit
+        if (handList.Count <= maxHandSize)
         {
             //hide message informing player that they need to discard down to 10 cards before they can continue play
             limitExceeded_Text.enabled = false;
@@ -142,19 +139,18 @@ public class HandManager : MonoBehaviour {
             isExceedingHandSize = false;
         }
 
-        SetCardPositionsInHand(numCardsInHand, ref x, ref handPositions);
-        UpdateCardPositionsInHand(numCardsInHand, ref deckList, ref handPositions, yPos);
+        SetCardPositionsInHand(ref x, ref handPositions,ref handList);
+        UpdateCardPositionsInHand(ref handPositions, yPos, ref handList);
 
     }
 
-    public void AddCardToHand(ref int numCardsInHand, ref List<float> HandPositions, ref float x, ref List<GameObject> deckList, float yPos)
+    //loop through all cards after the removed card and change their pos value
+    private void UpdatePosInHand(ref List<GameObject> handList)
     {
-        numCardsInHand++;
-        HandPositions.Add(0f);
-        newCardPos = 0;
-
-        SetCardPositionsInHand(numCardsInHand, ref x, ref HandPositions);
-        UpdateCardPositionsInHand(numCardsInHand, ref deckList, ref HandPositions, yPos);
+        for (int i = 0; i < handList.Count; i++)
+        {
+            handList[i].GetComponent<CardMovement>().posInHand = i;
+        }
     }
 
     public IEnumerator DrawCards(int numCards, string target)
@@ -165,7 +161,7 @@ public class HandManager : MonoBehaviour {
             {
                 if(playerDeckList.Count - numCards >= 0)
                 {
-                    DrawCards(ref numCardsInPlayerHand, "player", ref playerDeckList, ref Player_HandPositions, ref player_x, player_yPos);
+                    DrawCards("player", ref playerDeckList, ref Player_HandPositions, ref player_x, player_yPos, ref playerHandList);
                 }
                 else
                 {
@@ -176,9 +172,10 @@ public class HandManager : MonoBehaviour {
             }
             else if (target == "enemy")
             {
+                print("draw enemy card!");
                 if (enemyDeckList.Count - numCards >= 0)
                 {
-                    DrawCards(ref numCardsInEnemyHand, "enemy", ref enemyDeckList, ref Enemy_HandPositions, ref enemy_x, enemy_yPos);
+                    DrawCards("enemy", ref enemyDeckList, ref Enemy_HandPositions, ref enemy_x, enemy_yPos, ref enemyHandlist);
                 }
                 else
                 {
@@ -193,23 +190,38 @@ public class HandManager : MonoBehaviour {
 
     }
 
-    private void DrawCards(ref int numCardsInHand, string target, ref List<GameObject> deckList, ref List<float> handPositions, ref float x, float yPos)
+    private void DrawCards(string target, ref List<GameObject> deckList, ref List<float> handPositions, ref float x, float yPos, ref List<GameObject> handList)
     {
         //play sound
         soundScript.PlaySound_DrawCard();
 
-        //add a card to the hand
-        AddCardToHand(ref numCardsInHand, ref handPositions, ref x, ref deckList, yPos);
-
         statManagerScript.UpdateCardsInDeck(target, -1);
 
-        //card is now in the player's hand
-
         //playerHandList.Add(playerDeckList[numCardsInHand - 1]);
-        deckList[numCardsInHand - 1].GetComponent<CardMovement>().isInHand = true;
+        if (target == "player")
+        {
+            print("number of cards in hand before drawing: " + handList.Count);
+          //  print("position in hand before moving into player hand: " + deckList[numCardsInHand - 1].GetComponent<CardMovement>().posInHand);
+        }
+            
+        
+        //add the card in the first position of the deck list to the hand list
+        handList.Add(deckList[0]);
+        //update positions in hand
+        UpdatePosInHand(ref handList);
+        //the card is now in the hand
+        handList[handList.Count-1].GetComponent<CardMovement>().isInHand = true;
+        //remove the card in the decklist that was just added to the hand list
+        deckList.RemoveAt(0);
 
         //set the position(index) of the card in the hand
-        deckList[numCardsInHand - 1].GetComponent<CardMovement>().posInHand = numCardsInHand - 1;
+       // handList[handList.Count - 1].GetComponent<CardMovement>().posInHand = handList.Count-1;
+
+        //ADD card to hand (visually)
+        handPositions.Add(0f);
+        newCardPos = 0;
+        SetCardPositionsInHand(ref x, ref handPositions, ref handList);
+        UpdateCardPositionsInHand(ref handPositions, yPos, ref handList);
 
         //change the card's layering
         SetLayeringInHand(ref deckList);
@@ -217,12 +229,12 @@ public class HandManager : MonoBehaviour {
         //ON ARRIVAL
         if(target == "enemy")
         {
-            if (enemyDeckList[numCardsInHand - 1].GetComponent<CardObj>().CardName == "Lethargy")
+            if (handList[handList.Count - 1].GetComponent<CardObj>().CardName == "Lethargy")
             {
                 print("LETHARGY");
                 spiderScript.Lethargy();
 
-                enemyDeckList[numCardsInHand - 1].GetComponent<CardMovement>().PlayEnemyCard();
+                handList[handList.Count - 1].GetComponent<CardMovement>().PlayEnemyCard();
 
             }
         }
@@ -230,7 +242,7 @@ public class HandManager : MonoBehaviour {
 
 
         //check if card hand size is exceeded
-        if (numCardsInHand > maxHandSize)
+        if (handList.Count > maxHandSize)
         {
             //display message informing player that they need to discard down to 10 cards before they can continue play
             //another check in the Discard Card function
@@ -240,6 +252,7 @@ public class HandManager : MonoBehaviour {
         }
     }
 
+    //shuffles the dsicard pile and adds cards back into the deck
     private void RemakeDeck(string target, ref List<GameObject> discardList, ref List<GameObject> deckList, Transform deckPos )
     {
         //gain a cycle token
@@ -257,10 +270,12 @@ public class HandManager : MonoBehaviour {
             //change target position of each card to the player's deck
             var obj = (GameObject)Instantiate(TempObj, new Vector3(deckPos.position.x, deckPos.position.y, deckPos.position.z), Quaternion.Euler(90, 0, 0));
             deckList[count].GetComponent<CardMovement>()._targetTransform = obj.transform;
+            deckList[count].GetComponent<CardMovement>().isInHand = false;
+            deckList[count].GetComponent<CardMovement>().isPlayed = false;
             count++;
         }
 
-        statManagerScript.SetTotalCards(target, deckList.Count);
+        statManagerScript.SetTotalCards(target, deckList.Count,0);
         discardList.Clear();
 
     }
@@ -364,30 +379,34 @@ public class HandManager : MonoBehaviour {
                 if (target == "player")
                 {
                     RemakeDeck(target, ref areaManagerScript.player_DiscardCardList, ref playerDeckList, playerDeck);
-                    yield return new WaitForSecondsRealtime(0.2f);
+                    yield return new WaitForSecondsRealtime(1f);
                     InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, playerDeckList, areaManagerScript.player_DiscardCardList);
+                    yield return new WaitForSecondsRealtime(0.5f);
                     i--;
                 }
                 else if (target == "enemy")
                 {
                     RemakeDeck(target, ref areaManagerScript.enemy_DiscardCardList, ref enemyDeckList, enemyDeck);
-                    yield return new WaitForSecondsRealtime(0.2f);
+                    yield return new WaitForSecondsRealtime(1f);
                     InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, enemyDeckList, areaManagerScript.enemy_DiscardCardList);
+                    yield return new WaitForSecondsRealtime(0.5f);
                     i--;
                 }
 
             }
             else if (tempHandList.Count > 0)
             {
+                
+                print("num cards in deck: " + tempDeckPileList.Count + "!!");
                 //check if there are cards in the player's hand
                 //burn them
                 chosenIndex = Random.Range(0, tempHandList.Count);
                 print("index: " + chosenIndex);
-                if (target == "player")
-                    areaManagerScript.Call_TakeDamage(tempHandList[chosenIndex], "player");
-                else if (target == "enemy")
-                    areaManagerScript.Call_TakeDamage(tempHandList[chosenIndex], "enemy");
+                areaManagerScript.Call_TakeDamage(tempHandList[chosenIndex], target);
                 tempHandList.RemoveAt(chosenIndex);
+
+                Call_SetPositionsInHand(target);
+                Call_UpdateCardPositionsInHand(target);
             }
             
             yield return new WaitForSecondsRealtime(1.1f);
@@ -432,21 +451,21 @@ public class HandManager : MonoBehaviour {
     {
         if (target == "player")
         {
-            SetCardPositionsInHand(numCardsInPlayerHand, ref player_x, ref Player_HandPositions);
+            SetCardPositionsInHand(ref player_x, ref Player_HandPositions, ref playerHandList);
         }
         else if (target == "enemy")
         {
-            print("enemy numCards in hand: " + numCardsInEnemyHand);
-            SetCardPositionsInHand(numCardsInEnemyHand, ref enemy_x, ref Enemy_HandPositions);
+            print("enemy numCards in hand: " + enemyHandlist.Count);
+            SetCardPositionsInHand(ref enemy_x, ref Enemy_HandPositions, ref enemyHandlist);
         }
     }
 
-    private void SetCardPositionsInHand(int numCardsInHand, ref float x, ref List<float> handPositions)
+    private void SetCardPositionsInHand(ref float x, ref List<float> handPositions, ref List<GameObject> handList)
     {
         //check if number of cards is odd or even
-        if (numCardsInHand > 1)
+        if (handList.Count > 1)
         {
-            multiplier = (numCardsInHand - 1f) / 2;
+            multiplier = (handList.Count - 1f) / 2;
 
             //check to see that the boundary value hasn't been crossed
             //if it has been crossed, make the distance between cards smaller
@@ -460,7 +479,7 @@ public class HandManager : MonoBehaviour {
 
             //start on the right hand side
             //move from right to left
-            for (int i = 0; i < numCardsInHand; i++)
+            for (int i = 0; i < handList.Count; i++)
             {
                 newCardPos = multiplier * x;
                 handPositions[i] = newCardPos;
@@ -469,7 +488,7 @@ public class HandManager : MonoBehaviour {
         }
         else
         {
-            if(numCardsInHand != 0)
+            if(handList.Count != 0)
                 handPositions[0] = 0;
         }
     }
@@ -479,24 +498,24 @@ public class HandManager : MonoBehaviour {
     {
         if (target == "player")
         {
-            UpdateCardPositionsInHand(numCardsInPlayerHand, ref playerDeckList, ref Player_HandPositions, player_yPos);
+            UpdateCardPositionsInHand(ref Player_HandPositions, player_yPos, ref playerHandList);
         }
         else if (target == "enemy")
         {
-            UpdateCardPositionsInHand(numCardsInEnemyHand, ref enemyDeckList, ref Enemy_HandPositions, enemy_yPos);
+            UpdateCardPositionsInHand(ref Enemy_HandPositions, enemy_yPos, ref enemyHandlist);
         }
     }
 
-    private void UpdateCardPositionsInHand(int numCardsInHand, ref List<GameObject> deckList, ref List<float> handPositions, float yPos)
+    private void UpdateCardPositionsInHand(ref List<float> handPositions, float yPos, ref List<GameObject> handList)
     {
         //assign positions to cards
-        for (int i = 0; i < numCardsInHand; i++)
+        for (int i = 0; i < handList.Count; i++)
         {
-            CardMovement cardScript = deckList[i].GetComponent<CardMovement>();
+            CardMovement cardScript = handList[i].GetComponent<CardMovement>();
 
             var obj = (GameObject)Instantiate(TempObj, new Vector3(handPositions[i], 0f, yPos), Quaternion.Euler(90,0,0));
 
-            deckList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
+            handList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
 
         }
     }

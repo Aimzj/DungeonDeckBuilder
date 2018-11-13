@@ -178,15 +178,15 @@ public class CardGenerator : MonoBehaviour {
 
         //fill stats
         statManagerScript.SetHealth("player", player_health);
-        statManagerScript.SetTotalCards("player", player_cardsInDeck);
+        statManagerScript.SetTotalCards("player", player_cardsInDeck,0);
         statManagerScript.SetHealth("enemy", enemy_health);
-        statManagerScript.SetTotalCards("enemy", enemy_cardsInDeck);
+        statManagerScript.SetTotalCards("enemy", enemy_cardsInDeck,0);
 
         //Initialise decks in their respective scripts
         handManagerScript.InitialiseCards(level);
 
         //start the game
-        gameManagerScript.StartGame();
+        gameManagerScript.StartGame(1);
     }
 
 

@@ -135,7 +135,7 @@ public class StatsManager : MonoBehaviour {
         }
     }
 
-    public void UpdateEssence(string target, int num)
+   /* public void UpdateEssence(string target, int num)
     {
         if (target == "player")
         {
@@ -148,21 +148,21 @@ public class StatsManager : MonoBehaviour {
             numEssence_enemy += num;
             enemyEssence.text = "Essemce: " + numEssence_enemy;
         }
-    }
+    }*/
 
-    public void SetTotalCards(string target, int num)
+    public void SetTotalCards(string target, int num, int cardsInPlay)
     {
         if (target == "player")
         {
             totalCards_player = num;
             numCardsInDeck_player = num;
-            playerCardsInDeck.text = "Cards In Deck: " + numCardsInDeck_player + "/" + totalCards_player;
+            playerCardsInDeck.text = "Cards In Deck: " + (numCardsInDeck_player-cardsInPlay) + "/" + totalCards_player;
         }
         else if (target == "enemy")
         {
             totalCards_enemy = num;
             numCardsInDeck_enemy = num;
-            enemyCardsInDeck.text = "Cards In Deck: " + numCardsInDeck_enemy + "/" + totalCards_enemy;
+            enemyCardsInDeck.text = "Cards In Deck: " + (numCardsInDeck_enemy-cardsInPlay) + "/" + totalCards_enemy;
         }
     }
 
