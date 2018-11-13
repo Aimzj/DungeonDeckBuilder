@@ -186,7 +186,7 @@ public class CardGenerator : MonoBehaviour {
         handManagerScript.InitialiseCards(level);
 
         //start the game
-        gameManagerScript.StartGame(1);
+        gameManagerScript.StartGame(2);
     }
 
 
