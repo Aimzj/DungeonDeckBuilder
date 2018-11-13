@@ -40,7 +40,7 @@ public class AreaManager : MonoBehaviour {
         playerDiscard = GameObject.Find("Discard").GetComponent<Transform>();
         playerTrash = GameObject.Find("Trash").GetComponent<Transform>();
         enemyDeck = GameObject.Find("EnemyDeck").GetComponent<Transform>();
-        enemyDiscard = GameObject.Find("EnemyDiscard").GetComponent<Transform>();
+        enemyDiscard = GameObject.Find("EnemyDiscardPile").GetComponent<Transform>();
         enemyTrash = GameObject.Find("EnemyTrashPile").GetComponent<Transform>();
 
         playerTempDisplay = GameObject.Find("PlayerTempDisplay").GetComponent<Transform>();
@@ -75,6 +75,7 @@ public class AreaManager : MonoBehaviour {
 
     private void DiscardCard(GameObject cardObj, string target, ref List<GameObject> discardList, Transform discardTrans)
     {
+      
         //add 1 to the discard pool
         statManagerScript.UpdateDiscard(target, 1);
 
@@ -87,7 +88,6 @@ public class AreaManager : MonoBehaviour {
         //move the card's position to discard pile
         var obj = (GameObject)Instantiate(TempObj, new Vector3(discardTrans.position.x, discardTrans.position.y, discardTrans.position.z), Quaternion.Euler(90, 90, 0));
         cardObj.GetComponent<CardMovement>()._targetTransform = obj.transform;
-
         //arrange cards in hand
         handManagerScript.Call_SetPositionsInHand(target);
         handManagerScript.Call_UpdateCardPositionsInHand(target);
