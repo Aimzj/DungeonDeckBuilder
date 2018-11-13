@@ -9443,26 +9443,21 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2134202296}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1fb0dd89c425c94c9d8a3b3a24196db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   deck: []
-  hp: 10
-  sigilCount: 4
-  handSize: 4
-  Numdebuffs: 10
-  discardZone: {fileID: 0}
-  deckZone: {fileID: 0}
-  board: {fileID: 0}
+  DamageTaken: 0
+  HP: 0
 --- !u!114 &2134202308
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2134202296}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 628158ec921e1614f8b3046212a3857e, type: 3}
   m_Name: 

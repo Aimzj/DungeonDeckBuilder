@@ -47,6 +47,9 @@ public class Naga : MonoBehaviour {
 
     public IEnumerator Reaction()
     {
+<<<<<<< HEAD
+=======
+>>>>>>> 500aeaf358dea0044fe800974de6af756c9efbe1
         HP = statsManagerScript.numHealth_enemy;
         UpdateEnemyHand();
         for (int i = NagaHand.Count -1; i >= 0; i--)
@@ -103,27 +106,22 @@ public class Naga : MonoBehaviour {
                 }
             }
         }
-    }
 
 
 
-    public IEnumerator Action()
+
+  
+
+
     {
-        UpdateEnemyHand();
-        actionDiscard();
-        yield return new WaitForSecondsRealtime(1);
-
-    }
-
-
-    IEnumerator actionDiscard()
-    {
+<<<<<<< HEAD
+=======
+>>>>>>> 500aeaf358dea0044fe800974de6af756c9efbe1
         HP = statsManagerScript.numHealth_enemy;
         UpdateEnemyHand();
         for (int i = 0; i <= NagaHand.Count - 1; i++)
         {
 
-            if (numEldritchOath > 0)
             {
                 for (int x = 0; x <= NagaHand.Count - 1; x++)
                 {
@@ -143,11 +141,7 @@ public class Naga : MonoBehaviour {
                 }
 
             }
-            else if (numCrushBlow > 0 && NagaHand.Count >= 2)
             {
-
-
-                if (NagaHand.Count >= 2)
                 {
                     NagaHand[i].GetComponent<CardMovement>().PlayEnemyCard();
                     statsManagerScript.UpdateAttack("enemy", NagaHand[i].GetComponent<CardObj>().Attack);
@@ -155,7 +149,6 @@ public class Naga : MonoBehaviour {
 
 
                     //playcard
-                    numCrushBlow--;
                     for (int k = 0; k <= NagaHand.Count - 1; k++)
                     {
 
@@ -200,10 +193,8 @@ public class Naga : MonoBehaviour {
                         }
                     }
 
-                }
                 i = 0;
             }
-
         }
     }
 
@@ -265,8 +256,6 @@ public class Naga : MonoBehaviour {
 
         }
 
-        NagaHand[index].GetComponent<CardMovement>().PlayEnemyCard();
-
     }
 
 
@@ -299,7 +288,6 @@ public class Naga : MonoBehaviour {
                 numCrushBlow++;
 
             }
-            else if (NagaHand[i].GetComponent<CardObj>().CardName == "Serpent Scale")
             {
                 numScale++;
             }
