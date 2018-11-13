@@ -335,24 +335,29 @@ public class HandManager : MonoBehaviour {
     void Update () {
         if (Input.GetKeyDown(KeyCode.K))
         {
-            StartCoroutine(Call_TakeDamage(5, "player"));
+         //   StartCoroutine(Call_TakeDamage(5, "player"));
         }
     }
 
-    public IEnumerator Call_TakeDamage(int value, string target)
+    /*public IEnumerator Call_TakeDamage(int value, string target)
     {
         int chosenIndex;
-        List<GameObject> tempDeckPileList = new List<GameObject>();
-        List<GameObject> tempHandList = new List<GameObject>();
-        List<GameObject> tempDiscardList = new List<GameObject>();
-
+        List<GameObject> tempDeckPileList;
+        List<GameObject> tempHandList;
+        List<GameObject> tempDiscardList;
         if (target == "player")
         {
-            InitialiseDeck(ref tempDeckPileList,ref tempHandList,ref tempDiscardList, playerDeckList, areaManagerScript.player_DiscardCardList);
+            tempDeckPileList = new List<GameObject>(playerDeckList);
+            tempHandList = new List<GameObject>(playerHandList);
+            tempDiscardList = new List<GameObject>(areaManagerScript.player_DiscardCardList);
+            // InitialiseDeck(ref tempDeckPileList,ref tempHandList,ref tempDiscardList, playerDeckList, areaManagerScript.player_DiscardCardList);
         }
         else if(target == "enemy")
         {
-            InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, enemyDeckList, areaManagerScript.enemy_DiscardCardList);
+            tempDeckPileList = new List<GameObject>(playerDeckList);
+            tempHandList = new List<GameObject>(playerHandList);
+            tempDiscardList = new List<GameObject>(areaManagerScript.player_DiscardCardList);
+            // InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, enemyDeckList, areaManagerScript.enemy_DiscardCardList);
         }
         
 
@@ -413,7 +418,7 @@ public class HandManager : MonoBehaviour {
 
         }
 
-    }
+    }*/
 
     private void InitialiseDeck(ref List<GameObject> tempDeckList,ref List<GameObject> tempHandList, ref List<GameObject> tempDiscardList,  List<GameObject> deckList, List<GameObject> discardList)
     {

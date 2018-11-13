@@ -135,7 +135,7 @@ public class CardGenerator : MonoBehaviour {
                     cardObj.GetComponent<CardMovement>().isEnemyCard = true;
                     SpiderDeck.Add(cardObj);
                 }
-                else if(level==2 && cardScript.CardType.Contains("naga"))
+                else if(level==2 && cardScript.CardType=="naga")
                 {
                     //check for Sigils
                     if (numSigils > 0)
