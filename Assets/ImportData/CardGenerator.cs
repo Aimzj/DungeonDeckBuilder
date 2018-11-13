@@ -139,6 +139,7 @@ public class CardGenerator : MonoBehaviour {
                 else if(level==2
                     && cardScript.CardType == "naga")
                 {
+                   
                     //check for Sigils
                     if (numSigils > 0)
                     {
