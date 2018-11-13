@@ -63,6 +63,8 @@ public class CardMovement : MonoBehaviour {
     //bool is used to prevent player from interacting with scripts when they shouldn't
     public bool isFrozen;
 
+    public bool isKindling;
+
     // Use this for initialization
     void Start () {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();

@@ -188,6 +188,11 @@ public class AreaManager : MonoBehaviour {
         {
             statManagerScript.UpdateSigils(target, -1);
         }
+        //check if card burnt was a kindling card
+        if (cardObj.GetComponent<CardMovement>().isKindling)
+        {
+            statManagerScript.UpdateKindling(target, 0, -1);
+        }
 
         //arrange cards in hand
         handManagerScript.Call_SetPositionsInHand(target);

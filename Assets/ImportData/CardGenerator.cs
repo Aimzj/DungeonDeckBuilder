@@ -45,8 +45,7 @@ public class CardGenerator : MonoBehaviour {
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
-        InitialiseLevel(2);
-       
+        InitialiseLevel(1);
     }
 
 
@@ -68,13 +67,16 @@ public class CardGenerator : MonoBehaviour {
             LoadMyData("card_" + i.ToString());
 
             int numSigils = cardScript.SigilNum;
+            int numKindling = cardScript.Kindling;
 
             //set stats
             if (cardScript.CardType == "player_starting")
             {
-            
+
                 if (numSigils > 0)
                     statManagerScript.UpdateSigils("player", numSigils);
+                if (numKindling > 0)
+                    statManagerScript.SetKindling("player", numKindling);
                 player_health += cardScript.SigilNum * 5;
                 player_cardsInDeck += cardScript.NumInDeck;
             }
@@ -84,6 +86,8 @@ public class CardGenerator : MonoBehaviour {
             
                 if (numSigils > 0)
                     statManagerScript.UpdateSigils("enemy", numSigils);
+                if (numKindling > 0)
+                    statManagerScript.SetKindling("enemy", numKindling);
                 enemy_health += cardScript.SigilNum * 5;
                 enemy_cardsInDeck += cardScript.NumInDeck;
             }
@@ -93,6 +97,8 @@ public class CardGenerator : MonoBehaviour {
                
                 if (numSigils > 0)
                     statManagerScript.UpdateSigils("enemy", numSigils);
+                if (numKindling > 0)
+                    statManagerScript.SetKindling("enemy", numKindling);
                 enemy_health += cardScript.SigilNum * 5;
                 enemy_cardsInDeck += cardScript.NumInDeck;
             }
@@ -101,6 +107,7 @@ public class CardGenerator : MonoBehaviour {
             for (int j = 0; j < cardScript.NumInDeck; j++)
             {
                 cardObj = (GameObject)Instantiate(tempObj);
+
                 if (cardScript.CardType == "player_starting")
                 {
                     //check for Sigils
@@ -109,6 +116,12 @@ public class CardGenerator : MonoBehaviour {
                         //put a sigil on the card
                         cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
                         numSigils--;
+                    }
+                    else if (numKindling > 0)
+                    {
+                        //put the kindling mark on the card
+                        cardObj.GetComponent<CardMovement>().isKindling = true;
+                        numKindling--;
                     }
 
                     cardObj.transform.position = playerDeckTrans.position;
@@ -126,6 +139,11 @@ public class CardGenerator : MonoBehaviour {
                         //put a sigil on the card
                         cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
                         numSigils--;
+                    }else if (numKindling > 0)
+                    {
+                        //put the kindling mark on the card
+                        cardObj.GetComponent<CardMovement>().isKindling = true;
+                        numKindling--;
                     }
 
                     cardObj.transform.position = enemyDeckTrans.position;
@@ -144,6 +162,12 @@ public class CardGenerator : MonoBehaviour {
                         //put a sigil on the card
                         cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
                         numSigils--;
+                    }
+                    else if (numKindling > 0)
+                    {
+                        //put the kindling mark on the card
+                        cardObj.GetComponent<CardMovement>().isKindling = true;
+                        numKindling--;
                     }
 
                     cardObj.transform.position = enemyDeckTrans.position;
@@ -186,7 +210,7 @@ public class CardGenerator : MonoBehaviour {
         handManagerScript.InitialiseCards(level);
 
         //start the game
-        gameManagerScript.StartGame(2);
+        gameManagerScript.StartGame(level);
     }
 
 
@@ -202,6 +226,7 @@ public class CardGenerator : MonoBehaviour {
         cardScript.Defense = my_container.GetData("defense").ToInt();
 
         cardScript.SigilNum = my_container.GetData("sigil_num").ToInt();
+        cardScript.Kindling = my_container.GetData("kindling").ToInt();
 
         cardScript.DiscardEffect = my_container.GetData("discard_effect").ToString();
 
