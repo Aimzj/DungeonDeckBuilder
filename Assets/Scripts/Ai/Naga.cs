@@ -176,9 +176,10 @@ public class Naga : MonoBehaviour {
 
             if (numEldritchOath > 0 && NagaHand.Count >= 2)
             {
+                print("ELDRTICH OATH");
                 for (int x = 0; x <= NagaHand.Count - 1; x++)
                 {
-                    if (NagaHand[x].GetComponent<CardObj>().CardName == "Eldritch Oath")
+                    if (NagaHand[x].GetComponent<CardObj>().CardName == "Eldritch Oath ")
                     {
                         int cost = 1;
                         //TRIGGER DISCARD FIRST
@@ -314,7 +315,7 @@ public class Naga : MonoBehaviour {
 
         for (int i = 0; i <= NagaHand.Count - 1; i++)
         {
-            if (NagaHand[i].GetComponent<CardObj>().CardName == "Eldritch Oath")
+            if (NagaHand[i].GetComponent<CardObj>().CardName == "Eldritch Oath ")
             {
                 numEldritchOath++;
 
