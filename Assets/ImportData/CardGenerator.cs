@@ -45,7 +45,7 @@ public class CardGenerator : MonoBehaviour {
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
-        InitialiseLevel(2);
+        InitialiseLevel(1);
        
     }
 

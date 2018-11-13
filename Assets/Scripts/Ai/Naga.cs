@@ -47,7 +47,7 @@ public class Naga : MonoBehaviour {
 
     public IEnumerator Reaction()
     {
-        HP = statsManagerScript.enemyHealth;
+        HP = statsManagerScript.numHealth_enemy;
         UpdateEnemyHand();
         for (int i = NagaHand.Count -1; i >= 0; i--)
         {
@@ -118,7 +118,7 @@ public class Naga : MonoBehaviour {
 
     IEnumerator actionDiscard()
     {
-        HP = statsManagerScript.enemyHealth;
+        HP = statsManagerScript.numHealth_enemy;
         UpdateEnemyHand();
         for (int i = 0; i <= NagaHand.Count - 1; i++)
         {

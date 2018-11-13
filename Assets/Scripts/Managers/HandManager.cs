@@ -318,10 +318,10 @@ public class HandManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-       /* if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K))
         {
-            StartCoroutine(DamagePlayer(5));
-        }*/
+            StartCoroutine(Call_TakeDamage(5, "player"));
+        }
     }
 
     public IEnumerator Call_TakeDamage(int value, string target)
@@ -329,14 +329,15 @@ public class HandManager : MonoBehaviour {
         int chosenIndex;
         List<GameObject> tempDeckPileList = new List<GameObject>();
         List<GameObject> tempHandList = new List<GameObject>();
+        List<GameObject> tempDiscardList = new List<GameObject>();
 
         if (target == "player")
         {
-            InitialiseDeck(ref tempDeckPileList,ref tempHandList, playerDeckList);
+            InitialiseDeck(ref tempDeckPileList,ref tempHandList,ref tempDiscardList, playerDeckList, areaManagerScript.player_DiscardCardList);
         }
         else if(target == "enemy")
         {
-            InitialiseDeck(ref tempDeckPileList, ref tempHandList, enemyDeckList);
+            InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, enemyDeckList, areaManagerScript.enemy_DiscardCardList);
         }
         
 
@@ -356,6 +357,26 @@ public class HandManager : MonoBehaviour {
                     areaManagerScript.Call_TakeDamage(tempDeckPileList[chosenIndex], "enemy");
                 tempDeckPileList.RemoveAt(chosenIndex);
             }
+            else if (tempDiscardList.Count > 0)
+            {
+                //check if there are cards in the discard pile
+                //reshuffle the discard pile
+                if (target == "player")
+                {
+                    RemakeDeck(target, ref areaManagerScript.player_DiscardCardList, ref playerDeckList, playerDeck);
+                    yield return new WaitForSecondsRealtime(0.2f);
+                    InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, playerDeckList, areaManagerScript.player_DiscardCardList);
+                    i--;
+                }
+                else if (target == "enemy")
+                {
+                    RemakeDeck(target, ref areaManagerScript.enemy_DiscardCardList, ref enemyDeckList, enemyDeck);
+                    yield return new WaitForSecondsRealtime(0.2f);
+                    InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, enemyDeckList, areaManagerScript.enemy_DiscardCardList);
+                    i--;
+                }
+
+            }
             else if (tempHandList.Count > 0)
             {
                 //check if there are cards in the player's hand
@@ -368,32 +389,14 @@ public class HandManager : MonoBehaviour {
                     areaManagerScript.Call_TakeDamage(tempHandList[chosenIndex], "enemy");
                 tempHandList.RemoveAt(chosenIndex);
             }
-            else
-            {
-                //reshuffle the discard pile
-                if (target == "player")
-                {
-                    RemakeDeck(target, ref areaManagerScript.player_DiscardCardList, ref playerDeckList, playerDeck);
-                    yield return new WaitForSecondsRealtime(0.2f);
-                    InitialiseDeck(ref tempDeckPileList, ref tempHandList, playerDeckList);
-                    i--;
-                }
-                else if (target == "enemy")
-                {
-                    RemakeDeck(target, ref areaManagerScript.enemy_DiscardCardList, ref enemyDeckList, enemyDeck);
-                    yield return new WaitForSecondsRealtime(0.2f);
-                    InitialiseDeck(ref tempDeckPileList, ref tempHandList, enemyDeckList);
-                    i--;
-                }
-                
-            }
+            
             yield return new WaitForSecondsRealtime(1.1f);
 
         }
 
     }
 
-    private void InitialiseDeck(ref List<GameObject> tempDeckList,ref List<GameObject> tempHandList, List<GameObject> deckList)
+    private void InitialiseDeck(ref List<GameObject> tempDeckList,ref List<GameObject> tempHandList, ref List<GameObject> tempDiscardList,  List<GameObject> deckList, List<GameObject> discardList)
     {
         //create a new list that contains only the cards in the deck pile
         //create a new list that contains only cards in the player's hand
@@ -413,6 +416,8 @@ public class HandManager : MonoBehaviour {
             {
                 tempHandList.Add(deckList[i]);
             }
+
+            tempDiscardList = discardList;
         }
 
     }
