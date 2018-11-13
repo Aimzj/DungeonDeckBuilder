@@ -214,6 +214,12 @@ public class HandManager : MonoBehaviour {
         //remove the card in the decklist that was just added to the hand list
         deckList.RemoveAt(0);
 
+        //check if the card drawn was kindling
+        if(handList[handList.Count - 1].GetComponent<CardMovement>().isKindling)
+        {
+            statManagerScript.UpdateKindling(target, -1, 0);
+        }
+
         //set the position(index) of the card in the hand
        // handList[handList.Count - 1].GetComponent<CardMovement>().posInHand = handList.Count-1;
 
@@ -272,6 +278,13 @@ public class HandManager : MonoBehaviour {
             deckList[count].GetComponent<CardMovement>()._targetTransform = obj.transform;
             deckList[count].GetComponent<CardMovement>().isInHand = false;
             deckList[count].GetComponent<CardMovement>().isPlayed = false;
+
+            //check if the added card is kindling
+            if (deckList[count].GetComponent<CardMovement>().isKindling)
+            {
+                statManagerScript.UpdateKindling(target, 1, 0);
+            }
+
             count++;
         }
 
@@ -335,31 +348,18 @@ public class HandManager : MonoBehaviour {
     void Update () {
         if (Input.GetKeyDown(KeyCode.K))
         {
-         //   StartCoroutine(Call_TakeDamage(5, "player"));
+            StartCoroutine(Call_TakeDamage(5, "player"));
         }
     }
 
-    /*public IEnumerator Call_TakeDamage(int value, string target)
+    public IEnumerator Call_TakeDamage(int value, string target)
     {
-        int chosenIndex;
-        List<GameObject> tempDeckPileList;
-        List<GameObject> tempHandList;
-        List<GameObject> tempDiscardList;
-        if (target == "player")
-        {
-            tempDeckPileList = new List<GameObject>(playerDeckList);
-            tempHandList = new List<GameObject>(playerHandList);
-            tempDiscardList = new List<GameObject>(areaManagerScript.player_DiscardCardList);
-            // InitialiseDeck(ref tempDeckPileList,ref tempHandList,ref tempDiscardList, playerDeckList, areaManagerScript.player_DiscardCardList);
-        }
-        else if(target == "enemy")
-        {
-            tempDeckPileList = new List<GameObject>(playerDeckList);
-            tempHandList = new List<GameObject>(playerHandList);
-            tempDiscardList = new List<GameObject>(areaManagerScript.player_DiscardCardList);
-            // InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, enemyDeckList, areaManagerScript.enemy_DiscardCardList);
-        }
-        
+        int chosenIndex=0;
+        List<GameObject> tempDeckPileList = new List<GameObject>();
+        List<GameObject> tempHandList = new List<GameObject>(); ;
+        List<GameObject> tempDiscardList = new List<GameObject>(); ;
+
+        InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, target);
 
         //loop through deck and randomly burn cards
         for (int i = 0; i < value; i++)
@@ -369,12 +369,60 @@ public class HandManager : MonoBehaviour {
             //check that there are cards in the deck to burn
             if (tempDeckPileList.Count > 0)
             {
-                chosenIndex = Random.Range(0, tempDeckPileList.Count);
-                print("index: " + chosenIndex);
+                //KINDLING
                 if (target == "player")
+                {
+                    //if there is kindling in the deck
+                    if (statManagerScript.numKindling_player>0)
+                    {
+                        //loop through the entire deck looking for the kindling
+                        for(int k=0; k<tempDeckPileList.Count; k++)
+                        {
+                            //is this card kindling?
+                            if (tempDeckPileList[k].GetComponent<CardMovement>().isKindling)
+                            {
+                                chosenIndex = k;
+                            }
+                        }
+                        //update kindling left in deck
+                        statManagerScript.UpdateKindling(target, -1, -1);
+                        print("PLAYER'S KINDLING BURNT");
+                    }
+                    else
+                    {
+                        chosenIndex = Random.Range(0, tempDeckPileList.Count);
+                    }
+                }else if (target == "enemy")
+                {
+                    //if there is kindling in the deck
+                    if (statManagerScript.numKindling_enemy > 0)
+                    {
+                        //loop through the entire deck looking for the kindling
+                        for (int k = 0; k < tempDeckPileList.Count; k++)
+                        {
+                            //is this card kindling?
+                            if (tempDeckPileList[k].GetComponent<CardMovement>().isKindling)
+                            {
+                                chosenIndex = k;
+                            }
+                        }
+                        //update kindling left in deck
+                        statManagerScript.UpdateKindling(target, -1, -1);
+                    }
+                    else
+                    {
+                        chosenIndex = Random.Range(0, tempDeckPileList.Count);
+                    }
+                }
+
+                if (target == "player")
+                {                    
                     areaManagerScript.Call_TakeDamage(tempDeckPileList[chosenIndex], "player");
+                }     
                 else if(target == "enemy")
+                {
                     areaManagerScript.Call_TakeDamage(tempDeckPileList[chosenIndex], "enemy");
+                }
                 tempDeckPileList.RemoveAt(chosenIndex);
             }
             else if (tempDiscardList.Count > 0)
@@ -384,28 +432,43 @@ public class HandManager : MonoBehaviour {
                 if (target == "player")
                 {
                     RemakeDeck(target, ref areaManagerScript.player_DiscardCardList, ref playerDeckList, playerDeck);
-                    yield return new WaitForSecondsRealtime(1f);
-                    InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, playerDeckList, areaManagerScript.player_DiscardCardList);
-                    yield return new WaitForSecondsRealtime(0.5f);
-                    i--;
                 }
                 else if (target == "enemy")
                 {
-                    RemakeDeck(target, ref areaManagerScript.enemy_DiscardCardList, ref enemyDeckList, enemyDeck);
-                    yield return new WaitForSecondsRealtime(1f);
-                    InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, enemyDeckList, areaManagerScript.enemy_DiscardCardList);
-                    yield return new WaitForSecondsRealtime(0.5f);
-                    i--;
+                    RemakeDeck(target, ref areaManagerScript.enemy_DiscardCardList, ref enemyDeckList, enemyDeck); 
                 }
 
+                yield return new WaitForSecondsRealtime(1f);
+                InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, target);
+                yield return new WaitForSecondsRealtime(0.5f);
+                i--;
             }
+            //check if there are cards in the player's hand
             else if (tempHandList.Count > 0)
             {
                 
                 print("num cards in deck: " + tempDeckPileList.Count + "!!");
-                //check if there are cards in the player's hand
+                //check if there is kindling in the hand
+                bool isFound = false;
+                for(int k =0; k<tempHandList.Count; k++)
+                {
+                    //is this card kindling?
+                    if (tempDeckPileList[k].GetComponent<CardMovement>().isKindling)
+                    {
+                        chosenIndex = k;
+                        isFound = true;
+                    }
+                }
+                if (isFound)
+                {
+                    statManagerScript.UpdateKindling(target, 0, -1);
+                }
+                else
+                {
+                    chosenIndex = Random.Range(0, tempHandList.Count);
+                }           
+
                 //burn them
-                chosenIndex = Random.Range(0, tempHandList.Count);
                 print("index: " + chosenIndex);
                 areaManagerScript.Call_TakeDamage(tempHandList[chosenIndex], target);
                 tempHandList.RemoveAt(chosenIndex);
@@ -418,30 +481,21 @@ public class HandManager : MonoBehaviour {
 
         }
 
-    }*/
+    }
 
-    private void InitialiseDeck(ref List<GameObject> tempDeckList,ref List<GameObject> tempHandList, ref List<GameObject> tempDiscardList,  List<GameObject> deckList, List<GameObject> discardList)
+    private void InitialiseDeck(ref List<GameObject> tempDeckPileList, ref List<GameObject> tempHandList, ref List<GameObject> tempDiscardList,  string target)
     {
-        //create a new list that contains only the cards in the deck pile
-        //create a new list that contains only cards in the player's hand
-        //loop through all cards
-        for (int i = 0; i < deckList.Count; i++)
+        if (target == "player")
         {
-            //if the card is not being held and has not been played (in the deck pile)
-            if (!deckList[i].GetComponent<CardMovement>().isInHand
-                && !deckList[i].GetComponent<CardMovement>().isPlayed)
-            {
-                tempDeckList.Add(deckList[i]);
-            }
-
-            //if the card is being held and has not been played
-            if (deckList[i].GetComponent<CardMovement>().isInHand
-                && !deckList[i].GetComponent<CardMovement>().isPlayed)
-            {
-                tempHandList.Add(deckList[i]);
-            }
-
-            tempDiscardList = discardList;
+            tempDeckPileList = playerDeckList;
+            tempHandList = playerHandList;
+            tempDiscardList = areaManagerScript.player_DiscardCardList;
+        }
+        else if(target == "enemy")
+        {
+            tempDeckPileList = enemyDeckList;
+            tempHandList = enemyHandlist;
+            tempDiscardList = areaManagerScript.enemy_DiscardCardList;
         }
 
     }
