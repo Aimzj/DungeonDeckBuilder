@@ -167,6 +167,36 @@ public class CardMovement : MonoBehaviour {
        // cardEffectScript.PlayCard(this.gameObject, false);
     }
 
+    public void DiscardEnemyCard()
+    {
+        //play discard sound
+        soundScript.PlaySound_PlayCard();
+
+        //remove the card from the hand list
+        handManagerScript.Call_RemoveCardFromHand(this.posInHand, "enemy");
+        posInHand = -1;
+
+        isPlayed = true;
+        isInHand = false;
+
+        areaManagerScript.Call_DiscardCard(this.gameObject, "enemy");
+    }
+
+    public void TrashEnemyCard()
+    {
+        //play sound
+        soundScript.PlaySound_PlayCard();
+
+        //remove the card from the Hand List
+        handManagerScript.Call_RemoveCardFromHand(this.posInHand, "enemy");
+        posInHand = -1;
+
+        isPlayed = true;
+        isInHand = false;
+
+        areaManagerScript.Call_TrashCard(this.gameObject, "enemy");
+    }
+
     private void OnMouseUp()
     {
         if (!isEnemyCard
