@@ -63,7 +63,7 @@ public class Spider : MonoBehaviour {
         {
             //call end of enemy reaction function
             print("DONE WITH ENEMY REACTION");
-            gameManagerScript.EndEnemyReact();
+            StartCoroutine(gameManagerScript.EndEnemyReact());
         }
     }
 

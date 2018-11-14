@@ -107,13 +107,21 @@ public class GameManager : MonoBehaviour {
 
     public void EndPlayerReact()
     {
+        StartCoroutine(EndPlayerReact_wait());
+    }
+
+    public IEnumerator EndPlayerReact_wait()
+    {
         //resolve attack and defense values and other effects
         int DamageDealt_toPlayer = statManagerScript.numAttack_enemy - statManagerScript.numDefense_player;
         if (DamageDealt_toPlayer > 0)
         {
             statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
-            //StartCoroutine(handManagerScript.DamagePlayer(DamageDealt_toPlayer));
+            StartCoroutine(handManagerScript.Call_TakeDamage(DamageDealt_toPlayer, "player"));
         }
+        //wait until all damage is finished being dealt before drawing new cards
+        yield return new WaitForSecondsRealtime(1.2f * DamageDealt_toPlayer);
+
         //clear attack and defense values
         statManagerScript.ClearAttack();
         statManagerScript.ClearDefense();
@@ -138,7 +146,7 @@ public class GameManager : MonoBehaviour {
     }
 
     //called by enemy script
-    public void EndEnemyReact()
+    public IEnumerator EndEnemyReact()
     {
         //after the enemy reacts to player's cards, it is the enemy's turn
 
@@ -147,8 +155,10 @@ public class GameManager : MonoBehaviour {
         if (DamageDealt_toEnemy > 0)
         {
             statManagerScript.UpdateHealth("enemy", -DamageDealt_toEnemy);
-           // StartCoroutine(enemyHandManagerScript.DamageEnemy(DamageDealt_toEnemy));
+            StartCoroutine(handManagerScript.Call_TakeDamage(DamageDealt_toEnemy,"enemy"));
         }
+        //wait until all damage is finished being dealt before drawing new cards
+        yield return new WaitForSecondsRealtime(1.2f * DamageDealt_toEnemy);
 
         //clear attack and defense values
         statManagerScript.ClearAttack();
