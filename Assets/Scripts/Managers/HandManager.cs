@@ -291,6 +291,23 @@ public class HandManager : MonoBehaviour {
         statManagerScript.SetTotalCards(target, deckList.Count,0);
         discardList.Clear();
 
+
+        //deal damage for the cycle tokens
+        if (target == "player")
+        {
+            if (statManagerScript.numCycleTokens_player - 1 > 0)
+            {
+                Call_TakeDamage(statManagerScript.numCycleTokens_player - 1, "player");
+            }
+        }
+        else if (target == "enemy")
+        {
+            if (statManagerScript.numCycleTokens_enemy - 1 > 0)
+            {
+                Call_TakeDamage(statManagerScript.numCycleTokens_enemy - 1, "enemy");
+            }
+        }
+        
     }
 
     //loop through all cards and assign Layers
@@ -498,11 +515,6 @@ public class HandManager : MonoBehaviour {
             tempDiscardList = areaManagerScript.enemy_DiscardCardList;
         }
 
-    }
-
-    private void TakeDamage(int value)
-    {
-        
     }
 
         //called by the area manager
