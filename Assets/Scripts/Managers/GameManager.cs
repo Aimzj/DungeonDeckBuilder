@@ -185,10 +185,15 @@ public class GameManager : MonoBehaviour {
     {
         yield return new WaitForSeconds(3f);
         //ENEMY ACTS      
-        if(level==1)
+        if (level == 1)
+        {
+            print("do the thing DUMB SPIDER!");
             StartCoroutine(spiderScript.Action());
-        else if(level==2)
+        }
+        else if (level == 2)
+        {
             StartCoroutine(nagaScript.Action());
+        }
         
     }
 

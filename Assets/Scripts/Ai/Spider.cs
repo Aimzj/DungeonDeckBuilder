@@ -172,10 +172,10 @@ public class Spider : MonoBehaviour {
     {
         spiderHand.Clear();
         //create a list of the current cards existing in the enemy's hand
-        for (int i = 0; i < handManagerScript.enemyDeckList.Count; i++)
+        for (int i = 0; i < handManagerScript.enemyHandlist.Count; i++)
         {
-            if (handManagerScript.enemyDeckList[i].GetComponent<CardMovement>().isInHand)
-                spiderHand.Add(handManagerScript.enemyDeckList[i]);
+            if (handManagerScript.enemyHandlist[i].GetComponent<CardMovement>().isInHand)
+                spiderHand.Add(handManagerScript.enemyHandlist[i]);
         }
     }
 
