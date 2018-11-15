@@ -73,6 +73,38 @@ public class AreaManager : MonoBehaviour {
         }
     }
 
+    public void ReorderPlayAreaLayers(string target)
+    {
+        if (target == "player")
+        {
+            //loop through all the cards in the hand (that are not hovering) and set their positions
+            //starting from layer 6
+            int count = 6;
+            for (int i = player_PlayCardList.Count - 1; i >= 0; i--)
+            {
+                if (!player_PlayCardList[i].GetComponent<CardMovement>().isHovering)
+                {
+                    player_PlayCardList[i].GetComponent<CardMovement>().ChangeOrder(count);
+                    count += 2;
+                }
+            }
+        }
+        else if (target == "enemy")
+        {
+            //loop through all the cards in the hand (that are not hovering) and set their positions
+            //starting from layer 6
+            int count = 6;
+            for (int i = enemy_PlayCardList.Count - 1; i >= 0; i--)
+            {
+                if (!enemy_PlayCardList[i].GetComponent<CardMovement>().isHovering)
+                {
+                    enemy_PlayCardList[i].GetComponent<CardMovement>().ChangeOrder(count);
+                    count += 2;
+                }
+            }
+        }
+    }
+
     private void DiscardCard(GameObject cardObj, string target, ref List<GameObject> discardList, Transform discardTrans)
     {
       
@@ -264,7 +296,7 @@ public class AreaManager : MonoBehaviour {
         handManagerScript.Call_SetPositionsInHand(target);
         handManagerScript.Call_UpdateCardPositionsInHand(target);
 
-
+        ReorderPlayAreaLayers(target);
     }
 
     public void Call_DiscardPlayArea(string target)

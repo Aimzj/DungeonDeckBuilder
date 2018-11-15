@@ -230,7 +230,7 @@ public class HandManager : MonoBehaviour {
         UpdateCardPositionsInHand(ref handPositions, yPos, ref handList);
 
         //change the card's layering
-        SetLayeringInHand(ref deckList);
+        ReorderHandLayers(target);
 
         //ON ARRIVAL
         if(target == "enemy")
@@ -308,6 +308,39 @@ public class HandManager : MonoBehaviour {
             }
         }
         
+    }
+
+    public void ReorderHandLayers(string target)
+    {
+        if (target == "player")
+        {
+            //loop through all the cards in the hand (that are not hovering) and set their positions
+            //starting from layer 6
+            int count = 6;
+            for (int i = playerHandList.Count-1; i >=0; i--)
+            {
+                if (!playerHandList[i].GetComponent<CardMovement>().isHovering)
+                {
+                    playerHandList[i].GetComponent<CardMovement>().ChangeOrder(count);
+                    count +=2;
+                }
+            }
+        }
+        else if (target == "enemy")
+        {
+            //loop through all the cards in the hand (that are not hovering) and set their positions
+            //starting from layer 6
+            int count = 6;
+            for (int i = enemyHandlist.Count - 1; i >= 0; i--)
+            {
+                if (!enemyHandlist[i].GetComponent<CardMovement>().isHovering)
+                {
+                    enemyHandlist[i].GetComponent<CardMovement>().ChangeOrder(count);
+                    count += 2;
+                }
+            }
+        }
+
     }
 
     //loop through all cards and assign Layers
