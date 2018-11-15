@@ -153,9 +153,17 @@ public class AreaManager : MonoBehaviour {
         trashList[trashList.Count - 1].GetComponent<CardMovement>().isPlayed = true;
 
         StartCoroutine(TempDisplay(cardObj, tempDisplay, trashTrans, target));
+
+        //damage player
+        statManagerScript.UpdateHealth(target, -1);
+        //check if burnt card was a Sigil card
+        if (cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
+        {
+            statManagerScript.UpdateSigils(target, -1);
+        }
     }
 
-    IEnumerator TempDisplay(GameObject card, Transform tempDisplay, Transform trashTrans, string target)
+    public IEnumerator TempDisplay(GameObject card, Transform tempDisplay, Transform targetTrans, string target)
     {
         //change the card's order in layer
         card.GetComponent<CardMovement>().ChangeOrder(100);
@@ -166,20 +174,14 @@ public class AreaManager : MonoBehaviour {
 
         yield return new WaitForSecondsRealtime(1);
 
-        //move the card's position to player's trash pile
-        obj = (GameObject)Instantiate(TempObj, new Vector3(trashTrans.position.x, trashTrans.position.y, trashTrans.position.z), Quaternion.Euler(90, 90, 0));
+        //move the card's position to target position
+        obj = (GameObject)Instantiate(TempObj, new Vector3(targetTrans.position.x, targetTrans.position.y, targetTrans.position.z), Quaternion.Euler(90, 90, 0));
         card.GetComponent<CardMovement>()._targetTransform = obj.transform;       
 
-        //damage player
-        statManagerScript.UpdateHealth(target, -1);
-        //check if burnt card was a Sigil card
-        if (card.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
-        {
-            statManagerScript.UpdateSigils(target, -1);
-        }
-
         yield return new WaitForSecondsRealtime(0.5f);
-        card.GetComponent<CardMovement>().ChangeOrder(15);
+
+        //change order in layer
+        card.GetComponent<CardMovement>().ChangeOrder(0);
     }
 
     public void Call_TrashCard(GameObject cardObj, string target)

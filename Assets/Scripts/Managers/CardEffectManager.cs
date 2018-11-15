@@ -9,6 +9,7 @@ public class CardEffectManager : MonoBehaviour {
     private AreaManager areaManagerScript;
 
     private Transform tempDisplayPlayer;
+    private Transform playerDeckTrans;
 	// Use this for initialization
 	void Start () {
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
@@ -16,6 +17,8 @@ public class CardEffectManager : MonoBehaviour {
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
 
         tempDisplayPlayer = GameObject.Find("PlayerTempDisplay").GetComponent<Transform>();
+        playerDeckTrans = GameObject.Find("Deck").GetComponent<Transform>();
+
     }
 
     //play a card from the hand
@@ -79,7 +82,6 @@ public class CardEffectManager : MonoBehaviour {
             attack += areaManagerScript.player_DiscardCardList[areaManagerScript.player_DiscardCardList.Count - 1].GetComponent<CardObj>().Attack;
             attack += areaManagerScript.player_DiscardCardList[areaManagerScript.player_DiscardCardList.Count - 1].GetComponent<CardObj>().Defense;
             attack += areaManagerScript.player_DiscardCardList[areaManagerScript.player_DiscardCardList.Count - 1].GetComponent<CardObj>().DiscardCost;
-            attack += areaManagerScript.player_DiscardCardList[areaManagerScript.player_DiscardCardList.Count - 1].GetComponent<CardObj>().BurnCost;
 
             //Card.Attack += attack;
             playedCard.transform.Find("AttackCost").GetComponent<TextMeshPro>().text = (Card.Attack + attack).ToString();
@@ -102,49 +104,61 @@ public class CardEffectManager : MonoBehaviour {
         }
         else if(Card.CardName == "Eternal Will")
         {
+            //Reaction: You and your opponent gather and shuffle your discard pile, hand and deck and draw cards equal to your previous hadn count. Draw 1 card.
 
         }
 
-
-        if (isBurn)
-        {
-            //play effects with burn
-            if(Card.CardName=="Focused Strike")
-            {
-                //add 3 attack to the card
-                playedCard.transform.Find("AttackCost").GetComponent<TextMeshPro>().text = (Card.Attack + 3).ToString();
-                statManagerScript.UpdateAttack("player", 3);
-            }
-            else if(Card.CardName == "Advanced Guard")
-            {
-                //draw 4 cards
-                StartCoroutine(handManagerScript.DrawCards(4, "player"));
-            }
-            else if (Card.CardName == "Naga Red Eye Gem")
-            {
-                //Regain a sigil card from the burnt pile
-
-                //loop through the trash pile and return the first sigil card encountered to the player's hand
-            }
-            else if(Card.CardName == "Lucky Charm")
-            {
-                //Draw one card of your choice from your deck
-            }
-            else if(Card.CardName=="Second Wind")
-            {
-                //Action - Draw your burnt card's attack value x2 from your deck.
-                //Reaction - Draw your burnt card's defence value x2 from your deck 
-            }
-            else if (Card.CardName == "Fireball")
-            {
-                //Burn the top two cards of your opponents deck
-            }
-        }
     }
 
-    private void PlayBurn(GameObject cardObj)
+    public void PlayBurn(GameObject playedCard)
     {
+        CardObj Card = playedCard.GetComponent<CardObj>();
 
+        //play effects with burn
+        if (Card.CardName == "Focused Strike")
+        {
+            //add 3 attack to the card
+            playedCard.transform.Find("AttackCost").GetComponent<TextMeshPro>().text = (Card.Attack + 3).ToString();
+            statManagerScript.UpdateAttack("player", 3);
+        }
+        else if (Card.CardName == "Advanced Guard")
+        {
+            //draw 4 cards
+            StartCoroutine(handManagerScript.DrawCards(4, "player"));
+        }
+        else if (Card.CardName == "Naga Red Eye Gem")
+        {
+            //Regain a sigil card from the burnt pile
+
+            //loop through the trash pile and return the first sigil card encountered to the player's hand
+            for(int i = 0; i< areaManagerScript.enemy_TrashCardList.Count; i++)
+            {
+                //if the sigil on the card is enabled
+                if (areaManagerScript.enemy_TrashCardList[i].transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
+                {
+                    //add the card to the player's hand
+                    areaManagerScript.TempDisplay(areaManagerScript.enemy_TrashCardList[i], tempDisplayPlayer, playerDeckTrans, "player");
+                    handManagerScript.playerDeckList.Add(areaManagerScript.enemy_TrashCardList[i]);
+
+                    //remove the card from the trash pile
+                    areaManagerScript.player_TrashCardList.RemoveAt(i);
+                }
+            }
+            
+        }
+        else if (Card.CardName == "Lucky Charm")
+        {
+            //Draw one card of your choice from your deck
+        }
+        else if (Card.CardName == "Second Wind")
+        {
+            //Action - Draw your burnt card's attack value x2 from your deck.
+            //Reaction - Draw your burnt card's defence value x2 from your deck 
+        }
+        else if (Card.CardName == "Fireball")
+        {
+            //Burn the top two cards of your opponents deck
+        }
     }
 	
 	// Update is called once per frame

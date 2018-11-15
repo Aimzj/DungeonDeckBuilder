@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour {
     private Button endTurnButton;
 
     private StatsManager statManagerScript;
+    private CardEffectManager cardEffectScript;
 
     private Spider spiderScript;
     private Naga nagaScript;
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour {
         endTurnButton = GameObject.Find("EndTurn").GetComponent<Button>();
 
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+        cardEffectScript = GameObject.Find("GameManager").GetComponent<CardEffectManager>();
 
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
@@ -312,7 +314,7 @@ public class GameManager : MonoBehaviour {
         areaManagerScript.player_PlayCardList[areaManagerScript.player_PlayCardList.Count-1].transform.Find("BurnBorder").GetComponent<SpriteRenderer>().enabled = true;
 
         //play the card's burn effects
-
+        cardEffectScript.PlayBurn(areaManagerScript.player_PlayCardList[areaManagerScript.player_PlayCardList.Count - 1]);
 
     }
 }
