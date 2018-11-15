@@ -45,7 +45,7 @@ public class Naga : MonoBehaviour {
     }
 
   
-    void reactionDiscard(int cost, int index)
+    IEnumerator reactionDiscard(int cost, int index)
     {
         while (cost != 0)
         {
@@ -58,13 +58,14 @@ public class Naga : MonoBehaviour {
                     {
                         numCotD--;
                         cost--;
-                        areaManagerScript.Call_DiscardCard(NagaHand[k], "enemy");
+                        NagaHand[k].GetComponent<CardMovement>().DiscardEnemyCard();
                         NagaHand.RemoveAt(k);
+                        yield return new WaitForSecondsRealtime(1);
                     }
                 }
             }
 
-            if (numScale > 0)
+            else if (numScale > 0)
             {
                 for (int k = 0; k > NagaHand.Count; k++)
                 {
@@ -72,13 +73,14 @@ public class Naga : MonoBehaviour {
                     {
                         numScale--;
                         cost--;
-                        areaManagerScript.Call_DiscardCard(NagaHand[k], "enemy");
+                        NagaHand[k].GetComponent<CardMovement>().DiscardEnemyCard();
                         NagaHand.RemoveAt(k);
+                        yield return new WaitForSecondsRealtime(1);
                     }
                 }
             }
 
-            if (numCrushBlow > 0)
+            else if (numCrushBlow > 0)
             {
                 for (int k = 0; k > NagaHand.Count; k++)
                 {
@@ -86,8 +88,9 @@ public class Naga : MonoBehaviour {
                     {
                         numCrushBlow--;
                         cost--;
-                        areaManagerScript.Call_DiscardCard(NagaHand[k], "enemy");
+                        NagaHand[k].GetComponent<CardMovement>().DiscardEnemyCard();
                         NagaHand.RemoveAt(k);
+                        yield return new WaitForSecondsRealtime(1);
                     }
                 }
             }
@@ -113,10 +116,10 @@ public class Naga : MonoBehaviour {
                 {
                     if (NagaHand[x].GetComponent<CardObj>().CardName == "Eldritch Oath")
                     {
-                       // int cost = 1;
-                        reactionDiscard(1,x);
+                        // int cost = 1;
+                        StartCoroutine(attackDiscard(1, x));
                         //TRIGGER DISCARD FIRST
-                       
+
 
                         NagaHand[i].GetComponent<CardMovement>().PlayEnemyCard();
                         statsManagerScript.UpdateAttack("enemy", NagaHand[i].GetComponent<CardObj>().Attack);
@@ -168,7 +171,7 @@ public class Naga : MonoBehaviour {
             {
                 if (NagaHand[k].GetComponent<CardObj>().CardName == "Call of the Deep")
                 {
-                    reactionDiscard(1,k);
+                    StartCoroutine(attackDiscard(1, k));
                     NagaHand[k].GetComponent<CardMovement>().PlayEnemyCard();
                     statsManagerScript.UpdateAttack("enemy", 1);
                     numCotD--;
@@ -184,7 +187,7 @@ public class Naga : MonoBehaviour {
 
 
 
-  void attackDiscard(int cost, int index)
+  IEnumerator attackDiscard(int cost, int index)
     {
         while (cost > 0)
         {
@@ -202,11 +205,12 @@ public class Naga : MonoBehaviour {
                         print("DISCARD CALL");
                         numCotD--;
                         cost--;
-                        // NagaHand[k].GetComponent<CardMovement>().PlayEnemyCard();
+                        NagaHand[k].GetComponent<CardMovement>().DiscardEnemyCard();
 
-                        areaManagerScript.Call_DiscardCard(NagaHand[k], "enemy");
+                        //areaManagerScript.Call_DiscardCard(NagaHand[k], "enemy");
 
                         NagaHand.RemoveAt(k);
+                        yield return new WaitForSecondsRealtime(1);
                         // k = 0;
 
 
@@ -225,10 +229,11 @@ public class Naga : MonoBehaviour {
                         print("DISCARD SCALES");
                         numScale--;
                         cost--;
-                        // NagaHand[k].GetComponent<CardMovement>().PlayEnemyCard();
-                        areaManagerScript.Call_DiscardCard(NagaHand[k], "enemy");
+                        NagaHand[k].GetComponent<CardMovement>().DiscardEnemyCard();
+                        //areaManagerScript.Call_DiscardCard(NagaHand[k], "enemy");
 
                         NagaHand.RemoveAt(k);
+                        yield return new WaitForSecondsRealtime(1);
                         // k = 0;
 
 
@@ -247,9 +252,10 @@ public class Naga : MonoBehaviour {
                         print("DISCARD BLOW");
                         numCrushBlow--;
                         cost--;
-                        //NagaHand[k].GetComponent<CardMovement>().PlayEnemyCard();
-                        areaManagerScript.Call_DiscardCard(NagaHand[k], "enemy");
+                        NagaHand[k].GetComponent<CardMovement>().DiscardEnemyCard();
+                        //areaManagerScript.Call_DiscardCard(NagaHand[k], "enemy");
                         NagaHand.RemoveAt(k);
+                        yield return new WaitForSecondsRealtime(1);
 
 
                     }
@@ -290,7 +296,8 @@ public class Naga : MonoBehaviour {
                         int counter = 0;
                         int cost = 1;
 
-                        attackDiscard(1, x);
+                        //DISCARD
+                        StartCoroutine (attackDiscard(1, x));
                         
                     
                                                 
