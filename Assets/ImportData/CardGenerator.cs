@@ -23,6 +23,9 @@ public class CardGenerator : MonoBehaviour {
 
     public Sprite PlayerSprite_Front, PlayerSprite_Back, SpiderSprite_Front, SpiderSprite_Back;
 
+    //FOR TUTORIAL
+    private SetDecks setTutDecks;
+
     //decks
     public List<GameObject>
         //player deck
@@ -44,6 +47,9 @@ public class CardGenerator : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+
+        //For tutorial
+        setTutDecks = GameObject.Find("GameManager").GetComponent<SetDecks>();
 
         InitialiseLevel(1);
     }
@@ -70,7 +76,7 @@ public class CardGenerator : MonoBehaviour {
             int numKindling = cardScript.Kindling;
 
             //set stats
-            if (cardScript.CardType == "player_starting")
+            if (cardScript.CardType == "player_starting" && level != 0)
             {
 
                 if (numSigils > 0)
@@ -79,6 +85,10 @@ public class CardGenerator : MonoBehaviour {
                     statManagerScript.SetKindling("player", numKindling);
                 player_health += cardScript.SigilNum * 5;
                 player_cardsInDeck += cardScript.NumInDeck;
+            }
+            else if (level == 0)
+            {
+                setTutDecks.setDecks();
             }
             else if (level == 1
                 && cardScript.CardType == "spider")

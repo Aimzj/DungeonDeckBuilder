@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour {
 
     private Spider spiderScript;
     private Naga nagaScript;
+    private Dummy dummyScript;
 
     private TextMeshPro gamePhaseText;
     private GameObject gamePhaseDisplay;
@@ -33,13 +34,15 @@ public class GameManager : MonoBehaviour {
 
         gamePhaseDisplay = GameObject.Find("GamePhase");
         gamePhaseText = GameObject.Find("GamePhaseText").GetComponent<TextMeshPro>();
-
+     
         endTurnButton = GameObject.Find("EndTurn").GetComponent<Button>();
 
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
+        handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
         nagaScript = GameObject.Find("GameManager").GetComponent<Naga>(); ;
+        dummyScript = GameObject.Find("GameManager").GetComponent<Dummy>();
     }
 
     public void StartGame(int lvl)
@@ -194,8 +197,12 @@ public class GameManager : MonoBehaviour {
     IEnumerator EnemyWaitToAct()
     {
         yield return new WaitForSeconds(3f);
-        //ENEMY ACTS      
-        if (level == 1)
+        //ENEMY ACTS  
+        if(level == 0)
+        {
+            StartCoroutine(dummyScript.Action());
+        }
+       else  if (level == 1)
         {
             print("do the thing DUMB SPIDER!");
             StartCoroutine(spiderScript.Action());
@@ -220,9 +227,11 @@ public class GameManager : MonoBehaviour {
             //ENEMY REACTS
             statManagerScript.SetPhase("player", "waiting");
             statManagerScript.SetPhase("enemy", "reaction");
-            if(level==1)
+            if (level == 0)
+                StartCoroutine(dummyScript.Reaction());
+            else if (level == 1)
                 StartCoroutine(spiderScript.Reaction());
-            else if(level==2)
+            else if (level == 2)
                 StartCoroutine(nagaScript.Reaction());
             
         }
