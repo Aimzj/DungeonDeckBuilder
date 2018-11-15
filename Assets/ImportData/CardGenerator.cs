@@ -51,7 +51,7 @@ public class CardGenerator : MonoBehaviour {
         //For tutorial
         setTutDecks = GameObject.Find("GameManager").GetComponent<SetDecks>();
 
-        InitialiseLevel(1);
+        InitialiseLevel(2);
     }
 
 

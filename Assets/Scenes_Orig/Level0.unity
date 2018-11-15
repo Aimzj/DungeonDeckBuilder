@@ -9814,7 +9814,6 @@ MonoBehaviour:
   isPlay: 0
   isDiscard: 0
   isTrash: 0
-  isBurn: 0
 --- !u!114 &2134202301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9826,6 +9825,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05533604201e40744a94753be62d9be5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectText: {fileID: 0}
+  costText: {fileID: 0}
 --- !u!114 &2134202302
 MonoBehaviour:
   m_ObjectHideFlags: 0

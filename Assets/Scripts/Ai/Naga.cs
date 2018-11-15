@@ -334,11 +334,11 @@ public class Naga : MonoBehaviour {
     {
      
         NagaHand.Clear();
-
+        NagaHand = new List<GameObject>(handManagerScript.enemyHandlist);
         for (int i = 0; i < handManagerScript.enemyHandlist.Count; i++)
         {
-
-            NagaHand.Add(handManagerScript.enemyHandlist[i]);
+           
+           // NagaHand.Add(handManagerScript.enemyHandlist[i]);
 
         }
       
