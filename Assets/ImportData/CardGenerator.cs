@@ -59,7 +59,7 @@ public class CardGenerator : MonoBehaviour {
         //For tutorial
         setTutDecks = GameObject.Find("GameManager").GetComponent<SetDecks>();
 
-        InitialiseLevel(1);
+        InitialiseLevel(2);
     }
 
     private void InstantiateCard(ref GameObject card, Vector3 pos, Quaternion rot, bool isKindling, ref List<GameObject> pack, int numCards)

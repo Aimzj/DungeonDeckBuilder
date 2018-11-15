@@ -9,6 +9,7 @@ public class SetText : MonoBehaviour {
 
     bool dummyAttack = false;
     bool isPlayerAction = false;
+    bool discardPrompt = false
     private Dummy dummyScript;
     float timer = 3f;
 
@@ -26,9 +27,11 @@ public class SetText : MonoBehaviour {
                 break;
             case 2:
                 if (!dummyAttack)
-                outputText = "Now it's your opponent's turn, lets see what they do";
-                else if(!dummyAttack)
+                    outputText = "Now it's your opponent's turn, lets see what they do";
+                else if (!dummyAttack && isPlayerAction)
                     outputText = "Play a guard to defend yourself";
+                else if (discardPrompt)
+                    outputText = "Some cards require you to discard others cards to be played";
                 break;
             case 3:
                 break;
