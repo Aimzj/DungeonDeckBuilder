@@ -138,7 +138,7 @@ public class CardEffectManager : MonoBehaviour {
         }
     }
 
-    private void Strike()
+    private void PlayBurn(GameObject cardObj)
     {
 
     }
