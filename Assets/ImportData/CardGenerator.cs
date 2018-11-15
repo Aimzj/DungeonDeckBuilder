@@ -186,6 +186,13 @@ public class CardGenerator : MonoBehaviour {
 
                         cardObj.GetComponent<CardMovement>().isEnemyCard = false;
                         PoisonDeck.Add(cardObj);
+                    }else if(cardScript.CardName == "Wound")
+                    {
+                        cardObj.transform.position = poisonDeckTrans.position;
+                        cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+                        cardObj.GetComponent<CardMovement>().isEnemyCard = false;
+                        WoundDeck.Add(cardObj);
                     }
                 }
                 else

@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour {
 
     private int level;
 
+    private Canvas burnCanvas;
+    public TextMeshProUGUI effectText, costText;
+
     // Use this for initialization
     void Start () {
 
@@ -39,7 +42,10 @@ public class GameManager : MonoBehaviour {
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
         spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
-        nagaScript = GameObject.Find("GameManager").GetComponent<Naga>(); ;
+        nagaScript = GameObject.Find("GameManager").GetComponent<Naga>();
+
+        burnCanvas = GameObject.Find("Burn_Canvas").GetComponent<Canvas>();
+        burnCanvas.enabled = false;
     }
 
     public void StartGame(int lvl)
@@ -247,5 +253,53 @@ public class GameManager : MonoBehaviour {
     public void OpenStore()
     {
         StartCoroutine(sceneManagerScript.FadeOut(2));
+    }
+
+    public void DisplayBurnUI(GameObject cardObj)
+    {
+        burnCanvas.enabled = true;
+        effectText.text = "(" + cardObj.GetComponent<CardObj>().BurnEffect + ")";
+        costText.text = "Cost: " + cardObj.GetComponent<CardObj>().BurnCost.ToString();
+
+        //freeze all interactions with cards
+        for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+        {
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isFrozen = true;
+        }
+        //disable the button
+        endTurnButton.enabled = false;
+    }
+
+    public void NoBurn()
+    {
+        //unfreeze all interactions with cards
+        for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+        {
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isFrozen = false;
+        }
+        //enable the button
+        endTurnButton.enabled = true;
+
+        burnCanvas.enabled = false;
+    }
+
+    public void YesBurn()
+    {
+        //unfreeze all interactions with cards
+        for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+        {
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isFrozen = false;
+        }
+        //enable the button
+        endTurnButton.enabled = true;
+
+        burnCanvas.enabled = false;
+
+        //give the card a burn halo whilst in play area
+        areaManagerScript.player_PlayCardList[areaManagerScript.player_PlayCardList.Count-1].transform.Find("BurnBorder").GetComponent<SpriteRenderer>().enabled = true;
+
+        //play the card's burn effects
+
+
     }
 }
