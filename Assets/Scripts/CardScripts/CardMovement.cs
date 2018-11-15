@@ -202,7 +202,8 @@ public class CardMovement : MonoBehaviour {
     private void OnMouseUp()
     {
         if (!isEnemyCard
-            && !isFrozen)
+            && !isFrozen
+            && !isPlayed)
         {
             isFollowing = false;
             handManagerScript.isPlayerHoldingCard = isFollowing;

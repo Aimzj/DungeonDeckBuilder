@@ -100,6 +100,10 @@ public class CardEffectManager : MonoBehaviour {
             //Recover 5 burnt cards. This card is burnt immediately after use
 
         }
+        else if(Card.CardName == "Eternal Will")
+        {
+
+        }
 
 
         if (isBurn)

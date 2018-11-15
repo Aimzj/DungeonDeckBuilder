@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour {
         int DamageDealt_toPlayer = statManagerScript.numAttack_enemy - statManagerScript.numDefense_player;
         if (DamageDealt_toPlayer > 0)
         {
-            statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
+           // statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
             StartCoroutine(handManagerScript.Call_TakeDamage(DamageDealt_toPlayer, "player"));
         }
         //wait until all damage is finished being dealt before drawing new cards
@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour {
         int DamageDealt_toEnemy = statManagerScript.numAttack_player - statManagerScript.numDefense_enemy;
         if (DamageDealt_toEnemy > 0)
         {
-            statManagerScript.UpdateHealth("enemy", -DamageDealt_toEnemy);
+           // statManagerScript.UpdateHealth("enemy", -DamageDealt_toEnemy);
             StartCoroutine(handManagerScript.Call_TakeDamage(DamageDealt_toEnemy,"enemy"));
         }
         //wait until all damage is finished being dealt before drawing new cards

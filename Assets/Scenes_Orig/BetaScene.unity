@@ -6545,7 +6545,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1334488221}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2134202301}
+        m_MethodName: NoBurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1334488221
@@ -6657,7 +6668,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1379771582}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2134202301}
+        m_MethodName: YesBurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1379771582
@@ -11765,6 +11787,13 @@ MonoBehaviour:
   NagaDeck: []
   PoisonDeck: []
   WoundDeck: []
+  ReinforcementPack1: []
+  ReinforcementPack2: []
+  HealingPack: []
+  AshPack: []
+  NecromancerPack: []
+  ArcanePack: []
+  PrimusPack: []
 --- !u!114 &2134202305
 MonoBehaviour:
   m_ObjectHideFlags: 0

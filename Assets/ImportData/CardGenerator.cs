@@ -152,8 +152,7 @@ public class CardGenerator : MonoBehaviour {
                     //x1 primus (kindled)
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref PrimusPack, 1);
                 }
-
-                if (cardScript.CardName == "Guard")
+                else if (cardScript.CardName == "Guard")
                 {
                     //x1 reinforcement1
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack1,1);
@@ -173,20 +172,17 @@ public class CardGenerator : MonoBehaviour {
                     //x1 primus (kindled)
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref PrimusPack, 1);
                 }
-
-                if(cardScript.CardName == "Lucky Charm")
+                else if(cardScript.CardName == "Lucky Charm")
                 {
                     //x2 reinforcement1
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack1,2);
                 }
-
-                if(cardScript.CardName == "Fireball")
+                else if(cardScript.CardName == "Fireball")
                 {
                     //x1 ash
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,1);
                 }
-
-                if(cardScript.CardName == "Focused Strike")
+                else if(cardScript.CardName == "Focused Strike")
                 {
                     //x2 reinforcement pack 2
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2,2);
@@ -197,8 +193,7 @@ public class CardGenerator : MonoBehaviour {
                     //x1 primus
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1);
                 }
-
-                if(cardScript.CardName == "Strike")
+                else if(cardScript.CardName == "Strike")
                 {
                     //x3 ash (1 kindling)
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref AshPack,1);
@@ -216,27 +211,27 @@ public class CardGenerator : MonoBehaviour {
                     //x1 primus
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1);
                 }
-                if (cardScript.CardName == "Second Wind")
+                else if(cardScript.CardName == "Second Wind")
                 {
                     //x1 reinforcement2
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1);
                 }
-                if(cardScript.CardName == "Healing Potion")
+                else if(cardScript.CardName == "Healing Potion")
                 {
                     //x1 healing pack
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1);
                 }
-                if(cardScript.CardName == "Pact of Maggots")
+                else if(cardScript.CardName == "Pact of Maggots")
                 {
                     //x1 Necromancer
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref NecromancerPack, 1);
                 }
-                if(cardScript.CardName == "Inner Strength")
+                else if(cardScript.CardName == "Inner Strength")
                 {
                     //x1 arcane
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ArcanePack, 1);
                 }
-                if(cardScript.CardName == "Eternal Will")
+                else if(cardScript.CardName == "Eternal Will")
                 {
                     //x1 primus pack
                     InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1);
