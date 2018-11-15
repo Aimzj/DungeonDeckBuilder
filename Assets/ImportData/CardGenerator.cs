@@ -9,7 +9,7 @@ public class CardGenerator : MonoBehaviour {
     //transforms of decks
     private Transform playerDeckTrans, enemyDeckTrans, poisonDeckTrans;
 
-    private int numUniqueCards=20;
+    private int numUniqueCards=21;
 
     public GameObject Card;
 
@@ -32,7 +32,15 @@ public class CardGenerator : MonoBehaviour {
         NagaDeck,
         //status effect decks
         PoisonDeck,
-        WoundDeck;
+        WoundDeck,
+        //packs
+        ReinforcementPack1,
+        ReinforcementPack2,
+        HealingPack,
+        AshPack,
+        NecromancerPack,
+        ArcanePack,
+        PrimusPack;
 
 
     // Use this for initialization
@@ -48,6 +56,23 @@ public class CardGenerator : MonoBehaviour {
         InitialiseLevel(1);
     }
 
+    private void InstantiateCard(ref GameObject card, Vector3 pos, Quaternion rot, bool isKindling, ref List<GameObject> pack, int numCards)
+    {
+        for(int i = 0; i<numCards; i++)
+        {
+            card = (GameObject)Instantiate(tempObj);
+            card.transform.position = pos;
+            card.transform.rotation = rot;
+
+            if (isKindling)
+            {
+                card.GetComponent<CardMovement>().isKindling = true;
+            }
+
+            pack.Add(card);
+        }
+        
+    }
 
     public void InitialiseLevel(int level)
     {
@@ -102,6 +127,112 @@ public class CardGenerator : MonoBehaviour {
                 enemy_health += cardScript.SigilNum * 5;
                 enemy_cardsInDeck += cardScript.NumInDeck;
             }
+
+            //create card packs
+            if (cardScript.CardType == "player")
+            {
+                if(cardScript.CardName=="Advanced Guard")
+                {
+                    //x2 reinforcement1
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0),false, ref ReinforcementPack1,2);
+
+                    //x1 healing pack
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1);
+
+                    //x1 primus (kindled)
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref PrimusPack, 1);
+                }
+
+                if (cardScript.CardName == "Guard")
+                {
+                    //x1 reinforcement1
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack1,1);
+
+                    //x1 reinforcement2
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1);
+
+                    //x1 healing pack
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1);
+
+                    //x2 Necromancer
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref NecromancerPack, 2);
+
+                    //x4 arcane (4 kindled)
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref ArcanePack, 4);
+
+                    //x1 primus (kindled)
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref PrimusPack, 1);
+                }
+
+                if(cardScript.CardName == "Lucky Charm")
+                {
+                    //x2 reinforcement1
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack1,2);
+                }
+
+                if(cardScript.CardName == "Fireball")
+                {
+                    //x1 ash
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,1);
+                }
+
+                if(cardScript.CardName == "Focused Strike")
+                {
+                    //x2 reinforcement pack 2
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2,2);
+
+                    //x1 ash
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,1);
+
+                    //x1 primus
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1);
+                }
+
+                if(cardScript.CardName == "Strike")
+                {
+                    //x3 ash (1 kindling)
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref AshPack,1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,2);
+
+                    //x1 reinforcement2
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1);
+
+                    //x2 healing (2 kindled)
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref HealingPack, 2);
+
+                    //x2 necromancer (2 kindled)
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref NecromancerPack, 2);
+
+                    //x1 primus
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1);
+                }
+                if (cardScript.CardName == "Second Wind")
+                {
+                    //x1 reinforcement2
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1);
+                }
+                if(cardScript.CardName == "Healing Potion")
+                {
+                    //x1 healing pack
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1);
+                }
+                if(cardScript.CardName == "Pact of Maggots")
+                {
+                    //x1 Necromancer
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref NecromancerPack, 1);
+                }
+                if(cardScript.CardName == "Inner Strength")
+                {
+                    //x1 arcane
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ArcanePack, 1);
+                }
+                if(cardScript.CardName == "Eternal Will")
+                {
+                    //x1 primus pack
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1);
+                }
+            }
+
 
             //seperate cards into decks
             for (int j = 0; j < cardScript.NumInDeck; j++)
