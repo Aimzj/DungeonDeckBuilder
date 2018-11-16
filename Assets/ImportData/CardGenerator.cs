@@ -9,7 +9,7 @@ public class CardGenerator : MonoBehaviour {
     //transforms of decks
     public Transform playerDeckTrans, enemyDeckTrans, poisonDeckTrans;
 
-    private int numUniqueCards=21;
+    private int numUniqueCards=22;
 
     public GameObject Card;
 
@@ -67,7 +67,7 @@ public class CardGenerator : MonoBehaviour {
 
     }
 
-    private void InstantiateCard(ref GameObject card, Vector3 pos, Quaternion rot, bool isKindling, ref List<GameObject> pack, int numCards)
+    private void InstantiateCard(ref GameObject card, Vector3 pos, Quaternion rot, bool isKindling, ref List<GameObject> pack, int numCards, bool isSigil)
     {
         for(int i = 0; i<numCards; i++)
         {
@@ -78,6 +78,11 @@ public class CardGenerator : MonoBehaviour {
             if (isKindling)
             {
                 card.GetComponent<CardMovement>().isKindling = true;
+            }
+
+            if (isSigil)
+            {
+                cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
             }
 
             pack.Add(card);
@@ -152,97 +157,97 @@ public class CardGenerator : MonoBehaviour {
                 if(cardScript.CardName=="Advanced Guard")
                 {
                     //x2 reinforcement1
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0),false, ref ReinforcementPack1,2);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0),false, ref ReinforcementPack1,2, false);
 
                     //x1 healing pack
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1, false);
 
                     //x1 primus (kindled)
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref PrimusPack, 1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref PrimusPack, 1, false);
                 }
                 else if (cardScript.CardName == "Guard")
                 {
                     //x1 reinforcement1
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack1,1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack1,1, false);
 
                     //x1 reinforcement2
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1, false);
 
                     //x1 healing pack
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1, false);
 
                     //x2 Necromancer
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref NecromancerPack, 2);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref NecromancerPack, 2, false);
 
                     //x4 arcane (4 kindled)
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref ArcanePack, 4);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref ArcanePack, 4, false);
 
                     //x1 primus (kindled)
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref PrimusPack, 1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref PrimusPack, 1, false);
                 }
                 else if(cardScript.CardName == "Lucky Charm")
                 {
                     //x2 reinforcement1
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack1,2);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack1,2, false);
                 }
                 else if(cardScript.CardName == "Fireball")
                 {
                     //x1 ash
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,1, true);
                 }
                 else if(cardScript.CardName == "Focused Strike")
                 {
                     //x2 reinforcement pack 2
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2,2);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2,2, false);
 
                     //x1 ash
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,1, false);
 
                     //x1 primus
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1, false);
                 }
                 else if(cardScript.CardName == "Strike")
                 {
                     //x3 ash (1 kindling)
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref AshPack,1);
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,2);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref AshPack,1, false);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,2, false);
 
                     //x1 reinforcement2
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1, false);
 
                     //x2 healing (2 kindled)
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref HealingPack, 2);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref HealingPack, 2, false);
 
                     //x2 necromancer (2 kindled)
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref NecromancerPack, 2);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref NecromancerPack, 2, false);
 
                     //x1 primus
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1, false);
                 }
                 else if(cardScript.CardName == "Second Wind")
                 {
                     //x1 reinforcement2
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1, false);
                 }
-                else if(cardScript.CardName == "Healing Potion")
+                else if(cardScript.CardName == "Symbol of Faith")
                 {
                     //x1 healing pack
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1, true);
                 }
                 else if(cardScript.CardName == "Pact of Maggots")
                 {
                     //x1 Necromancer
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref NecromancerPack, 1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref NecromancerPack, 1, true);
                 }
                 else if(cardScript.CardName == "Inner Strength")
                 {
                     //x1 arcane
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ArcanePack, 1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ArcanePack, 1, true);
                 }
                 else if(cardScript.CardName == "Eternal Will")
                 {
                     //x1 primus pack
-                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1, true);
                 }
             }
 
