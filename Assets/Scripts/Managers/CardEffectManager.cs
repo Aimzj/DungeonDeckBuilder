@@ -140,13 +140,13 @@ public class CardEffectManager : MonoBehaviour {
             //Regain a sigil card from the burnt pile
 
             //loop through the trash pile and return the first sigil card encountered to the player's hand
-            for(int i = 0; i< areaManagerScript.enemy_TrashCardList.Count; i++)
+            for(int i = 0; i< areaManagerScript.player_TrashCardList.Count; i++)
             {
-                //if the sigil on the card is enabled
-                if (areaManagerScript.enemy_TrashCardList[i].transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
+                //if the sigil on the card is enabled and it is the player's card
+                if (areaManagerScript.player_TrashCardList[i].transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
                 {
                     //add the card to the player's hand
-                    StartCoroutine(areaManagerScript.TempDisplay(areaManagerScript.enemy_TrashCardList[i], tempDisplayPlayer, playerDeckTrans, "player"));
+                    StartCoroutine(areaManagerScript.TempDisplay(areaManagerScript.player_TrashCardList[i], tempDisplayPlayer, playerDeckTrans, "player"));
                     handManagerScript.playerDeckList.Add(areaManagerScript.enemy_TrashCardList[i]);
 
                     //remove the card from the trash pile
@@ -157,7 +157,9 @@ public class CardEffectManager : MonoBehaviour {
         }
         else if (Card.CardName == "Lucky Charm")
         {
-            //Draw one card of your choice from your deck
+            //Draw two random cards from your deck
+            int rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
+            StartCoroutine(handManagerScript.DrawCards(2, "player"));
         }
         else if (Card.CardName == "Second Wind")
         {

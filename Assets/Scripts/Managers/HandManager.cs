@@ -227,13 +227,13 @@ public class HandManager : MonoBehaviour {
             
         
         //add the card in the first position of the deck list to the hand list
-        handList.Add(deckList[0]);
+        handList.Add(deckList[deckList.Count-1]);
         //update positions in hand
         UpdatePosInHand(ref handList);
         //the card is now in the hand
         handList[handList.Count-1].GetComponent<CardMovement>().isInHand = true;
         //remove the card in the decklist that was just added to the hand list
-        deckList.RemoveAt(0);
+        deckList.RemoveAt(deckList.Count - 1);
 
         //check if the card drawn was kindling
         if(handList[handList.Count - 1].GetComponent<CardMovement>().isKindling)
