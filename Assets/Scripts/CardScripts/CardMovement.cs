@@ -34,7 +34,7 @@ public class CardMovement : MonoBehaviour {
     private double smooth = 5.0;
 
     //hovering
-    private bool isHovering;
+    public bool isHovering;
     public bool isInHand;
     private Vector3 origHandPos;
     [SerializeField]
@@ -129,7 +129,7 @@ public class CardMovement : MonoBehaviour {
                     isHovering = false;
 
                     //change the order in layer of card and text
-                    ChangeOrder(100);
+                    ChangeOrder(42);
                 }
             }
         }
@@ -165,6 +165,7 @@ public class CardMovement : MonoBehaviour {
 
         areaManagerScript.Call_PlayCard(this.gameObject, "enemy");
 
+        handManagerScript.ReorderHandLayers("enemy");
         //play card with effects
        // cardEffectScript.PlayCard(this.gameObject, false);
     }
@@ -182,6 +183,8 @@ public class CardMovement : MonoBehaviour {
         isInHand = false;
 
         areaManagerScript.Call_DiscardCard(this.gameObject, "enemy");
+
+        handManagerScript.ReorderHandLayers("enemy");
     }
 
     public void TrashEnemyCard()
@@ -197,12 +200,15 @@ public class CardMovement : MonoBehaviour {
         isInHand = false;
 
         areaManagerScript.Call_TrashCard(this.gameObject, "enemy");
+
+        handManagerScript.ReorderHandLayers("enemy");
     }
 
     private void OnMouseUp()
     {
         if (!isEnemyCard
-            && !isFrozen)
+            && !isFrozen
+            && !isPlayed)
         {
             isFollowing = false;
             handManagerScript.isPlayerHoldingCard = isFollowing;
@@ -312,6 +318,7 @@ public class CardMovement : MonoBehaviour {
 
             isHovering = true;
             _targetTransform.position = new Vector3(_targetTransform.position.x, hoverHeight, zShift);
+            ChangeOrder(41);
         }
         
     }
@@ -325,6 +332,8 @@ public class CardMovement : MonoBehaviour {
         {
             isHovering = false;
             _targetTransform.position = new Vector3(_targetTransform.position.x, _targetTransform.position.y-hoverHeight, -0.83f);
+
+            handManagerScript.ReorderHandLayers("player");
         }
     }
 
