@@ -106,11 +106,8 @@ public class AreaManager : MonoBehaviour {
             int count = 6;
             for (int i = enemy_PlayCardList.Count - 1; i >= 0; i--)
             {
-                if (!enemy_PlayCardList[i].GetComponent<CardMovement>().isHovering)
-                {
                     enemy_PlayCardList[i].GetComponent<CardMovement>().ChangeOrder(count);
                     count += 2;
-                }
             }
         }
     }
