@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour {
             statManagerScript.SetPhase("player", "action");
             statManagerScript.SetPhase("enemy", "waiting");
 
-            StartCoroutine(handManagerScript.DrawCards(2, "player"));
+            StartCoroutine(handManagerScript.DrawCards(4, "player"));
             StartCoroutine(Delay(3, "enemy"));
         }
 

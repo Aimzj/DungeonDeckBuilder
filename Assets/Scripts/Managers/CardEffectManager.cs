@@ -61,13 +61,10 @@ public class CardEffectManager : MonoBehaviour {
         //play card effects
         if(Card.CardName=="Advanced Guard")
         {
-            //Action - Draw 1 card 
-            //Reaction - gain +2 def to this card until it goes to the discard
-            if (statManagerScript.phase_player == "action")
-            {
-                StartCoroutine(handManagerScript.DrawCards(1, "player"));
-            }
-            else if(statManagerScript.phase_player == "reaction")
+            //Reaction - if played after a card with a defense value higher than 1, add +2 defense to this card
+            GameObject lastPlayedCard = areaManagerScript.player_PlayCardList[areaManagerScript.player_PlayCardList.Count - 1];
+            if(statManagerScript.phase_player == "reaction"
+                && lastPlayedCard.GetComponent<CardObj>().Defense > 1)
             {
                 //Card.Defense += 2;
                 playedCard.transform.Find("DefenseCost").GetComponent<TextMeshPro>().text = Card.Defense.ToString();
@@ -110,6 +107,18 @@ public class CardEffectManager : MonoBehaviour {
 
     }
 
+    public void PlayOnArrivalEffects(GameObject cardObj)
+    {
+        //retrieve card data
+        CardObj Card = cardObj.GetComponent<CardObj>();
+
+        if (Card.CardName == "Advanced Guard")
+        {
+            //draw 1 card
+            StartCoroutine(handManagerScript.DrawCards(1, "player"));
+        }
+    }
+
     public void PlayBurn(GameObject playedCard)
     {
         CardObj Card = playedCard.GetComponent<CardObj>();
@@ -137,7 +146,7 @@ public class CardEffectManager : MonoBehaviour {
                 if (areaManagerScript.enemy_TrashCardList[i].transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
                 {
                     //add the card to the player's hand
-                    areaManagerScript.TempDisplay(areaManagerScript.enemy_TrashCardList[i], tempDisplayPlayer, playerDeckTrans, "player");
+                    StartCoroutine(areaManagerScript.TempDisplay(areaManagerScript.enemy_TrashCardList[i], tempDisplayPlayer, playerDeckTrans, "player"));
                     handManagerScript.playerDeckList.Add(areaManagerScript.enemy_TrashCardList[i]);
 
                     //remove the card from the trash pile
