@@ -104,7 +104,6 @@ public class CardGenerator : MonoBehaviour {
             tempObj = (GameObject)Instantiate(Card, Vector3.zero, Quaternion.identity);
             //load data onto card
             cardScript = tempObj.GetComponent<CardObj>();
-            Debug.Log("working: " + i.ToString());
             LoadMyData("card_" + i.ToString());
 
             int numSigils = cardScript.SigilNum;
@@ -346,7 +345,6 @@ public class CardGenerator : MonoBehaviour {
                 }
                 else
                 {
-                    print(cardScript.CardName+ " :" + cardScript.CardType+" :" +level.ToString());
                     cardObj.transform.position = new Vector3(1000,1000,1000);
                     cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
                 }

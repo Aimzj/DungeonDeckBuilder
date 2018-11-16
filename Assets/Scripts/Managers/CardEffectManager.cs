@@ -47,16 +47,19 @@ public class CardEffectManager : MonoBehaviour {
         //check if action or reaction phase
 
         //ATTACK
-        if (Card.Attack > 0 && statManagerScript.phase_player == "action")
+        if(statManagerScript.phase_player == "action")
         {
             statManagerScript.UpdateAttack("player", Card.Attack);
+            
         }
 
         //DEFEND
-        if (Card.Defense > 0 && statManagerScript.phase_player=="reaction")
+        if(statManagerScript.phase_player == "reaction")
         {
             statManagerScript.UpdateDefense("player", Card.Defense);
+            
         }
+
 
         //play card effects
         if(Card.CardName=="Advanced Guard")
@@ -107,6 +110,28 @@ public class CardEffectManager : MonoBehaviour {
 
     }
 
+    public int PlayUndyingPoisonEffects()
+    {
+
+        //POISON UNDYING EFFECT
+        //loop through discard and count number of poisons
+        int numPoisons = 0;
+        for(int i=0; i<areaManagerScript.player_DiscardCardList.Count; i++)
+        {
+            if (areaManagerScript.player_DiscardCardList[i].GetComponent<CardObj>().CardName == "Poison")
+            {
+                numPoisons++;
+            }
+        }
+
+        //discard a card from bottom of player's deck for every poison in discard
+        int numDiscards = numPoisons / 2;
+
+        StartCoroutine(handManagerScript.DiscardFromBottomOfDeck(numDiscards));
+
+        return numDiscards;
+    }
+
     public void PlayOnArrivalEffects(GameObject cardObj)
     {
         //retrieve card data
@@ -116,6 +141,10 @@ public class CardEffectManager : MonoBehaviour {
         {
             //draw 1 card
             StartCoroutine(handManagerScript.DrawCards(1, "player"));
+        }
+        if(Card.CardName == "Poison")
+        {
+            cardObj.GetComponent<CardMovement>().PlayPlayerCard();
         }
     }
 
@@ -146,8 +175,10 @@ public class CardEffectManager : MonoBehaviour {
                 if (areaManagerScript.player_TrashCardList[i].transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
                 {
                     //add the card to the player's hand
-                    StartCoroutine(areaManagerScript.TempDisplay(areaManagerScript.player_TrashCardList[i], tempDisplayPlayer, playerDeckTrans, "player"));
-                    handManagerScript.playerDeckList.Add(areaManagerScript.enemy_TrashCardList[i]);
+                    StartCoroutine(areaManagerScript.TempDisplay(areaManagerScript.player_TrashCardList[i], tempDisplayPlayer, playerDeckTrans));
+                    handManagerScript.playerDeckList.Add(areaManagerScript.player_TrashCardList[i]);
+                    
+                    statManagerScript.UpdateCardsInDeck("player", 1, 1);
 
                     //remove the card from the trash pile
                     areaManagerScript.player_TrashCardList.RemoveAt(i);

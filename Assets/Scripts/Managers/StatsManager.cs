@@ -198,44 +198,31 @@ public class StatsManager : MonoBehaviour {
         }
     }
 
-    public void UpdateTotalCards(string target, int num)
+    public void UpdateCardsInDeck(string target, int numCards, int numTotal)
     {
         if (target == "player")
         {
-            totalCards_player += num;
-            playerCardsInDeck.text = "Cards In Deck: " + numCardsInDeck_player + "/" + totalCards_player;
+            numCardsInDeck_player += numCards;
+            totalCards_player += numTotal;
+            playerCardsInDeck.text = "Cards In Deck: " + numCardsInDeck_player + "/"+totalCards_player;
 
             if (totalCards_player <= 0)
             {
                 //PLAYER WINS
-                endGameText.text = "PLAYER WINS!";
+                endGameText.text = "You Lose";
             }
-
         }
         else if (target == "enemy")
         {
-            totalCards_enemy += num;
+            numCardsInDeck_enemy += numCards;
+            totalCards_enemy += numTotal;
             enemyCardsInDeck.text = "Cards In Deck: " + numCardsInDeck_enemy + "/" + totalCards_enemy;
 
             if (totalCards_enemy <= 0)
             {
                 //PLAYER WINS
-                endGameText.text = "PLAYER WINS!";
+                endGameText.text = "You Win!";
             }
-        }
-    }
-
-    public void UpdateCardsInDeck(string target, int num)
-    {
-        if (target == "player")
-        {
-            numCardsInDeck_player += num;
-            playerCardsInDeck.text = "Cards In Deck: " + numCardsInDeck_player + "/"+totalCards_player;
-        }
-        else if (target == "enemy")
-        {
-            numCardsInDeck_enemy += num;
-            enemyCardsInDeck.text = "Cards In Deck: " + numCardsInDeck_enemy + "/" + totalCards_enemy;
         }
     }
 
@@ -285,7 +272,6 @@ public class StatsManager : MonoBehaviour {
     {
         if (target == "player")
         {
-            print("playerLosesSigil: "+ numSigilsRemaining_player);
             numSigilsRemaining_player += num;
             playerSigils.text = "Sigils Remaining: " + numSigilsRemaining_player;
 

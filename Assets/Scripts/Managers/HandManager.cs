@@ -54,7 +54,8 @@ public class HandManager : MonoBehaviour {
 
     private Spider spiderScript;
 
-  
+    private Transform tempPlayerDisplay;
+
     // Use this for initialization
     void Start () {
         playerDeck = GameObject.Find("Deck").GetComponent<Transform>();
@@ -63,6 +64,8 @@ public class HandManager : MonoBehaviour {
         enemyDeck = GameObject.Find("EnemyDeck").GetComponent<Transform>();
         enemyDiscard = GameObject.Find("EnemyDiscard").GetComponent<Transform>();
         enemyTrash = GameObject.Find("EnemyTrashPile").GetComponent<Transform>();
+
+        tempPlayerDisplay = GameObject.Find("PlayerTempDisplay").GetComponent<Transform>();
 
         soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
         cardGenScript = GameObject.Find("GameManager").GetComponent<CardGenerator>();
@@ -193,7 +196,6 @@ public class HandManager : MonoBehaviour {
             }
             else if (target == "enemy")
             {
-                print("draw enemy card!");
                 if (enemyDeckList.Count - numCards >= 0)
                 {
                     DrawCards("enemy", ref enemyDeckList, ref Enemy_HandPositions, ref enemy_x, enemy_yPos, ref enemyHandlist);
@@ -216,15 +218,7 @@ public class HandManager : MonoBehaviour {
         //play sound
         soundScript.PlaySound_DrawCard();
 
-        statManagerScript.UpdateCardsInDeck(target, -1);
-
-        //playerHandList.Add(playerDeckList[numCardsInHand - 1]);
-        if (target == "player")
-        {
-            print("number of cards in hand before drawing: " + handList.Count);
-          //  print("position in hand before moving into player hand: " + deckList[numCardsInHand - 1].GetComponent<CardMovement>().posInHand);
-        }
-            
+        statManagerScript.UpdateCardsInDeck(target, -1,0);
         
         //add the card in the first position of the deck list to the hand list
         handList.Add(deckList[deckList.Count-1]);
@@ -277,8 +271,6 @@ public class HandManager : MonoBehaviour {
 
             }
         }
-        
-
 
         //check if card hand size is exceeded
         if (handList.Count > maxHandSize)
@@ -291,7 +283,7 @@ public class HandManager : MonoBehaviour {
         }
     }
 
-    //shuffles the dsicard pile and adds cards back into the deck
+    //shuffles the discard pile and adds cards back into the deck
     private void RemakeDeck(string target, ref List<GameObject> discardList, ref List<GameObject> deckList, Transform deckPos )
     {
         //gain a cycle token
@@ -326,7 +318,7 @@ public class HandManager : MonoBehaviour {
 
 
         //deal damage for the cycle tokens
-        if (target == "player")
+      /*  if (target == "player")
         {
             if (statManagerScript.numCycleTokens_player - 1 > 0)
             {
@@ -339,7 +331,7 @@ public class HandManager : MonoBehaviour {
             {
                 Call_TakeDamage(statManagerScript.numCycleTokens_enemy - 1, "enemy");
             }
-        }
+        }*/
         
     }
 
@@ -435,6 +427,44 @@ public class HandManager : MonoBehaviour {
         }
     }
 
+    public IEnumerator DiscardFromBottomOfDeck(int value)
+    {
+        print("POISON?? "+ value);
+        for(int i=0; i<value; i++)
+        {
+            print("POISON EFFECT WORK DAMMIT");
+            //check that there are cards to discard in the deck
+            if (playerDeckList.Count > 0)
+            {
+                //choose the card at the bottom of the deck
+                areaManagerScript.player_DiscardCardList.Add(playerDeckList[0]);
+
+                print("POISON EFFECT");
+                StartCoroutine(areaManagerScript.TempDisplay(playerDeckList[0], tempPlayerDisplay, playerDiscard));
+
+                //check if the card was kindling
+                if (playerDeckList[0].GetComponent<CardMovement>().isKindling)
+                {
+                    statManagerScript.UpdateKindling("player", -1, 0);
+                }
+
+                //remove from the decklist
+                playerDeckList.RemoveAt(0);
+
+                yield return new WaitForSeconds(1);
+            }
+            else
+            {
+                RemakeDeck("player", ref areaManagerScript.player_DiscardCardList, ref playerDeckList, playerDeck);
+                yield return new WaitForSeconds(0.5f);
+                i--;
+            }
+        }
+        
+
+        
+    }
+
     public IEnumerator Call_TakeDamage(int value, string target)
     {
         int chosenIndex=0;
@@ -469,7 +499,6 @@ public class HandManager : MonoBehaviour {
                         }
                         //update kindling left in deck
                         statManagerScript.UpdateKindling(target, -1, -1);
-                        print("PLAYER'S KINDLING BURNT");
                     }
                     else
                     {
