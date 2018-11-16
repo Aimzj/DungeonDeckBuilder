@@ -150,6 +150,7 @@ public class CardMovement : MonoBehaviour {
         gameObject.transform.Find("Sigil").GetComponent<SpriteRenderer>().sortingOrder = num + 1;
 
     }
+    
 
     public void PlayEnemyCard()
     {
