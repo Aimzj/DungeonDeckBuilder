@@ -152,6 +152,8 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(DisplayPhase("Player's Turn"));
         //player draws 3
         StartCoroutine(Delay(3, "player"));
+        print("PLAYER INFO");
+        StartCoroutine(dummyScript.PlayerDialogue());
 
         //PLAYER ACTS
         statManagerScript.SetPhase("player", "action");
@@ -164,7 +166,7 @@ public class GameManager : MonoBehaviour {
     //called by enemy script
     public IEnumerator EndEnemyReact()
     {
-        print("WORK FFS");
+
         //after the enemy reacts to player's cards, it is the enemy's turn
 
         //resolve attack and defense values and other effects
