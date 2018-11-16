@@ -154,6 +154,10 @@ public class Naga : MonoBehaviour {
                             statsManagerScript.UpdateDefense("enemy", 3);
                            // i = NagaHand.Count - 1;
                             DamageTaken -= 3;
+                            if(DamageTaken%3 > 0)
+                            {
+                                statsManagerScript.UpdateAttack("enemy", 1);
+                            }
                             numScale--;
                             yield return new WaitForSecondsRealtime(1);
                         }

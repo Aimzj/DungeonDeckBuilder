@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 
 public class Dummy : MonoBehaviour {
 
     private List<GameObject> dummyHand = new List<GameObject>();
 
-    public int TurnCount = -1;
+    public int TurnCount = 1;
 
     private AreaManager areaManagerScript;
     private HandManager handManagerScript;
@@ -15,21 +15,26 @@ public class Dummy : MonoBehaviour {
     private GameManager gameManagerScript;
     string output = "";
 
+    public TextMeshProUGUI dialogueText;
+
     private void Start()
     {
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         statsManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+       
     }
 
     IEnumerator startMessage()
     {
-        output = "Welcome to burn. The card game where you will seek the eternal flame ";
+        //output = "Welcome to burn. The card game where you will seek the eternal flame ";
+        dialogueText.text = "Welcome to burn. The card game where you will seek the eternal flame";
         yield return new WaitForSecondsRealtime(2);
-        output = "Play attacks during your action phase to do damage";
+        dialogueText.text = "Play attacks during your action phase to do damage";
         yield return new WaitForSecondsRealtime(2);
-        output = "Each point of damage will destroy one card from the opponent's deck";
+        dialogueText.text = "Each point of damage will destroy one card from the opponent's deck";
         yield return new WaitForSecondsRealtime(2);
     }
 
@@ -46,20 +51,20 @@ public class Dummy : MonoBehaviour {
                 //print(1);
                 playCard("Strike",1);
                 yield return new WaitForSecondsRealtime(2);
-                output = "Try to defend yourself with a guard";
+                dialogueText.text = "Try to defend yourself with a guard";
                 yield return new WaitForSecondsRealtime(2);
-                output = "Cards with shield give you defence points for the reaction phase";
+                dialogueText.text = "Cards with shield give you defence points for the reaction phase";
                 yield return new WaitForSecondsRealtime(2);
-                output = "These guards have a discard cost";
+                dialogueText.text = "These guards have a discard cost";
                 yield return new WaitForSecondsRealtime(2);
-                output = "Put one of the guards into the discard pile so you can defend";
+                dialogueText.text = "Put one of the guards into the discard pile so you can defend";
                 break;
 
             case 1:
                 
                 playCard("Strike",3);
                 yield return new WaitForSecondsRealtime(2);
-                output = "Looks like you dont have enough guards to defend";
+                dialogueText.text = "Looks like you dont have enough guards to defend";
                 //Make player lose red eye gem
                 //playCard("Strike");
                 break;
@@ -67,7 +72,7 @@ public class Dummy : MonoBehaviour {
             
 
         }
-      
+        dialogueText.text = " ";
         print("DONE WITH ENEMY Action");
         gameManagerScript.EndEnemyTurn();
     }
@@ -98,33 +103,33 @@ public class Dummy : MonoBehaviour {
         }
         else if (TurnCount == 1)
         {
-            output = "Lucky Charm has a special effect";
+            dialogueText.text = "Lucky Charm has a special effect";
             yield return new WaitForSecondsRealtime(2);
-            output = "Play it to see how it works";
+            dialogueText.text = "Play it to see how it works";
             yield return new WaitForSecondsRealtime(2);
-            output = "Play out the new cards you got from the effect";
+            dialogueText.text = "Play out the new cards you got from the effect";
             yield return new WaitForSecondsRealtime(2);
-            output = "Some effects only active in the reactive or active phase";
+            dialogueText.text = "Some effects only active in the reactive or active phase";
             yield return new WaitForSecondsRealtime(2);
-            output = "You'll get to try these out later";
+            dialogueText.text = "You'll get to try these out later";
             yield return new WaitForSecondsRealtime(2);
         }
         else if (TurnCount == 2)
         {
-            output = "The enemy is low on cards and vulnerable now!";
+            dialogueText.text = "The enemy is low on cards and vulnerable now!";
             yield return new WaitForSecondsRealtime(2);
-            output = "Play the focused stike card for massive damage";
+            dialogueText.text = "Play the focused stike card for massive damage";
             yield return new WaitForSecondsRealtime(2);
-            output = "Active it's powerful burn effect by burning one card before playing this";
+            dialogueText.text = "Active it's powerful burn effect by burning one card before playing this";
             yield return new WaitForSecondsRealtime(2);
-            output = "Dont forget the discard cost too!";
+            dialogueText.text = "Dont forget the discard cost too!";
             yield return new WaitForSecondsRealtime(2);
         }
         else if (TurnCount == 3)
         {
-            output = "";
+            dialogueText.text = "";
         }
-        
+        dialogueText.text = " ";
         yield return new WaitForSecondsRealtime(2);
     }
 
@@ -147,33 +152,36 @@ public class Dummy : MonoBehaviour {
                 //Trigger Prompt
                 playCard("Lesser Guard",2);
                 yield return new WaitForSecondsRealtime(2);
-                output = "Some cards trigger effects when drawn";
+                dialogueText.text = "Some cards trigger effects when drawn";
+                print(dialogueText.text);
                 yield return new WaitForSecondsRealtime(2);
-                output = "These are marked with the 'on arrival' keyword";
+                dialogueText.text = "These are marked with the 'on arrival' keyword";
 
                 break;
             case 3:
-                output = "Congratualtions you've finished training";
+                dialogueText.text = "Congratualtions you've finished training";
                 yield return new WaitForSecondsRealtime(2);
-                output = "An encouter ends once either the player or the monster reach their burn limits or lose all sigils";
+                dialogueText.text = "An encouter ends once either the player or the monster reach their burn limits or lose all sigils";
                 yield return new WaitForSecondsRealtime(2);
-                output = "Don't worry your sigils come back after each battle";
+                dialogueText.text = "Don't worry your sigils come back after each battle";
                 yield return new WaitForSecondsRealtime(2);
-                output = "After each victory you will awarded with the your choice of card pack to add to your deck";
+                dialogueText.text = "After each victory you will awarded with the your choice of card pack to add to your deck";
                 yield return new WaitForSecondsRealtime(2);
-                output = "Remember your burn limit persists through encounters";
+                dialogueText.text = "Remember your burn limit persists through encounters";
                 yield return new WaitForSecondsRealtime(2);
-                output = "You are now ready to delve deeper and face greater challenges";
+                dialogueText.text = "You are now ready to delve deeper and face greater challenges";
                 yield return new WaitForSecondsRealtime(2);
-                output = "Good luck an get ready to burn!";
+                dialogueText.text = "Good luck an get ready to burn!";
                 yield return new WaitForSecondsRealtime(2);
+                //dialogueText.text = "";
                 //TRIGGER PROMPT FOR PLAYER
                 break;
 
 
 
         }
-        yield return new WaitForSecondsRealtime(2);
+        dialogueText.text = " ";
+       yield return new WaitForSecondsRealtime(2);
         print("END ENEMY REACTION");
         gameManagerScript.EndPlayerReact();
     }
