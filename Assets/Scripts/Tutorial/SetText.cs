@@ -9,7 +9,7 @@ public class SetText : MonoBehaviour {
 
     bool dummyAttack = false;
     bool isPlayerAction = false;
-    bool discardPrompt = false
+    bool discardPrompt = false;
     private Dummy dummyScript;
     float timer = 3f;
 

@@ -770,7 +770,7 @@ MonoBehaviour:
   BurnCost: 0
   FlavourText: 
   Attack: 1
-  Defense: 1
+  Defense: 0
   SigilNum: 0
   Kindling: 0
   DiscardEffect: 

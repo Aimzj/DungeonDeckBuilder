@@ -33,6 +33,10 @@ public class AreaManager : MonoBehaviour {
 
     private HandManager handManagerScript;
     private StatsManager statManagerScript;
+    private Dummy dummyScript;
+
+    //For Tut
+    public int level = 0;
 
     // Use this for initialization
     void Start () {
@@ -51,6 +55,8 @@ public class AreaManager : MonoBehaviour {
 
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+
+        dummyScript = GameObject.Find("GameManager").GetComponent<Dummy>();
 
         player_numCardsInPlay = 0;
         enemy_numCardsInPlay = 0;
@@ -263,6 +269,13 @@ public class AreaManager : MonoBehaviour {
 
         handManagerScript.Call_SetPositionsInHand(target);
         handManagerScript.Call_UpdateCardPositionsInHand(target);
+
+        //For tut
+        if(level == 0 && cardObj.GetComponent<CardObj>().CardType == "player")
+        {
+            StartCoroutine(dummyScript.PlayerDialogue());
+        }
+        
 
 
     }

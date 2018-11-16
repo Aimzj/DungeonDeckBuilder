@@ -27,7 +27,8 @@ public class GameManager : MonoBehaviour {
     private TextMeshPro gamePhaseText;
     private GameObject gamePhaseDisplay;
 
-    private int level;
+    private int level = 0;
+    private int turnCount;
 
     private Canvas burnCanvas;
     public TextMeshProUGUI effectText, costText;
@@ -192,6 +193,7 @@ public class GameManager : MonoBehaviour {
 
 
         StartCoroutine(EnemyWaitToAct());
+        StartCoroutine(dummyScript.PlayerDialogue());
 
 
 
@@ -210,6 +212,7 @@ public class GameManager : MonoBehaviour {
         //ENEMY ACTS  
         if(level == 0)
         {
+            print("CAN YOU WORK FFS");
             StartCoroutine(dummyScript.Action());
         }
        else  if (level == 1)

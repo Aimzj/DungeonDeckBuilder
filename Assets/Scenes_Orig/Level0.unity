@@ -9860,6 +9860,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0451a7baf5e5ac49a25a9af23c56638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerDeckTrans: {fileID: 0}
+  enemyDeckTrans: {fileID: 0}
+  poisonDeckTrans: {fileID: 0}
   Card: {fileID: 1194213479686936, guid: 7db14e0d90d630645abeef99acd35f71, type: 2}
   PlayerSprite_Front: {fileID: 21300000, guid: 4ed4e50417a8762489784bd093f20e41, type: 3}
   PlayerSprite_Back: {fileID: 0}
@@ -9870,6 +9873,25 @@ MonoBehaviour:
   NagaDeck: []
   PoisonDeck: []
   WoundDeck: []
+  ReinforcementPack1: []
+  ReinforcementPack2: []
+  HealingPack: []
+  AshPack: []
+  NecromancerPack: []
+  ArcanePack: []
+  PrimusPack: []
+  PlayerTutDeck:
+  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  EnemyTutDeck:
+  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
 --- !u!114 &2134202305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9961,7 +9983,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea8004be3b340f441a5cce13aa1c5809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TurnCount: 0
+  TurnCount: 1
 --- !u!114 &2134202308
 MonoBehaviour:
   m_ObjectHideFlags: 0
