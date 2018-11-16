@@ -78,7 +78,7 @@ public class StatsManager : MonoBehaviour {
             if (phase == "action")
                 buttonText.text = "End Turn";
             else if(phase == "reaction")
-                buttonText.text = "REACT";
+                buttonText.text = "React";
             else
                 buttonText.text = "waiting...";
 
@@ -121,7 +121,7 @@ public class StatsManager : MonoBehaviour {
             if (numHealth_player <= 0)
             {
                 //PLAYER LOSES
-                endGameText.text = "YOU LOSE";
+                endGameText.text = "You Lose";
             }
         }
         else if (target == "enemy")
@@ -132,7 +132,7 @@ public class StatsManager : MonoBehaviour {
             if (numHealth_enemy <= 0)
             {
                 //PLAYER WINS
-                endGameText.text = "PLAYER WINS!";
+                endGameText.text = "You Win!";
             }
         }
     }

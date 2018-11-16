@@ -33,6 +33,9 @@ public class AreaManager : MonoBehaviour {
 
     private HandManager handManagerScript;
     private StatsManager statManagerScript;
+    private SoundManager soundManagerScript;
+
+    public ParticleSystem bigFireball;
 
     // Use this for initialization
     void Start () {
@@ -51,6 +54,7 @@ public class AreaManager : MonoBehaviour {
 
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+        soundManagerScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
 
         player_numCardsInPlay = 0;
         enemy_numCardsInPlay = 0;
@@ -105,6 +109,16 @@ public class AreaManager : MonoBehaviour {
         }
     }
 
+    private void OrderLayerDiscard(ref List<GameObject> discardList)
+    {       
+        //loop through discard list
+        for (int i=0; i < discardList.Count; i++)
+        {
+            discardList[i].GetComponent<CardMovement>().ChangeOrder(11);
+        }
+        discardList[discardList.Count - 1].GetComponent<CardMovement>().ChangeOrder(13);
+    }
+
     private void DiscardCard(GameObject cardObj, string target, ref List<GameObject> discardList, Transform discardTrans)
     {
       
@@ -123,6 +137,8 @@ public class AreaManager : MonoBehaviour {
         //arrange cards in hand
         handManagerScript.Call_SetPositionsInHand(target);
         handManagerScript.Call_UpdateCardPositionsInHand(target);
+
+        OrderLayerDiscard(ref discardList);
     }
 
     public void Call_TakeDamage(GameObject cardObj, string target)
@@ -178,6 +194,11 @@ public class AreaManager : MonoBehaviour {
         obj = (GameObject)Instantiate(TempObj, new Vector3(targetTrans.position.x, targetTrans.position.y, targetTrans.position.z), Quaternion.Euler(90, 90, 0));
         card.GetComponent<CardMovement>()._targetTransform = obj.transform;       
 
+        if(targetTrans.position == playerTrash.position || targetTrans.position == enemyTrash.position)
+        {
+            soundManagerScript.PlaySound_BurnCard();
+            bigFireball.Play();
+        }
         yield return new WaitForSecondsRealtime(0.5f);
 
         //change order in layer
@@ -198,6 +219,9 @@ public class AreaManager : MonoBehaviour {
 
     public void TrashCard(GameObject cardObj, string target, ref List<GameObject> trashList, Transform trashTrans)
     {
+        bigFireball.Play();
+        soundManagerScript.PlaySound_BurnCard();
+
         //add 1 to the burn pool
         statManagerScript.UpdateBurn(target, 1);
 
@@ -232,6 +256,14 @@ public class AreaManager : MonoBehaviour {
         handManagerScript.Call_SetPositionsInHand(target);
         handManagerScript.Call_UpdateCardPositionsInHand(target);
 
+        StartCoroutine(OrderChangeDelay(cardObj));
+    }
+
+    IEnumerator OrderChangeDelay(GameObject card)
+    {
+        yield return new WaitForSecondsRealtime(0.2f);
+        //change order in layer
+        card.GetComponent<CardMovement>().ChangeOrder(0);
     }
 
     public void Call_PlayCard(GameObject cardObj, string target)

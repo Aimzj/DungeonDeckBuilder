@@ -50,6 +50,7 @@ public class HandManager : MonoBehaviour {
     private CardGenerator cardGenScript;
     private AreaManager areaManagerScript;
     private StatsManager statManagerScript;
+    private CardEffectManager cardEffectScript;
 
     private Spider spiderScript;
 
@@ -66,6 +67,7 @@ public class HandManager : MonoBehaviour {
         cardGenScript = GameObject.Find("GameManager").GetComponent<CardGenerator>();
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+        cardEffectScript = GameObject.Find("GameManager").GetComponent<CardEffectManager>();
 
         spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
 
@@ -231,6 +233,9 @@ public class HandManager : MonoBehaviour {
 
         //change the card's layering
         ReorderHandLayers(target);
+
+        //ON ARRIVAL PLAYER
+        cardEffectScript.PlayOnArrivalEffects(handList[handList.Count - 1]);
 
         //ON ARRIVAL
         if(target == "enemy")

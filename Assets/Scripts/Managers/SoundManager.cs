@@ -5,13 +5,18 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour {
 
     //card interactions
-    public AudioSource DrawCard_Sound, PickUpCard_Sound, HoverCard_Sound, PlayCard_Sound;
+    public AudioSource DrawCard_Sound, PickUpCard_Sound, HoverCard_Sound, PlayCard_Sound, BurnCard_Sound;
 
 	// Use this for initialization
 	void Start () {
 		
 	}
 	
+    public void PlaySound_BurnCard()
+    {
+        BurnCard_Sound.Play();
+    }
+
     public void PlaySound_DrawCard()
     {
         DrawCard_Sound.Play();
