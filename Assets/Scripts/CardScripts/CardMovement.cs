@@ -34,7 +34,7 @@ public class CardMovement : MonoBehaviour {
     private double smooth = 5.0;
 
     //hovering
-    private bool isHovering;
+    public bool isHovering;
     public bool isInHand;
     private Vector3 origHandPos;
     [SerializeField]
@@ -53,6 +53,7 @@ public class CardMovement : MonoBehaviour {
     private AreaManager areaManagerScript;
     private CardEffectManager cardEffectScript;
     private StatsManager statManagerScript;
+    private GameManager gameManagerScript;
 
     //sound
     private SoundManager soundScript;
@@ -63,6 +64,8 @@ public class CardMovement : MonoBehaviour {
     //bool is used to prevent player from interacting with scripts when they shouldn't
     public bool isFrozen;
 
+    public bool isKindling;
+
     // Use this for initialization
     void Start () {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
@@ -70,6 +73,7 @@ public class CardMovement : MonoBehaviour {
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         cardEffectScript = GameObject.Find("GameManager").GetComponent<CardEffectManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
 
@@ -125,7 +129,7 @@ public class CardMovement : MonoBehaviour {
                     isHovering = false;
 
                     //change the order in layer of card and text
-                    ChangeOrder(100);
+                    ChangeOrder(42);
                 }
             }
         }
@@ -161,14 +165,50 @@ public class CardMovement : MonoBehaviour {
 
         areaManagerScript.Call_PlayCard(this.gameObject, "enemy");
 
+        handManagerScript.ReorderHandLayers("enemy");
         //play card with effects
        // cardEffectScript.PlayCard(this.gameObject, false);
+    }
+
+    public void DiscardEnemyCard()
+    {
+        //play discard sound
+        soundScript.PlaySound_PlayCard();
+
+        //remove the card from the hand list
+        handManagerScript.Call_RemoveCardFromHand(this.posInHand, "enemy");
+        posInHand = -1;
+
+        isPlayed = true;
+        isInHand = false;
+
+        areaManagerScript.Call_DiscardCard(this.gameObject, "enemy");
+
+        handManagerScript.ReorderHandLayers("enemy");
+    }
+
+    public void TrashEnemyCard()
+    {
+        //play sound
+        soundScript.PlaySound_PlayCard();
+
+        //remove the card from the Hand List
+        handManagerScript.Call_RemoveCardFromHand(this.posInHand, "enemy");
+        posInHand = -1;
+
+        isPlayed = true;
+        isInHand = false;
+
+        areaManagerScript.Call_TrashCard(this.gameObject, "enemy");
+
+        handManagerScript.ReorderHandLayers("enemy");
     }
 
     private void OnMouseUp()
     {
         if (!isEnemyCard
-            && !isFrozen)
+            && !isFrozen
+            && !isPlayed)
         {
             isFollowing = false;
             handManagerScript.isPlayerHoldingCard = isFollowing;
@@ -203,36 +243,20 @@ public class CardMovement : MonoBehaviour {
 
                         areaManagerScript.Call_PlayCard(this.gameObject, "player");
 
-                        //play card with effects
+                        //play the card's standard effects
                         cardEffectScript.PlayCard(this.gameObject, false);
+
+                        //check if the card has burn effects and if the player can afford them
+                        int burnCost = this.gameObject.GetComponent<CardObj>().BurnCost;
+                        if (burnCost > 0
+                            && statManagerScript.numBurn_player >= burnCost)
+                        {
+                            //ask the player if they want to use the effect
+                            gameManagerScript.DisplayBurnUI(this.gameObject);
+                        }
+                        
                     }
 
-                }
-                //PLAY WITH BURN EFFECTS
-                else if (areaSensorScript.isBurn)
-                {
-                    //only if the hand size is not exceeded
-                    //and if the player can "afford" it
-                    if (!handManagerScript.isExceedingHandSize
-                        && gameObject.GetComponent<CardObj>().BurnCost <= statManagerScript.numBurn_player
-                        && gameObject.GetComponent<CardObj>().DiscardCost <= statManagerScript.numDiscard_player)
-                    {
-                        //play burn sound
-
-                        //remove the card from the Hand List
-                        handManagerScript.Call_RemoveCardFromHand(this.posInHand, "player");
-                        posInHand = -1;
-
-                        isPlayed = true;
-                        isInHand = false;
-
-                        areaManagerScript.Call_PlayCard(this.gameObject, "player");
-
-                        //play card with burn effects
-                        cardEffectScript.PlayCard(this.gameObject, true);
-
-
-                    }
                 }
                 //DISCARD
                 else if (areaSensorScript.isDiscard)
@@ -294,6 +318,7 @@ public class CardMovement : MonoBehaviour {
 
             isHovering = true;
             _targetTransform.position = new Vector3(_targetTransform.position.x, hoverHeight, zShift);
+            ChangeOrder(41);
         }
         
     }
@@ -307,6 +332,8 @@ public class CardMovement : MonoBehaviour {
         {
             isHovering = false;
             _targetTransform.position = new Vector3(_targetTransform.position.x, _targetTransform.position.y-hoverHeight, -0.83f);
+
+            handManagerScript.ReorderHandLayers("player");
         }
     }
 

@@ -9,7 +9,7 @@ public class CardGenerator : MonoBehaviour {
     //transforms of decks
     private Transform playerDeckTrans, enemyDeckTrans, poisonDeckTrans;
 
-    private int numUniqueCards=20;
+    private int numUniqueCards=21;
 
     public GameObject Card;
 
@@ -23,6 +23,9 @@ public class CardGenerator : MonoBehaviour {
 
     public Sprite PlayerSprite_Front, PlayerSprite_Back, SpiderSprite_Front, SpiderSprite_Back;
 
+    //FOR TUTORIAL
+    private SetDecks setTutDecks;
+
     //decks
     public List<GameObject>
         //player deck
@@ -32,7 +35,15 @@ public class CardGenerator : MonoBehaviour {
         NagaDeck,
         //status effect decks
         PoisonDeck,
-        WoundDeck;
+        WoundDeck,
+        //packs
+        ReinforcementPack1,
+        ReinforcementPack2,
+        HealingPack,
+        AshPack,
+        NecromancerPack,
+        ArcanePack,
+        PrimusPack;
 
 
     // Use this for initialization
@@ -45,10 +56,29 @@ public class CardGenerator : MonoBehaviour {
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
-        InitialiseLevel(2);
-       
+        //For tutorial
+        setTutDecks = GameObject.Find("GameManager").GetComponent<SetDecks>();
+
+        InitialiseLevel(1);
     }
 
+    private void InstantiateCard(ref GameObject card, Vector3 pos, Quaternion rot, bool isKindling, ref List<GameObject> pack, int numCards)
+    {
+        for(int i = 0; i<numCards; i++)
+        {
+            card = (GameObject)Instantiate(tempObj);
+            card.transform.position = pos;
+            card.transform.rotation = rot;
+
+            if (isKindling)
+            {
+                card.GetComponent<CardMovement>().isKindling = true;
+            }
+
+            pack.Add(card);
+        }
+        
+    }
 
     public void InitialiseLevel(int level)
     {
@@ -68,15 +98,22 @@ public class CardGenerator : MonoBehaviour {
             LoadMyData("card_" + i.ToString());
 
             int numSigils = cardScript.SigilNum;
+            int numKindling = cardScript.Kindling;
 
             //set stats
-            if (cardScript.CardType == "player_starting")
+            if (cardScript.CardType == "player_starting" && level != 0)
             {
-            
+
                 if (numSigils > 0)
                     statManagerScript.UpdateSigils("player", numSigils);
+                if (numKindling > 0)
+                    statManagerScript.SetKindling("player", numKindling);
                 player_health += cardScript.SigilNum * 5;
                 player_cardsInDeck += cardScript.NumInDeck;
+            }
+            else if (level == 0)
+            {
+                setTutDecks.setDecks();
             }
             else if (level == 1
                 && cardScript.CardType == "spider")
@@ -84,6 +121,8 @@ public class CardGenerator : MonoBehaviour {
             
                 if (numSigils > 0)
                     statManagerScript.UpdateSigils("enemy", numSigils);
+                if (numKindling > 0)
+                    statManagerScript.SetKindling("enemy", numKindling);
                 enemy_health += cardScript.SigilNum * 5;
                 enemy_cardsInDeck += cardScript.NumInDeck;
             }
@@ -93,14 +132,118 @@ public class CardGenerator : MonoBehaviour {
                
                 if (numSigils > 0)
                     statManagerScript.UpdateSigils("enemy", numSigils);
+                if (numKindling > 0)
+                    statManagerScript.SetKindling("enemy", numKindling);
                 enemy_health += cardScript.SigilNum * 5;
                 enemy_cardsInDeck += cardScript.NumInDeck;
             }
+
+            //create card packs
+            if (cardScript.CardType == "player")
+            {
+                if(cardScript.CardName=="Advanced Guard")
+                {
+                    //x2 reinforcement1
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0),false, ref ReinforcementPack1,2);
+
+                    //x1 healing pack
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1);
+
+                    //x1 primus (kindled)
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref PrimusPack, 1);
+                }
+                else if (cardScript.CardName == "Guard")
+                {
+                    //x1 reinforcement1
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack1,1);
+
+                    //x1 reinforcement2
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1);
+
+                    //x1 healing pack
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1);
+
+                    //x2 Necromancer
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref NecromancerPack, 2);
+
+                    //x4 arcane (4 kindled)
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref ArcanePack, 4);
+
+                    //x1 primus (kindled)
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref PrimusPack, 1);
+                }
+                else if(cardScript.CardName == "Lucky Charm")
+                {
+                    //x2 reinforcement1
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack1,2);
+                }
+                else if(cardScript.CardName == "Fireball")
+                {
+                    //x1 ash
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,1);
+                }
+                else if(cardScript.CardName == "Focused Strike")
+                {
+                    //x2 reinforcement pack 2
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2,2);
+
+                    //x1 ash
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,1);
+
+                    //x1 primus
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1);
+                }
+                else if(cardScript.CardName == "Strike")
+                {
+                    //x3 ash (1 kindling)
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref AshPack,1);
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,2);
+
+                    //x1 reinforcement2
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1);
+
+                    //x2 healing (2 kindled)
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref HealingPack, 2);
+
+                    //x2 necromancer (2 kindled)
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref NecromancerPack, 2);
+
+                    //x1 primus
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1);
+                }
+                else if(cardScript.CardName == "Second Wind")
+                {
+                    //x1 reinforcement2
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1);
+                }
+                else if(cardScript.CardName == "Healing Potion")
+                {
+                    //x1 healing pack
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1);
+                }
+                else if(cardScript.CardName == "Pact of Maggots")
+                {
+                    //x1 Necromancer
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref NecromancerPack, 1);
+                }
+                else if(cardScript.CardName == "Inner Strength")
+                {
+                    //x1 arcane
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ArcanePack, 1);
+                }
+                else if(cardScript.CardName == "Eternal Will")
+                {
+                    //x1 primus pack
+                    InstantiateCard(ref cardObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1);
+                }
+            }
+
 
             //seperate cards into decks
             for (int j = 0; j < cardScript.NumInDeck; j++)
             {
                 cardObj = (GameObject)Instantiate(tempObj);
+
                 if (cardScript.CardType == "player_starting")
                 {
                     //check for Sigils
@@ -110,6 +253,12 @@ public class CardGenerator : MonoBehaviour {
                         cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
                         numSigils--;
                     }
+                    else if (numKindling > 0)
+                    {
+                        //put the kindling mark on the card
+                        cardObj.GetComponent<CardMovement>().isKindling = true;
+                        numKindling--;
+                    }
 
                     cardObj.transform.position = playerDeckTrans.position;
                     cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
@@ -118,8 +267,7 @@ public class CardGenerator : MonoBehaviour {
                     cardObj.GetComponent<CardMovement>().isEnemyCard = false;
                     PlayerDeck.Add(cardObj);
                 }
-                else if (level == 1
-                    && cardScript.CardType == "spider")
+                else if (level == 1 && cardScript.CardType == "spider")
                 {
                     //check for Sigils
                     if (numSigils > 0)
@@ -127,6 +275,11 @@ public class CardGenerator : MonoBehaviour {
                         //put a sigil on the card
                         cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
                         numSigils--;
+                    }else if (numKindling > 0)
+                    {
+                        //put the kindling mark on the card
+                        cardObj.GetComponent<CardMovement>().isKindling = true;
+                        numKindling--;
                     }
 
                     cardObj.transform.position = enemyDeckTrans.position;
@@ -136,15 +289,21 @@ public class CardGenerator : MonoBehaviour {
                     cardObj.GetComponent<CardMovement>().isEnemyCard = true;
                     SpiderDeck.Add(cardObj);
                 }
-                else if(level==2
-                    && cardScript.CardType == "naga")
+                else if(level==2 && cardScript.CardType=="naga")
                 {
+                   
                     //check for Sigils
                     if (numSigils > 0)
                     {
                         //put a sigil on the card
                         cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled = true;
                         numSigils--;
+                    }
+                    else if (numKindling > 0)
+                    {
+                        //put the kindling mark on the card
+                        cardObj.GetComponent<CardMovement>().isKindling = true;
+                        numKindling--;
                     }
 
                     cardObj.transform.position = enemyDeckTrans.position;
@@ -163,10 +322,18 @@ public class CardGenerator : MonoBehaviour {
 
                         cardObj.GetComponent<CardMovement>().isEnemyCard = false;
                         PoisonDeck.Add(cardObj);
+                    }else if(cardScript.CardName == "Wound")
+                    {
+                        cardObj.transform.position = poisonDeckTrans.position;
+                        cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+                        cardObj.GetComponent<CardMovement>().isEnemyCard = false;
+                        WoundDeck.Add(cardObj);
                     }
                 }
                 else
                 {
+                    print(cardScript.CardName+ " :" + cardScript.CardType+" :" +level.ToString());
                     cardObj.transform.position = new Vector3(1000,1000,1000);
                     cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
                 }
@@ -186,7 +353,7 @@ public class CardGenerator : MonoBehaviour {
         handManagerScript.InitialiseCards(level);
 
         //start the game
-        gameManagerScript.StartGame(1);
+        gameManagerScript.StartGame(level);
     }
 
 
@@ -202,6 +369,7 @@ public class CardGenerator : MonoBehaviour {
         cardScript.Defense = my_container.GetData("defense").ToInt();
 
         cardScript.SigilNum = my_container.GetData("sigil_num").ToInt();
+        cardScript.Kindling = my_container.GetData("kindling").ToInt();
 
         cardScript.DiscardEffect = my_container.GetData("discard_effect").ToString();
 

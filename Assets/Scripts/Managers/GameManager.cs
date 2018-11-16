@@ -19,27 +19,42 @@ public class GameManager : MonoBehaviour {
     private Button endTurnButton;
 
     private StatsManager statManagerScript;
+    private CardEffectManager cardEffectScript;
 
     private Spider spiderScript;
     private Naga nagaScript;
+    private Dummy dummyScript;
 
     private TextMeshPro gamePhaseText;
     private GameObject gamePhaseDisplay;
 
     private int level;
 
+    private Canvas burnCanvas;
+    public TextMeshProUGUI effectText, costText;
+
     // Use this for initialization
     void Start () {
 
         gamePhaseDisplay = GameObject.Find("GamePhase");
         gamePhaseText = GameObject.Find("GamePhaseText").GetComponent<TextMeshPro>();
-
+     
         endTurnButton = GameObject.Find("EndTurn").GetComponent<Button>();
 
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+        cardEffectScript = GameObject.Find("GameManager").GetComponent<CardEffectManager>();
 
+        handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
+
         nagaScript = GameObject.Find("GameManager").GetComponent<Naga>(); ;
+        dummyScript = GameObject.Find("GameManager").GetComponent<Dummy>();
+
+        
+
+        burnCanvas = GameObject.Find("Burn_Canvas").GetComponent<Canvas>();
+        burnCanvas.enabled = false;
+
     }
 
     public void StartGame(int lvl)
@@ -107,13 +122,21 @@ public class GameManager : MonoBehaviour {
 
     public void EndPlayerReact()
     {
+        StartCoroutine(EndPlayerReact_wait());
+    }
+
+    public IEnumerator EndPlayerReact_wait()
+    {
         //resolve attack and defense values and other effects
         int DamageDealt_toPlayer = statManagerScript.numAttack_enemy - statManagerScript.numDefense_player;
         if (DamageDealt_toPlayer > 0)
         {
-            statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
-            //StartCoroutine(handManagerScript.DamagePlayer(DamageDealt_toPlayer));
+           // statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
+            StartCoroutine(handManagerScript.Call_TakeDamage(DamageDealt_toPlayer, "player"));
         }
+        //wait until all damage is finished being dealt before drawing new cards
+        yield return new WaitForSecondsRealtime(1.2f * DamageDealt_toPlayer);
+
         //clear attack and defense values
         statManagerScript.ClearAttack();
         statManagerScript.ClearDefense();
@@ -138,7 +161,7 @@ public class GameManager : MonoBehaviour {
     }
 
     //called by enemy script
-    public void EndEnemyReact()
+    public IEnumerator EndEnemyReact()
     {
         //after the enemy reacts to player's cards, it is the enemy's turn
 
@@ -146,9 +169,11 @@ public class GameManager : MonoBehaviour {
         int DamageDealt_toEnemy = statManagerScript.numAttack_player - statManagerScript.numDefense_enemy;
         if (DamageDealt_toEnemy > 0)
         {
-            statManagerScript.UpdateHealth("enemy", -DamageDealt_toEnemy);
-           // StartCoroutine(enemyHandManagerScript.DamageEnemy(DamageDealt_toEnemy));
+           // statManagerScript.UpdateHealth("enemy", -DamageDealt_toEnemy);
+            StartCoroutine(handManagerScript.Call_TakeDamage(DamageDealt_toEnemy,"enemy"));
         }
+        //wait until all damage is finished being dealt before drawing new cards
+        yield return new WaitForSecondsRealtime(1.2f * DamageDealt_toEnemy);
 
         //clear attack and defense values
         statManagerScript.ClearAttack();
@@ -184,11 +209,20 @@ public class GameManager : MonoBehaviour {
     IEnumerator EnemyWaitToAct()
     {
         yield return new WaitForSeconds(3f);
-        //ENEMY ACTS      
-        if(level==1)
+        //ENEMY ACTS  
+        if(level == 0)
+        {
+            StartCoroutine(dummyScript.Action());
+        }
+       else  if (level == 1)
+        {
+            print("do the thing DUMB SPIDER!");
             StartCoroutine(spiderScript.Action());
-        else if(level==2)
+        }
+        else if (level == 2)
+        {
             StartCoroutine(nagaScript.Action());
+        }
         
     }
 
@@ -205,9 +239,11 @@ public class GameManager : MonoBehaviour {
             //ENEMY REACTS
             statManagerScript.SetPhase("player", "waiting");
             statManagerScript.SetPhase("enemy", "reaction");
-            if(level==1)
+            if (level == 0)
+                StartCoroutine(dummyScript.Reaction());
+            else if (level == 1)
                 StartCoroutine(spiderScript.Reaction());
-            else if(level==2)
+            else if (level == 2)
                 StartCoroutine(nagaScript.Reaction());
             
         }
@@ -232,5 +268,53 @@ public class GameManager : MonoBehaviour {
     public void OpenStore()
     {
         StartCoroutine(sceneManagerScript.FadeOut(2));
+    }
+
+    public void DisplayBurnUI(GameObject cardObj)
+    {
+        burnCanvas.enabled = true;
+        effectText.text = "(" + cardObj.GetComponent<CardObj>().BurnEffect + ")";
+        costText.text = "Cost: " + cardObj.GetComponent<CardObj>().BurnCost.ToString();
+
+        //freeze all interactions with cards
+        for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+        {
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isFrozen = true;
+        }
+        //disable the button
+        endTurnButton.enabled = false;
+    }
+
+    public void NoBurn()
+    {
+        //unfreeze all interactions with cards
+        for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+        {
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isFrozen = false;
+        }
+        //enable the button
+        endTurnButton.enabled = true;
+
+        burnCanvas.enabled = false;
+    }
+
+    public void YesBurn()
+    {
+        //unfreeze all interactions with cards
+        for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+        {
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isFrozen = false;
+        }
+        //enable the button
+        endTurnButton.enabled = true;
+
+        burnCanvas.enabled = false;
+
+        //give the card a burn halo whilst in play area
+        areaManagerScript.player_PlayCardList[areaManagerScript.player_PlayCardList.Count-1].transform.Find("BurnBorder").GetComponent<SpriteRenderer>().enabled = true;
+
+        //play the card's burn effects
+        cardEffectScript.PlayBurn(areaManagerScript.player_PlayCardList[areaManagerScript.player_PlayCardList.Count - 1]);
+
     }
 }

@@ -40,7 +40,7 @@ public class AreaManager : MonoBehaviour {
         playerDiscard = GameObject.Find("Discard").GetComponent<Transform>();
         playerTrash = GameObject.Find("Trash").GetComponent<Transform>();
         enemyDeck = GameObject.Find("EnemyDeck").GetComponent<Transform>();
-        enemyDiscard = GameObject.Find("EnemyDiscard").GetComponent<Transform>();
+        enemyDiscard = GameObject.Find("EnemyDiscardPile").GetComponent<Transform>();
         enemyTrash = GameObject.Find("EnemyTrashPile").GetComponent<Transform>();
 
         playerTempDisplay = GameObject.Find("PlayerTempDisplay").GetComponent<Transform>();
@@ -73,8 +73,41 @@ public class AreaManager : MonoBehaviour {
         }
     }
 
+    public void ReorderPlayAreaLayers(string target)
+    {
+        if (target == "player")
+        {
+            //loop through all the cards in the hand (that are not hovering) and set their positions
+            //starting from layer 6
+            int count = 6;
+            for (int i = player_PlayCardList.Count - 1; i >= 0; i--)
+            {
+                if (!player_PlayCardList[i].GetComponent<CardMovement>().isHovering)
+                {
+                    player_PlayCardList[i].GetComponent<CardMovement>().ChangeOrder(count);
+                    count += 2;
+                }
+            }
+        }
+        else if (target == "enemy")
+        {
+            //loop through all the cards in the hand (that are not hovering) and set their positions
+            //starting from layer 6
+            int count = 6;
+            for (int i = enemy_PlayCardList.Count - 1; i >= 0; i--)
+            {
+                if (!enemy_PlayCardList[i].GetComponent<CardMovement>().isHovering)
+                {
+                    enemy_PlayCardList[i].GetComponent<CardMovement>().ChangeOrder(count);
+                    count += 2;
+                }
+            }
+        }
+    }
+
     private void DiscardCard(GameObject cardObj, string target, ref List<GameObject> discardList, Transform discardTrans)
     {
+      
         //add 1 to the discard pool
         statManagerScript.UpdateDiscard(target, 1);
 
@@ -87,7 +120,6 @@ public class AreaManager : MonoBehaviour {
         //move the card's position to discard pile
         var obj = (GameObject)Instantiate(TempObj, new Vector3(discardTrans.position.x, discardTrans.position.y, discardTrans.position.z), Quaternion.Euler(90, 90, 0));
         cardObj.GetComponent<CardMovement>()._targetTransform = obj.transform;
-
         //arrange cards in hand
         handManagerScript.Call_SetPositionsInHand(target);
         handManagerScript.Call_UpdateCardPositionsInHand(target);
@@ -121,9 +153,17 @@ public class AreaManager : MonoBehaviour {
         trashList[trashList.Count - 1].GetComponent<CardMovement>().isPlayed = true;
 
         StartCoroutine(TempDisplay(cardObj, tempDisplay, trashTrans, target));
+
+        //damage player
+        statManagerScript.UpdateHealth(target, -1);
+        //check if burnt card was a Sigil card
+        if (cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
+        {
+            statManagerScript.UpdateSigils(target, -1);
+        }
     }
 
-    IEnumerator TempDisplay(GameObject card, Transform tempDisplay, Transform trashTrans, string target)
+    public IEnumerator TempDisplay(GameObject card, Transform tempDisplay, Transform targetTrans, string target)
     {
         //change the card's order in layer
         card.GetComponent<CardMovement>().ChangeOrder(100);
@@ -134,20 +174,14 @@ public class AreaManager : MonoBehaviour {
 
         yield return new WaitForSecondsRealtime(1);
 
-        //move the card's position to player's trash pile
-        obj = (GameObject)Instantiate(TempObj, new Vector3(trashTrans.position.x, trashTrans.position.y, trashTrans.position.z), Quaternion.Euler(90, 90, 0));
+        //move the card's position to target position
+        obj = (GameObject)Instantiate(TempObj, new Vector3(targetTrans.position.x, targetTrans.position.y, targetTrans.position.z), Quaternion.Euler(90, 90, 0));
         card.GetComponent<CardMovement>()._targetTransform = obj.transform;       
 
-        //damage player
-        statManagerScript.UpdateHealth(target, -1);
-        //check if burnt card was a Sigil card
-        if (card.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
-        {
-            statManagerScript.UpdateSigils(target, -1);
-        }
-
         yield return new WaitForSecondsRealtime(0.5f);
-        card.GetComponent<CardMovement>().ChangeOrder(15);
+
+        //change order in layer
+        card.GetComponent<CardMovement>().ChangeOrder(0);
     }
 
     public void Call_TrashCard(GameObject cardObj, string target)
@@ -187,6 +221,11 @@ public class AreaManager : MonoBehaviour {
         if (cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
         {
             statManagerScript.UpdateSigils(target, -1);
+        }
+        //check if card burnt was a kindling card
+        if (cardObj.GetComponent<CardMovement>().isKindling)
+        {
+            statManagerScript.UpdateKindling(target, 0, -1);
         }
 
         //arrange cards in hand
@@ -259,7 +298,7 @@ public class AreaManager : MonoBehaviour {
         handManagerScript.Call_SetPositionsInHand(target);
         handManagerScript.Call_UpdateCardPositionsInHand(target);
 
-
+        ReorderPlayAreaLayers(target);
     }
 
     public void Call_DiscardPlayArea(string target)

@@ -5,16 +5,48 @@ using TMPro;
 
 public class StatsManager : MonoBehaviour {
 
-    public TextMeshPro playerPhase, playerHealth, playerDefense, playerAttack, playerEssence, playerCardsInDeck, playerCycleTokens, playerDiscard, playerBurn, playerSigils;
-    public TextMeshPro enemyPhase, enemyHealth, enemyDefense, enemyAttack, enemyEssence, enemyCardsInDeck, enemyCycleTokens, enemyDiscard, enemyBurn, enemySigils;
+    public TextMeshPro playerPhase, playerHealth, playerDefense, playerAttack, playerEssence, playerCardsInDeck, playerCycleTokens, playerDiscard, playerBurn, playerSigils, playerKindling;
+    public TextMeshPro enemyPhase, enemyHealth, enemyDefense, enemyAttack, enemyEssence, enemyCardsInDeck, enemyCycleTokens, enemyDiscard, enemyBurn, enemySigils, enemyKindling;
     public TextMeshPro endGameText, buttonText;
 
-    public int totalHealth_player, numHealth_player, numDefense_player, numAttack_player, numEssence_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player, numSigilsRemaining_player;
-    public int totalHealth_enemy, numHealth_enemy, numDefense_enemy, numAttack_enemy, numEssence_enemy, numCardsInDeck_enemy, totalCards_enemy, numCycleTokens_enemy, numDiscard_enemy, numBurn_enemy, numSigilsRemaining_enemy;
+    public int totalHealth_player, numHealth_player, numDefense_player, numAttack_player, numEssence_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player, numSigilsRemaining_player, numKindling_player, numTotalKinding_player;
+    public int totalHealth_enemy, numHealth_enemy, numDefense_enemy, numAttack_enemy, numEssence_enemy, numCardsInDeck_enemy, totalCards_enemy, numCycleTokens_enemy, numDiscard_enemy, numBurn_enemy, numSigilsRemaining_enemy, numKindling_enemy, numTotalKindling_enemy;
 
     public string phase_player, phase_enemy;
 
     void Start () {
+    }
+    //Kindling changes when cards are added or removed from deck and when the kindled cards are burnt
+    public void UpdateKindling(string target, int numInDeck, int numTotal)
+    {
+        if (target == "player")
+        {
+            numKindling_player += numInDeck;
+            numTotalKinding_player += numTotal;
+            playerKindling.text = "Kindling: " + numKindling_player + "/" + numTotalKinding_player;
+        }
+        else if (target == "enemy")
+        {
+            numKindling_enemy += numInDeck;
+            numTotalKindling_enemy += numTotal;
+            enemyKindling.text = "Kindling: " + numKindling_enemy + "/" + numKindling_enemy;
+        }
+    }
+
+    public void SetKindling(string target, int num)
+    {
+        if(target == "player")
+        {
+            numKindling_player = num;
+            numTotalKinding_player = num;
+            playerKindling.text = "Kindling: " + num+ "/"+num;
+        }
+        else if(target == "enemy")
+        {
+            numKindling_enemy = num;
+            numTotalKindling_enemy = num;
+            enemyKindling.text = "Kindling: " + num + "/" + num;
+        }
     }
 
     public void ClearAttack()

@@ -37,9 +37,6 @@ public class Spider : MonoBehaviour {
             {
                 //play skitter
                 spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
-                //enemyAreaManagerScript.PlayCard(spiderHand[i]);
-                //enemyHandManagerScript.RemoveCardFromHand(i);
-                //Skitter();
                 statsManagerScript.UpdateDefense("enemy", 1);
 
                 yield return new WaitForSecondsRealtime(1);
@@ -66,7 +63,7 @@ public class Spider : MonoBehaviour {
         {
             //call end of enemy reaction function
             print("DONE WITH ENEMY REACTION");
-            gameManagerScript.EndEnemyReact();
+            StartCoroutine(gameManagerScript.EndEnemyReact());
         }
     }
 
@@ -75,7 +72,6 @@ public class Spider : MonoBehaviour {
         statsManagerScript.UpdateAttack("enemy", 1);
         statsManagerScript.UpdateDefense("enemy", 1);
 
-      //  StartCoroutine(enemyHandManagerScript.DrawCards(1));
     }
 
     private void Bite()
@@ -90,7 +86,6 @@ public class Spider : MonoBehaviour {
     //played as it arrives in enemy's hand
     public void Lethargy()
     {
-        // upperBound--;
         print("enemy phase: " + statsManagerScript.phase_enemy);
         if(statsManagerScript.phase_enemy=="reaction")
             statsManagerScript.UpdateDefense("enemy", 1);
@@ -115,56 +110,22 @@ public class Spider : MonoBehaviour {
 
                 //play skitter card
                 spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
-                //upperBound++;
-                //enemyAreaManagerScript.PlayCard(spiderHand[i]);
-                // yield return new WaitForSecondsRealtime(1);
-                //enemyHandManagerScript.RemoveCardFromHand(i);
-                //Skitter();
                 statsManagerScript.UpdateAttack("enemy",1);
 
                 yield return new WaitForSecondsRealtime(2);
-                //check number of cards in hand after skitter
-               /* int numInHand_after = enemyHandManagerScript.numCardsInHand;
-                print("before: " + numInHand_before + "    after: " + numInHand_after);
-                if (numInHand_after - numInHand_before == 0)
-                {
-                    //skitter added card
-                    print("SKITTER ADDED CARD");
-                    upperBound++;
-                }*/
-                //upperBound += numInHand_after - numInHand_before;
             }
             else if (spiderHand[i].GetComponent<CardObj>().CardName == "Bite")
             {
                 //play bite card
                 spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
-                //enemyAreaManagerScript.PlayCard(spiderHand[i]);
-                // yield return new WaitForSecondsRealtime(1);
-                //enemyHandManagerScript.RemoveCardFromHand(i);
-                //Bite();
                 statsManagerScript.UpdateAttack("enemy", 1);
 
                 yield return new WaitForSecondsRealtime(2);
             }
-          /*  i = 0;
-            UpdateEnemyHand();
-            upperBound = spiderHand.Count;
-            print("upper bound: " + spiderHand.Count);*/
+
         }
         print("DONE WITH ENEMY ACTION");
         gameManagerScript.EndEnemyTurn();
-        /*UpdateEnemyHand();
-        //check if more cards are in the enemy's hand
-        //if so, call action function again
-        if (spiderHand.Count > 0)
-        {
-            Action();
-        }
-        else
-        {
-            print("DONE WITH ENEMY ACTION");
-            gameManagerScript.EndEnemyTurn();
-        }*/
         
     }
 
@@ -172,11 +133,7 @@ public class Spider : MonoBehaviour {
     {
         spiderHand.Clear();
         //create a list of the current cards existing in the enemy's hand
-        for (int i = 0; i < handManagerScript.enemyDeckList.Count; i++)
-        {
-            if (handManagerScript.enemyDeckList[i].GetComponent<CardMovement>().isInHand)
-                spiderHand.Add(handManagerScript.enemyDeckList[i]);
-        }
+        spiderHand = new List<GameObject>(handManagerScript.enemyHandlist);  
     }
 
 	
