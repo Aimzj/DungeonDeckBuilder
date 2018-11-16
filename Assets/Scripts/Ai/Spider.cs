@@ -112,6 +112,9 @@ public class Spider : MonoBehaviour {
                 spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
                 statsManagerScript.UpdateAttack("enemy",1);
 
+                //draw a card 
+                StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
+
                 yield return new WaitForSecondsRealtime(2);
             }
             else if (spiderHand[i].GetComponent<CardObj>().CardName == "Bite")
