@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 114241457955869714}
   - component: {fileID: 114814923654643546}
   m_Layer: 0
-  m_Name: Luck Charm
+  m_Name: TempCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -765,15 +765,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36efb9a2e30f39544b150df38f3d0c65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardName: Lucky Charm
+  CardName: Fireball
   DiscardCost: 0
-  BurnCost: 0
-  FlavourText: Draw 2 cards
-  Attack: 1
+  BurnCost: 1
+  FlavourText: 
+  Attack: 0
   Defense: 0
   SigilNum: 0
   Kindling: 0
-  DiscardEffect: Draw 2 Cards
+  DiscardEffect: 
   BurnEffect: 
   Image_Name: 
   NumInDeck: 0

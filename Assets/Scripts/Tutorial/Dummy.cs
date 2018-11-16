@@ -20,6 +20,7 @@ public class Dummy : MonoBehaviour {
 
     private void Start()
     {
+        StartCoroutine(startMessage());
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         statsManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
@@ -32,7 +33,7 @@ public class Dummy : MonoBehaviour {
         statsManagerScript.SetTotalCards("enemy", 10,0);
         statsManagerScript.SetTotalCards("player", 10, 0);
 
-
+        StartCoroutine(handManagerScript.DrawCards(2, "player"));
         //statsManagerScript.numHealth_player = 100;
         //statsManagerScript.numCardsInDeck_player = 10;
         //statsManagerScript.numCardsInDeck_enemy = 10;
@@ -108,10 +109,11 @@ public class Dummy : MonoBehaviour {
 
     public IEnumerator PlayerDialogue()
     {
+        
         if (TurnCount == 0)
         {
-          
-            output = "Burn them all to win!";
+            print("PLAYER INFO");
+            //dialogueText.text = "Burn them all to win!";
             yield return new WaitForSecondsRealtime(2);
         }
         else if (TurnCount == 1)
@@ -140,7 +142,7 @@ public class Dummy : MonoBehaviour {
         }
         else if (TurnCount == 3)
         {
-            dialogueText.text = "";
+            //dialogueText.text = "";
         }
         dialogueText.text = " ";
         yield return new WaitForSecondsRealtime(2);
@@ -183,7 +185,7 @@ public class Dummy : MonoBehaviour {
                 yield return new WaitForSecondsRealtime(2);
                 dialogueText.text = "Good luck an get ready to burn!";
                 yield return new WaitForSecondsRealtime(2);
-                //dialogueText.text = "";
+                dialogueText.text = "";
                 //TRIGGER PROMPT FOR PLAYER
                 break;
 
@@ -191,10 +193,11 @@ public class Dummy : MonoBehaviour {
 
         }
         yield return new WaitForSecondsRealtime(2);
-        dialogueText.text = " ";
+        //dialogueText.text = " ";
      
         print("END ENEMY REACTION");
         StartCoroutine(gameManagerScript.EndEnemyReact());
+        //StartCoroutine(PlayerDialogue());
     }
 
     private void updateEnemyHand()

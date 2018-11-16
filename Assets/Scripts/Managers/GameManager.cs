@@ -152,6 +152,8 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(DisplayPhase("Player's Turn"));
         //player draws 3
         StartCoroutine(Delay(3, "player"));
+        print("PLAYER INFO");
+        StartCoroutine(dummyScript.PlayerDialogue());
 
         //PLAYER ACTS
         statManagerScript.SetPhase("player", "action");

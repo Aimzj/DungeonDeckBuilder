@@ -104,6 +104,12 @@ public class CardEffectManager : MonoBehaviour {
             //Reaction: You and your opponent gather and shuffle your discard pile, hand and deck and draw cards equal to your previous hadn count. Draw 1 card.
 
         }
+        else if (Card.CardName == "Lucky Charm")
+        {
+            //Draw two random cards from your deck
+            int rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
+            StartCoroutine(handManagerScript.DrawCards(2, "player"));
+        }
 
     }
 
@@ -163,13 +169,36 @@ public class CardEffectManager : MonoBehaviour {
         }
         else if (Card.CardName == "Second Wind")
         {
+           
             //Action - Draw your burnt card's attack value x2 from your deck.
+            if (statManagerScript.phase_player == "action")
+            {
+                var tempCard = areaManagerScript.player_TrashCardList[areaManagerScript.player_TrashCardList.Count - 1];
+                StartCoroutine(handManagerScript.DrawCards(tempCard.GetComponent<CardObj>().Attack * 2, "player"));
+            }
             //Reaction - Draw your burnt card's defence value x2 from your deck 
+            else if (statManagerScript.phase_player == "reaction")
+            {
+                var tempCard = areaManagerScript.player_TrashCardList[areaManagerScript.player_TrashCardList.Count - 1];
+                StartCoroutine(handManagerScript.DrawCards(tempCard.GetComponent<CardObj>().Defense * 2, "player"));
+                //print("Draw " + tempCard.GetComponent<CardObj>().Defense );
+            }
+
+
+           
+         
         }
         else if (Card.CardName == "Fireball")
         {
-            //Burn the top two cards of your opponents deck
+            print("FIREBALL");
+            //var tempCard = areaManagerScript.enemy_DeckCardList[areaManagerScript.enemy_DeckCardList.Count - 1];
+            StartCoroutine(handManagerScript.Call_TakeDamage(2, "enemy"));
+            //tempCard = areaManagerScript.enemy_DeckCardList[areaManagerScript.enemy_DeckCardList.Count - 1];
+            //tempCard.GetComponent<CardMovement>().TrashEnemyCard();*/
+
+
         }
+
     }
 	
 	// Update is called once per frame
