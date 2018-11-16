@@ -1562,7 +1562,7 @@ GameObject:
   - component: {fileID: 329210961}
   - component: {fileID: 329210960}
   m_Layer: 5
-  m_Name: TextMeshPro Text
+  m_Name: Dialogue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12354,8 +12354,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea8004be3b340f441a5cce13aa1c5809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dummyHand: []
   TurnCount: -1
-  dialogueText: {fileID: 0}
+  dialogueText: {fileID: 329210960}
 --- !u!114 &2134202308
 MonoBehaviour:
   m_ObjectHideFlags: 0

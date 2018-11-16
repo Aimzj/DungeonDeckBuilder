@@ -5,6 +5,7 @@ using TMPro;
 
 public class Dummy : MonoBehaviour {
 
+    [SerializeField]
     private List<GameObject> dummyHand = new List<GameObject>();
 
     public int TurnCount = 1;
@@ -24,7 +25,18 @@ public class Dummy : MonoBehaviour {
         statsManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-       
+        statsManagerScript.SetHealth("player", 10);
+        statsManagerScript.SetHealth("enemy", 10);
+        statsManagerScript.UpdateSigils("player", 3);
+        statsManagerScript.UpdateSigils("enemy", 3);
+        statsManagerScript.SetTotalCards("enemy", 10,0);
+        statsManagerScript.SetTotalCards("player", 10, 0);
+
+
+        //statsManagerScript.numHealth_player = 100;
+        //statsManagerScript.numCardsInDeck_player = 10;
+        //statsManagerScript.numCardsInDeck_enemy = 10;
+
     }
 
     IEnumerator startMessage()
@@ -72,6 +84,7 @@ public class Dummy : MonoBehaviour {
             
 
         }
+        yield return new WaitForSecondsRealtime(2);
         dialogueText.text = " ";
         print("DONE WITH ENEMY Action");
         gameManagerScript.EndEnemyTurn();
@@ -137,18 +150,15 @@ public class Dummy : MonoBehaviour {
     public IEnumerator Reaction()
     {
        // TurnCount++;
-        print("DUMMY REACTION");
+       // print("DUMMY REACTION");
         updateEnemyHand();
 
         switch (TurnCount)
         {
+          
+
             case 0:
-               
-                //TRIGGER PROMPT FOR PLAYER
-                break;
-
-            case 1:
-
+                print("REACTION TEXT");
                 //Trigger Prompt
                 playCard("Lesser Guard",2);
                 yield return new WaitForSecondsRealtime(2);
@@ -159,7 +169,7 @@ public class Dummy : MonoBehaviour {
 
                 break;
             case 3:
-                dialogueText.text = "Congratualtions you've finished training";
+                dialogueText.text = "Congratulations you've finished training";
                 yield return new WaitForSecondsRealtime(2);
                 dialogueText.text = "An encouter ends once either the player or the monster reach their burn limits or lose all sigils";
                 yield return new WaitForSecondsRealtime(2);
@@ -180,10 +190,11 @@ public class Dummy : MonoBehaviour {
 
 
         }
+        yield return new WaitForSecondsRealtime(2);
         dialogueText.text = " ";
-       yield return new WaitForSecondsRealtime(2);
+     
         print("END ENEMY REACTION");
-        gameManagerScript.EndPlayerReact();
+        StartCoroutine(gameManagerScript.EndEnemyReact());
     }
 
     private void updateEnemyHand()
