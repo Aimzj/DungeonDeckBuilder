@@ -7,7 +7,7 @@ public class CardGenerator : MonoBehaviour {
     //script loops through excel spreadsheet and seperates cards into their different decks
 
     //transforms of decks
-    private Transform playerDeckTrans, enemyDeckTrans, poisonDeckTrans;
+    public Transform playerDeckTrans, enemyDeckTrans, poisonDeckTrans;
 
     private int numUniqueCards=21;
 
@@ -45,6 +45,9 @@ public class CardGenerator : MonoBehaviour {
         ArcanePack,
         PrimusPack;
 
+    //Tutorial packs
+    public List<GameObject> PlayerTutDeck, EnemyTutDeck;
+
 
     // Use this for initialization
     void Start () {
@@ -57,9 +60,11 @@ public class CardGenerator : MonoBehaviour {
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
 
         //For tutorial
-        setTutDecks = GameObject.Find("GameManager").GetComponent<SetDecks>();
+        //setTutDecks = GameObject.Find("GameManager").GetComponent<SetDecks>();
 
-        InitialiseLevel(1);
+
+        InitialiseLevel(0);
+
     }
 
     private void InstantiateCard(ref GameObject card, Vector3 pos, Quaternion rot, bool isKindling, ref List<GameObject> pack, int numCards)
@@ -113,7 +118,10 @@ public class CardGenerator : MonoBehaviour {
             }
             else if (level == 0)
             {
-                setTutDecks.setDecks();
+                statManagerScript.UpdateSigils("enemy", 1);
+                statManagerScript.SetKindling("enemy", 0);
+                statManagerScript.UpdateSigils("player", 1);
+                statManagerScript.SetKindling("player", 1);
             }
             else if (level == 1
                 && cardScript.CardType == "spider")

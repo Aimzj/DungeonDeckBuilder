@@ -36,6 +36,10 @@ public class AreaManager : MonoBehaviour {
     private SoundManager soundManagerScript;
 
     public ParticleSystem bigFireball;
+    private Dummy dummyScript;
+
+    //For Tut
+    public int level = 0;
 
     // Use this for initialization
     void Start () {
@@ -55,6 +59,8 @@ public class AreaManager : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
         soundManagerScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
+
+        dummyScript = GameObject.Find("GameManager").GetComponent<Dummy>();
 
         player_numCardsInPlay = 0;
         enemy_numCardsInPlay = 0;
@@ -329,8 +335,9 @@ public class AreaManager : MonoBehaviour {
 
         handManagerScript.Call_SetPositionsInHand(target);
         handManagerScript.Call_UpdateCardPositionsInHand(target);
-
+  
         ReorderPlayAreaLayers(target);
+
     }
 
     public void Call_DiscardPlayArea(string target)

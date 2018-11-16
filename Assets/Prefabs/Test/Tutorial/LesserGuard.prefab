@@ -905,6 +905,7 @@ MonoBehaviour:
   FrontPlayerCard: {fileID: 0}
   BackPlayerCard: {fileID: 0}
   _targetTransform: {fileID: 0}
+  isHovering: 0
   isInHand: 0
   hoverHeight: 0
   zShift: 0
@@ -1459,7 +1460,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 15
-  m_Sprite: {fileID: 21300000, guid: 4ed4e50417a8762489784bd093f20e41, type: 3}
+  m_Sprite: {fileID: 21300000, guid: db4a633a81f45624c89fce0225922afe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

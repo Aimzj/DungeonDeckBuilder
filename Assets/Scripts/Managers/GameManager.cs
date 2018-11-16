@@ -28,7 +28,8 @@ public class GameManager : MonoBehaviour {
     private TextMeshPro gamePhaseText;
     private GameObject gamePhaseDisplay;
 
-    private int level;
+    private int level = 0;
+    private int turnCount;
 
     private Canvas burnCanvas;
     public TextMeshProUGUI effectText, costText;
@@ -163,6 +164,7 @@ public class GameManager : MonoBehaviour {
     //called by enemy script
     public IEnumerator EndEnemyReact()
     {
+        print("WORK FFS");;
         //after the enemy reacts to player's cards, it is the enemy's turn
 
         //resolve attack and defense values and other effects
@@ -192,8 +194,9 @@ public class GameManager : MonoBehaviour {
         statManagerScript.SetPhase("enemy", "action");
         StartCoroutine(Delay(3, "enemy"));
 
-
+    
         StartCoroutine(EnemyWaitToAct());
+        //StartCoroutine(dummyScript.PlayerDialogue());
 
 
 
@@ -208,10 +211,13 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator EnemyWaitToAct()
     {
+       
         yield return new WaitForSeconds(3f);
         //ENEMY ACTS  
+       
         if(level == 0)
         {
+            print("CAN YOU WORK FFS");
             StartCoroutine(dummyScript.Action());
         }
        else  if (level == 1)

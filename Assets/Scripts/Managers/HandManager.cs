@@ -54,6 +54,7 @@ public class HandManager : MonoBehaviour {
 
     private Spider spiderScript;
 
+  
     // Use this for initialization
     void Start () {
         playerDeck = GameObject.Find("Deck").GetComponent<Transform>();
@@ -98,7 +99,21 @@ public class HandManager : MonoBehaviour {
     public void InitialiseCards(int level)
     {
         playerDeckList = cardGenScript.PlayerDeck;
-        if (level == 1)
+        if(level == 0)
+        {
+            print("START TUT");
+            playerDeckList = cardGenScript.PlayerTutDeck;
+            enemyDeckList = cardGenScript.EnemyTutDeck;
+            //Generate Tut Decks
+            for(int i  = 0; i < playerDeckList.Count; i ++)
+            {
+                var playerTempCard = Instantiate(playerDeckList[i], playerDeck.position, Quaternion.Euler(90, 0, 0));
+                playerDeckList[i] = playerTempCard;
+                var enemyTempCard = Instantiate(enemyDeckList[i], enemyDeck.position, Quaternion.Euler(90, 0, 0));
+                enemyDeckList[i] = enemyTempCard;
+            }
+        }
+        else if (level == 1)
         {
             enemyDeckList = cardGenScript.SpiderDeck;
         } else if (level == 2)
@@ -106,9 +121,13 @@ public class HandManager : MonoBehaviour {
             enemyDeckList = cardGenScript.NagaDeck;
         }
 
-        //shuffle the card lists
-        Shuffle(ref playerDeckList);
-        Shuffle(ref enemyDeckList);
+        if(level != 0)
+        {
+            //shuffle the card lists
+            Shuffle(ref playerDeckList);
+            Shuffle(ref enemyDeckList);
+        }
+       
     }
 
     public void Call_RemoveCardFromHand(int pos, string target)
@@ -244,6 +263,15 @@ public class HandManager : MonoBehaviour {
             {
                 print("LETHARGY");
                 spiderScript.Lethargy();
+
+                handList[handList.Count - 1].GetComponent<CardMovement>().PlayEnemyCard();
+
+            }
+            else if (handList[handList.Count - 1].GetComponent<CardObj>().CardName == "Lesser Guard")
+            {
+                print("LesserGuard");
+                statManagerScript.UpdateDiscard("enemy", 1);
+                //Trigger Prompt
 
                 handList[handList.Count - 1].GetComponent<CardMovement>().PlayEnemyCard();
 
@@ -628,4 +656,6 @@ public class HandManager : MonoBehaviour {
 
         }
     }
+
+   
 }
