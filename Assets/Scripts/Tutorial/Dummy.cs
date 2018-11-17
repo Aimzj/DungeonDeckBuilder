@@ -76,7 +76,13 @@ public class Dummy : MonoBehaviour {
                 break;
 
             case 1:
-                
+
+           
+                dialogueText.text = "Some cards trigger effects when drawn";
+                print(dialogueText.text);
+                yield return new WaitForSecondsRealtime(timer);
+                dialogueText.text = "These are marked with the 'on arrival' keyword";
+                yield return new WaitForSecondsRealtime(timer);
                 playCard("Strike",3);
                 yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "Looks like you dont have enough guards to defend";
@@ -128,7 +134,7 @@ public class Dummy : MonoBehaviour {
         }
         else if (TurnCount == 1)
         {
-            dialogueText.text = "The enemy is low on cards and vulnerable now!";
+            dialogueText.text = "The enemy is low on health and vulnerable now!";
             yield return new WaitForSecondsRealtime(timer);
             dialogueText.text = "Play the focused stike card for massive damage";
             yield return new WaitForSecondsRealtime(timer);
@@ -154,18 +160,14 @@ public class Dummy : MonoBehaviour {
         {
           
 
-            case 2:
+            case 0:
                 print("REACTION TEXT");
                 //Trigger Prompt
-                playCard("Lesser Guard",1);
-                yield return new WaitForSecondsRealtime(timer);
-                dialogueText.text = "Some cards trigger effects when drawn";
-                print(dialogueText.text);
-                yield return new WaitForSecondsRealtime(timer);
-                dialogueText.text = "These are marked with the 'on arrival' keyword";
+                //playCard("Lesser Guard",1);
+                
 
                 break;
-            case 3:
+            case 1:
                 dialogueText.text = "Congratulations you've finished training";
                 yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "An encouter ends once either the player or the monster reach their burn limits or lose all sigils";
