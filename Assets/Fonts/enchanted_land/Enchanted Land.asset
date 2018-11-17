@@ -11,19 +11,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Enchanted Land
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: 1590723581
   material: {fileID: 21419659294393688}
-  materialHashCode: 0
+  materialHashCode: -464757290
   fontAssetType: 2
   m_fontInfo:
     Name: Enchanted Land
     PointSize: 202
-    Scale: 0
+    Scale: 1
     CharacterCount: 97
     LineHeight: 235
     Baseline: 0
     Ascender: 174
-    CapHeight: 0
+    CapHeight: 122
     Descender: -62
     CenterLine: 0
     SuperscriptOffset: 174
@@ -33,7 +33,7 @@ MonoBehaviour:
     UnderlineThickness: 14.794922
     strikethrough: 40.727272
     strikethroughThickness: 14.794922
-    TabWidth: 0
+    TabWidth: 210
     Padding: 5
     AtlasWidth: 1024
     AtlasHeight: 1024
@@ -42,10 +42,10 @@ MonoBehaviour:
   - id: 32
     x: 5
     y: 1019
-    width: 0
-    height: 0
+    width: 21
+    height: 236
     xOffset: 0
-    yOffset: 0
+    yOffset: 174
     xAdvance: 21
     scale: 1
   - id: 33
@@ -992,8 +992,8 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _FaceTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: b453adb92747e144e803c0d05ddc458a, type: 3}
+        m_Scale: {x: 0.8, y: 0.8}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 28948257030298526}

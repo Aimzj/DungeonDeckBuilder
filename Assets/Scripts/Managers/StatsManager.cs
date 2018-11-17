@@ -5,17 +5,32 @@ using TMPro;
 
 public class StatsManager : MonoBehaviour {
 
-    public TextMeshPro playerPhase, playerHealth, playerDefense, playerAttack, playerEssence, playerCardsInDeck, playerCycleTokens, playerDiscard, playerBurn, playerSigils, playerKindling;
-    public TextMeshPro enemyPhase, enemyHealth, enemyDefense, enemyAttack, enemyEssence, enemyCardsInDeck, enemyCycleTokens, enemyDiscard, enemyBurn, enemySigils, enemyKindling;
+    public TextMeshPro playerPhase, playerHealth,  playerCardsInDeck, playerCycleTokens, playerDiscard, playerBurn, playerSigils, playerKindling;
+    public TextMeshPro enemyPhase, enemyHealth, enemyDefense, enemyAttack, enemyCardsInDeck, enemyCycleTokens, enemyDiscard, enemyBurn, enemySigils, enemyKindling;
     public TextMeshPro endGameText, buttonText;
 
-    public int totalHealth_player, numHealth_player, numDefense_player, numAttack_player, numEssence_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player, numSigilsRemaining_player, numKindling_player, numTotalKinding_player;
-    public int totalHealth_enemy, numHealth_enemy, numDefense_enemy, numAttack_enemy, numEssence_enemy, numCardsInDeck_enemy, totalCards_enemy, numCycleTokens_enemy, numDiscard_enemy, numBurn_enemy, numSigilsRemaining_enemy, numKindling_enemy, numTotalKindling_enemy;
+    public int totalHealth_player, numHealth_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player, numSigilsRemaining_player, numKindling_player, numTotalKinding_player;
+    public int totalHealth_enemy, numHealth_enemy, numCardsInDeck_enemy, totalCards_enemy, numCycleTokens_enemy, numDiscard_enemy, numBurn_enemy, numSigilsRemaining_enemy, numKindling_enemy, numTotalKindling_enemy;
 
     public string phase_player, phase_enemy;
 
+    public Transform sword, attackGem, defenseGem;
+    public TextMeshPro attackText, defenseText;
+    public int numAttack, numDefense;
+
     void Start () {
+
     }
+
+    private void RotateSword(float angle)
+    {
+        sword.GetComponent<TargetRotation>().targetAngle = new Vector3(90f, 0f, angle);
+
+        Vector3 tempPos = new Vector3(attackGem.position.x, attackGem.position.y, attackGem.position.z);
+        attackGem.GetComponent<TargetPosition>().targetPos = new Vector3(defenseGem.position.x, defenseGem.position.y, defenseGem.position.z);
+        defenseGem.GetComponent<TargetPosition>().targetPos = tempPos;
+    }
+
     //Kindling changes when cards are added or removed from deck and when the kindled cards are burnt
     public void UpdateKindling(string target, int numInDeck, int numTotal)
     {
@@ -51,17 +66,13 @@ public class StatsManager : MonoBehaviour {
 
     public void ClearAttack()
     {
-        numAttack_player = 0;
-        numAttack_enemy = 0;
-        enemyAttack.text = "Attack: 0";
-        playerAttack.text = "Attack: 0";
+        numAttack = 0;
+        attackText.text = numAttack.ToString();
     }
     public void ClearDefense()
     {
-        numDefense_player = 0;
-        numDefense_enemy = 0;
-        enemyDefense.text = "Defense: 0";
-        playerDefense.text = "Defense: 0";
+        numDefense = 0;
+        defenseText.text = numDefense.ToString();
     }
 
     public void SetPhase(string target, string phase)
@@ -76,11 +87,20 @@ public class StatsManager : MonoBehaviour {
                 playerPhase.text = phase.ToUpper() + " phase";
 
             if (phase == "action")
+            {
                 buttonText.text = "End Turn";
+
+                //player is attacking, enemy defending
+                RotateSword(180f);
+            }
             else if(phase == "reaction")
+            {
                 buttonText.text = "React";
+            }
             else
+            {
                 buttonText.text = "waiting...";
+            }
 
         }
         else if (target == "enemy")
@@ -91,6 +111,12 @@ public class StatsManager : MonoBehaviour {
                 enemyPhase.text = phase.ToUpper();
             else
                 enemyPhase.text = phase.ToUpper() + " phase";
+
+            if (phase == "action")
+            {
+                //enemy is attacking, player is defending
+                RotateSword(0f);
+            }
         }
     }
 
@@ -139,48 +165,15 @@ public class StatsManager : MonoBehaviour {
 
     public void UpdateDefense(string target, int num)
     {
-        if (target == "player")
-        {
-            numDefense_player += num;
-            playerDefense.text = "Defense: " + numDefense_player;
-
-        }
-        else if (target == "enemy")
-        {
-            numDefense_enemy += num;
-            enemyDefense.text = "Defense: " + numDefense_enemy;
-        }
+        numDefense += num;
+        defenseText.text = numDefense.ToString();
     }
 
     public void UpdateAttack(string target, int num)
     {
-        if (target == "player")
-        {
-            numAttack_player += num;
-            playerAttack.text = "Attack: " + numAttack_player;
-
-        }
-        else if (target == "enemy")
-        {
-            numAttack_enemy += num;
-            enemyAttack.text = "Attack: " + numAttack_enemy;
-        }
+        numAttack += num;
+        attackText.text = numAttack.ToString();
     }
-
-   /* public void UpdateEssence(string target, int num)
-    {
-        if (target == "player")
-        {
-            numEssence_player += num;
-            playerEssence.text = "Essence: " + numEssence_player;
-
-        }
-        else if (target == "enemy")
-        {
-            numEssence_enemy += num;
-            enemyEssence.text = "Essemce: " + numEssence_enemy;
-        }
-    }*/
 
     public void SetTotalCards(string target, int num, int cardsInPlay)
     {
@@ -245,12 +238,12 @@ public class StatsManager : MonoBehaviour {
         if (target == "player")
         {
             numDiscard_player += num;
-            playerDiscard.text = "Discard Pool: " + numDiscard_player;
+            playerDiscard.text = numDiscard_player.ToString();
         }
         else if (target == "enemy")
         {
             numDiscard_enemy += num;
-            enemyDiscard.text = "Discard Pool: " + numDiscard_enemy;
+            enemyDiscard.text = numDiscard_enemy.ToString();
         }
     }
 
@@ -259,12 +252,12 @@ public class StatsManager : MonoBehaviour {
         if (target == "player")
         {
             numBurn_player += num;
-            playerBurn.text = "Burn Pool: " + numBurn_player;
+            playerBurn.text = numBurn_player.ToString();
         }
         else if (target == "enemy")
         {
             numBurn_enemy += num;
-            enemyBurn.text = "Burn Pool: " + numBurn_enemy;
+            enemyBurn.text = numBurn_enemy.ToString();
         }
     }
 
@@ -278,7 +271,7 @@ public class StatsManager : MonoBehaviour {
             if (numSigilsRemaining_player <= 0)
             {
                 //PLAYER LOSES
-                endGameText.text = "YOU LOSE";
+                endGameText.text = "You Lose";
             }
         }
         else if (target == "enemy")
@@ -289,7 +282,7 @@ public class StatsManager : MonoBehaviour {
             if (numSigilsRemaining_enemy <= 0)
             {
                 //PLAYER WINS
-                endGameText.text = "PLAYER WINS!";
+                endGameText.text = "Player Wins!";
             }
         }
     }

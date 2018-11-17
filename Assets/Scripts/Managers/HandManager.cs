@@ -429,17 +429,14 @@ public class HandManager : MonoBehaviour {
 
     public IEnumerator DiscardFromBottomOfDeck(int value)
     {
-        print("POISON?? "+ value);
         for(int i=0; i<value; i++)
         {
-            print("POISON EFFECT WORK DAMMIT");
             //check that there are cards to discard in the deck
             if (playerDeckList.Count > 0)
             {
                 //choose the card at the bottom of the deck
                 areaManagerScript.player_DiscardCardList.Add(playerDeckList[0]);
 
-                print("POISON EFFECT");
                 StartCoroutine(areaManagerScript.TempDisplay(playerDeckList[0], tempPlayerDisplay, playerDiscard));
 
                 //check if the card was kindling

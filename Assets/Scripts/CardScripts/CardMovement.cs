@@ -205,6 +205,8 @@ public class CardMovement : MonoBehaviour {
         handManagerScript.ReorderHandLayers("enemy");
     }
 
+  
+
     public void PlayPlayerCard()
     {
         //place the card on the table
