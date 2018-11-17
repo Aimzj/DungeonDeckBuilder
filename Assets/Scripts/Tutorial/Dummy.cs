@@ -15,6 +15,7 @@ public class Dummy : MonoBehaviour {
     private StatsManager statsManagerScript;
     private GameManager gameManagerScript;
     string output = "";
+    public float timer = 2;
 
     public TextMeshProUGUI dialogueText;
 
@@ -26,12 +27,12 @@ public class Dummy : MonoBehaviour {
         statsManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        statsManagerScript.UpdateHealth("player", 10,10);
-        statsManagerScript.UpdateHealth("enemy", 10,10);
-        statsManagerScript.UpdateSigils("player", 3);
-        statsManagerScript.UpdateSigils("enemy", 3);
-        statsManagerScript.SetTotalCards("enemy", 10,0);
-        statsManagerScript.SetTotalCards("player", 10, 0);
+        /*statsManagerScript.SetHealth("player", 100);
+        statsManagerScript.SetHealth("enemy", 100);
+        statsManagerScript.UpdateSigils("player", 30);
+        statsManagerScript.UpdateSigils("enemy", 30);
+        statsManagerScript.SetTotalCards("enemy", 100,0);
+        statsManagerScript.SetTotalCards("player", 100, 0);*/
 
         StartCoroutine(handManagerScript.DrawCards(2, "player"));
         //statsManagerScript.numHealth_player = 100;
@@ -44,11 +45,12 @@ public class Dummy : MonoBehaviour {
     {
         //output = "Welcome to burn. The card game where you will seek the eternal flame ";
         dialogueText.text = "Welcome to burn. The card game where you will seek the eternal flame";
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(timer);
         dialogueText.text = "Play attacks during your action phase to do damage";
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(timer);
         dialogueText.text = "Each point of damage will destroy one card from the opponent's deck";
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(timer);
+        dialogueText.text = " ";
     }
 
 
@@ -63,20 +65,26 @@ public class Dummy : MonoBehaviour {
             case 0:
                 //print(1);
                 playCard("Strike",1);
-                yield return new WaitForSecondsRealtime(2);
+                yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "Try to defend yourself with a guard";
-                yield return new WaitForSecondsRealtime(2);
+                yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "Cards with shield give you defence points for the reaction phase";
-                yield return new WaitForSecondsRealtime(2);
+                yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "These guards have a discard cost";
-                yield return new WaitForSecondsRealtime(2);
+                yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "Put one of the guards into the discard pile so you can defend";
                 break;
 
             case 1:
-                
+
+           
+                dialogueText.text = "Some cards trigger effects when drawn";
+                print(dialogueText.text);
+                yield return new WaitForSecondsRealtime(timer);
+                dialogueText.text = "These are marked with the 'on arrival' keyword";
+                yield return new WaitForSecondsRealtime(timer);
                 playCard("Strike",3);
-                yield return new WaitForSecondsRealtime(2);
+                yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "Looks like you dont have enough guards to defend";
                 //Make player lose red eye gem
                 //playCard("Strike");
@@ -85,7 +93,7 @@ public class Dummy : MonoBehaviour {
             
 
         }
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(timer);
         dialogueText.text = " ";
         print("DONE WITH ENEMY Action");
         gameManagerScript.EndEnemyTurn();
@@ -110,42 +118,35 @@ public class Dummy : MonoBehaviour {
     public IEnumerator PlayerDialogue()
     {
         
+     
         if (TurnCount == 0)
         {
-            print("PLAYER INFO");
-            //dialogueText.text = "Burn them all to win!";
-            yield return new WaitForSecondsRealtime(2);
+            dialogueText.text = "Lucky Charm has a special effect";
+            yield return new WaitForSecondsRealtime(timer);
+            dialogueText.text = "Play it to see how it works";
+            yield return new WaitForSecondsRealtime(timer);
+            dialogueText.text = "Play out the new cards you got from the effect";
+            yield return new WaitForSecondsRealtime(timer);
+            dialogueText.text = "Some effects only active in the reactive or active phase";
+            yield return new WaitForSecondsRealtime(timer);
+            dialogueText.text = "You'll get to try these out later";
+            yield return new WaitForSecondsRealtime(timer);
         }
         else if (TurnCount == 1)
         {
-            dialogueText.text = "Lucky Charm has a special effect";
-            yield return new WaitForSecondsRealtime(2);
-            dialogueText.text = "Play it to see how it works";
-            yield return new WaitForSecondsRealtime(2);
-            dialogueText.text = "Play out the new cards you got from the effect";
-            yield return new WaitForSecondsRealtime(2);
-            dialogueText.text = "Some effects only active in the reactive or active phase";
-            yield return new WaitForSecondsRealtime(2);
-            dialogueText.text = "You'll get to try these out later";
-            yield return new WaitForSecondsRealtime(2);
-        }
-        else if (TurnCount == 2)
-        {
-            dialogueText.text = "The enemy is low on cards and vulnerable now!";
-            yield return new WaitForSecondsRealtime(2);
+            dialogueText.text = "The enemy is low on health and vulnerable now!";
+            yield return new WaitForSecondsRealtime(timer);
             dialogueText.text = "Play the focused stike card for massive damage";
-            yield return new WaitForSecondsRealtime(2);
+            yield return new WaitForSecondsRealtime(timer);
             dialogueText.text = "Active it's powerful burn effect by burning one card before playing this";
-            yield return new WaitForSecondsRealtime(2);
+            yield return new WaitForSecondsRealtime(timer);
             dialogueText.text = "Dont forget the discard cost too!";
-            yield return new WaitForSecondsRealtime(2);
+            yield return new WaitForSecondsRealtime(timer);
         }
-        else if (TurnCount == 3)
-        {
-            //dialogueText.text = "";
-        }
+      
+        
+        yield return new WaitForSecondsRealtime(timer);
         dialogueText.text = " ";
-        yield return new WaitForSecondsRealtime(2);
     }
 
 
@@ -162,37 +163,34 @@ public class Dummy : MonoBehaviour {
             case 0:
                 print("REACTION TEXT");
                 //Trigger Prompt
-                playCard("Lesser Guard",2);
-                yield return new WaitForSecondsRealtime(2);
-                dialogueText.text = "Some cards trigger effects when drawn";
-                print(dialogueText.text);
-                yield return new WaitForSecondsRealtime(2);
-                dialogueText.text = "These are marked with the 'on arrival' keyword";
+                //playCard("Lesser Guard",1);
+                
 
                 break;
-            case 3:
+            case 1:
                 dialogueText.text = "Congratulations you've finished training";
-                yield return new WaitForSecondsRealtime(2);
+                yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "An encouter ends once either the player or the monster reach their burn limits or lose all sigils";
-                yield return new WaitForSecondsRealtime(2);
+                yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "Don't worry your sigils come back after each battle";
-                yield return new WaitForSecondsRealtime(2);
+                yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "After each victory you will awarded with the your choice of card pack to add to your deck";
-                yield return new WaitForSecondsRealtime(2);
+                yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "Remember your burn limit persists through encounters";
-                yield return new WaitForSecondsRealtime(2);
+                yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "You are now ready to delve deeper and face greater challenges";
-                yield return new WaitForSecondsRealtime(2);
-                dialogueText.text = "Good luck an get ready to burn!";
-                yield return new WaitForSecondsRealtime(2);
+                yield return new WaitForSecondsRealtime(timer);
+                dialogueText.text = "Good luck and get ready to burn!";
+                yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "";
                 //TRIGGER PROMPT FOR PLAYER
+                statsManagerScript.UpdateSigils("enemy", -2);
                 break;
 
 
 
         }
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(timer);
         //dialogueText.text = " ";
      
         print("END ENEMY REACTION");

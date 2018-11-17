@@ -76,6 +76,17 @@ public class GameManager : MonoBehaviour {
             StartCoroutine(handManagerScript.DrawCards(4, "player"));
             StartCoroutine(Delay(3, "enemy"));
         }
+        else if(SceneManager.GetActiveScene().name.Contains("level0"))
+        {
+            StartCoroutine(DisplayPhase("Player Goes First"));
+
+            statManagerScript.SetPhase("player", "action");
+            statManagerScript.SetPhase("enemy", "waiting");
+
+            StartCoroutine(handManagerScript.DrawCards(2, "player"));
+            StartCoroutine(Delay(3, "enemy"));
+        }
+
 
         cycleTokens = 0;
         discardBank = 0;
@@ -109,6 +120,8 @@ public class GameManager : MonoBehaviour {
         //PLAYER REACT
         statManagerScript.SetPhase("player", "reaction");
         statManagerScript.SetPhase("enemy", "waiting");
+     
+
 
         endTurnButton.enabled = true;
     }
@@ -132,19 +145,44 @@ public class GameManager : MonoBehaviour {
         int DamageDealt_toPlayer = statManagerScript.numAttack - statManagerScript.numDefense;
         if (DamageDealt_toPlayer > 0)
         {
-           // statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
+            // statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
+           
+               
             StartCoroutine(handManagerScript.Call_TakeDamage(DamageDealt_toPlayer, "player"));
+        
+        }
+        if (level == 2)
+        {
+            nagaScript.CrushingBlow();
+
         }
         //wait until all damage is finished being dealt before drawing new cards
         yield return new WaitForSecondsRealtime(1.2f * DamageDealt_toPlayer);
-
+        
+       
         //clear attack and defense values
         statManagerScript.ClearAttack();
         statManagerScript.ClearDefense();
         //play areas cleared after enemy reacts
         areaManagerScript.Call_DiscardPlayArea("player");
         areaManagerScript.Call_DiscardPlayArea("enemy");
+        if (level == 2)
+        {
+            if (nagaScript.numRemoveCards > 0)
+            {
 
+                for (int i = 0; i < nagaScript.numRemoveCards - 1; i++)
+                {
+                    if (areaManagerScript.player_DiscardCardList.Count > 0)
+                    {
+                        areaManagerScript.player_DiscardCardList.RemoveAt(areaManagerScript.player_DiscardCardList.Count - i);
+                    }
+
+                }
+            }
+
+        }
+       
         //enemy draws 1 card
         StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
         //end of enemy's turn
@@ -153,9 +191,14 @@ public class GameManager : MonoBehaviour {
         //player draws 3
         StartCoroutine(Delay(3, "player"));
 
-        print("PLAYER INFO");
+
+       
         if(level==0)
+        {
+            print("DIALOGUE TINGS");
             StartCoroutine(dummyScript.PlayerDialogue());
+        }
+            
         //PLAYER ACTS
         statManagerScript.SetPhase("player", "action");
         statManagerScript.SetPhase("enemy", "waiting");
@@ -197,6 +240,16 @@ public class GameManager : MonoBehaviour {
 
         //player draws 1 card
         StartCoroutine(handManagerScript.DrawCards(1, "player"));
+        //Check for pact of maggots
+       for(int i = 0; i < areaManagerScript.player_DiscardCardList.Count; i ++)
+        {
+            print("PACT");
+            if (areaManagerScript.player_DiscardCardList[i].GetComponent<CardObj>().CardName == "Pact of maggots")
+            {
+                print("FOUND PACT");
+                cardEffectScript.PactOfMaggot();
+            }
+        }
         //END OF PLAYER TURN
 
         StartCoroutine(DisplayPhase("Enemy's Turn"));
@@ -228,7 +281,6 @@ public class GameManager : MonoBehaviour {
        
         if(level == 0)
         {
-            print("CAN YOU WORK FFS");
             StartCoroutine(dummyScript.Action());
         }
        else  if (level == 1)
