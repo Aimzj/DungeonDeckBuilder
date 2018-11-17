@@ -26,12 +26,21 @@ public class Naga : MonoBehaviour {
     private int numScale = 0;
     private int numCotD = 0;
 
+    //Cards in play
+    public int NumCBInPlay = 0;
+
 
     //UPDATED
     private AreaManager areaManagerScript;
     private HandManager handManagerScript;
     private StatsManager statsManagerScript;
     private GameManager gameManagerScript;
+    private CardGenerator cardGenScript;
+
+    //AREAS
+    private Transform playerTempDisplay, enemyTempDisplay;
+    private Transform playerDeck;
+
     [SerializeField]
     private List<GameObject> NagaHand = new List<GameObject>();
 
@@ -41,6 +50,12 @@ public class Naga : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         statsManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
+        cardGenScript = GameObject.Find("GameManager").GetComponent<CardGenerator>();
+
+
+        playerTempDisplay = GameObject.Find("PlayerTempDisplay").GetComponent<Transform>();
+        enemyTempDisplay = GameObject.Find("EnemyTempDisplay").GetComponent<Transform>();
+        playerDeck = GameObject.Find("Deck").GetComponent<Transform>();
 
     }
 
@@ -86,6 +101,7 @@ public class Naga : MonoBehaviour {
                 {
                     if (cost > 0 && NagaHand[k].GetComponent<CardObj>().CardName == "Crushing Blow" && k != index)
                     {
+                        
                         numCrushBlow--;
                         cost--;
                         NagaHand[k].GetComponent<CardMovement>().DiscardEnemyCard();
@@ -105,6 +121,7 @@ public class Naga : MonoBehaviour {
        print("DAMAGE:" + DamageTaken);
         print("START ENEMY REACTION");
         HP = statsManagerScript.numHealth_enemy;
+        NumSigilsInBurn = statsManagerScript.numSigilsRemaining_enemy;
         UpdateEnemyHand();
         for (int i = NagaHand.Count -1; i >= 0; i--)
         {
@@ -123,8 +140,8 @@ public class Naga : MonoBehaviour {
 
                         NagaHand[i].GetComponent<CardMovement>().PlayEnemyCard();
                         statsManagerScript.UpdateAttack("enemy", NagaHand[i].GetComponent<CardObj>().Attack);
-                        NagaHand[i].GetComponent<CardObj>().Attack += 2;
-                        NagaHand[i].GetComponent<CardObj>().Defense += 1;
+                        NagaHand[i].GetComponent<CardObj>().Attack += 3;
+                        NagaHand[i].GetComponent<CardObj>().Defense += 2;
                         print("ELDRITCH OATH");
 
 
@@ -154,9 +171,12 @@ public class Naga : MonoBehaviour {
                             statsManagerScript.UpdateDefense("enemy", 3);
                            // i = NagaHand.Count - 1;
                             DamageTaken -= 3;
-                            if(DamageTaken%3 > 0)
+                            print("Damage Taken by Naga:" + DamageTaken);
+                            if(DamageTaken > 0)
                             {
-                                statsManagerScript.UpdateAttack("enemy", 1);
+                                //statsManagerScript.UpdateAttack("enemy", 1);
+                                giveWound();
+                                giveWound();
                             }
                             numScale--;
                             yield return new WaitForSecondsRealtime(1);
@@ -169,27 +189,92 @@ public class Naga : MonoBehaviour {
             }
         }
 
-        if(NumSigilsInBurn >= 2 && areaManagerScript.enemy_TrashCardList.Count >= 5)
+        if(NumSigilsInBurn <= 2 && areaManagerScript.enemy_TrashCardList.Count >= 5)
         {
-            for (int k = 0; k < NagaHand.Count; k++)
-            {
-                if (NagaHand[k].GetComponent<CardObj>().CardName == "Call of the Deep")
-                {
-                    StartCoroutine(attackDiscard(1, k));
-                    NagaHand[k].GetComponent<CardMovement>().PlayEnemyCard();
-                    statsManagerScript.UpdateAttack("enemy", 1);
-                    numCotD--;
-                    yield return new WaitForSecondsRealtime(1);
-                }
-            }
-
+           StartCoroutine(CalloftheDeep());
+          
         }
 
         print("DONE WITH ENEMY REACTION");
-        gameManagerScript.EndEnemyReact();
+        StartCoroutine(gameManagerScript.EndEnemyReact());
     }
 
+    IEnumerator CalloftheDeep()
+    {
+        bool foundSigil = false;
+        int numCard = 2;
+        for (int k = 0; k < NagaHand.Count; k++)
+        {
+            if (NagaHand[k].GetComponent<CardObj>().CardName == "Call of the Deep")
+            {
+                StartCoroutine(attackDiscard(1, k));
+                NagaHand[k].GetComponent<CardMovement>().PlayEnemyCard();
+                //statsManagerScript.UpdateAttack("enemy", 1);
+                for (int i = 0; i < areaManagerScript.enemy_TrashCardList.Count; i++)
+                {
+                    if(!foundSigil && numCard > 0)
+                    {
+                        if(areaManagerScript.enemy_TrashCardList[i].GetComponent<CardObj>().SigilNum > 0)
+                        {
+                            numCard--;
+                            handManagerScript.enemyHandlist.Add(areaManagerScript.enemy_TrashCardList[i]);
+                            
+                        }
+                    }
+                    else
+                    {
+                        numCard--;
+                        handManagerScript.enemyHandlist.Add(areaManagerScript.enemy_TrashCardList[i]);
+                    }
+                }
+                numCotD--;
+                UpdateEnemyHand();
+                yield return new WaitForSecondsRealtime(1);
+            }
+        }
+        numCard = 2;
+    }
 
+    void giveWound()
+    {
+        print("GIVE WOUND");
+        //Check for wound cards
+        if(cardGenScript.WoundDeck.Count < 0)
+        {
+            int rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
+            handManagerScript.playerDeckList.Insert(rand, cardGenScript.WoundDeck[0]);
+
+            StartCoroutine(areaManagerScript.TempDisplay(cardGenScript.WoundDeck[0], playerTempDisplay, playerDeck));
+            cardGenScript.WoundDeck.RemoveAt(0);
+            statsManagerScript.UpdateCardsInDeck("player", 1, 1);
+
+        }
+    }
+
+    public void CrushingBlow()
+    {
+        print("CRUSHING BLOW EFFECT");
+        int PlayerDefTotal = statsManagerScript.numDefense_player;
+        print("Player defence is : " + PlayerDefTotal);
+        for (int i = 0; i < NumCBInPlay; i ++)
+        {
+            print("Player defence is : " + PlayerDefTotal);
+            if(PlayerDefTotal > 0)
+            {
+
+                if(areaManagerScript.player_PlayCardList[i])
+                {
+                    areaManagerScript.Call_TrashCard(areaManagerScript.player_PlayCardList[i], "player");
+                    //areaManagerScript.player_TrashCardList.Add(areaManagerScript.player_PlayCardList[i]);
+                    /*for(int k = 0; k < areaManagerScript.player_PlayCardList.Count)
+                    {
+
+                    }*/
+                }
+
+            }
+        }
+    }
 
   IEnumerator attackDiscard(int cost, int index)
     {

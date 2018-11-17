@@ -132,8 +132,14 @@ public class GameManager : MonoBehaviour {
         int DamageDealt_toPlayer = statManagerScript.numAttack_enemy - statManagerScript.numDefense_player;
         if (DamageDealt_toPlayer > 0)
         {
-           // statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
+            // statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
+            if (level == 2)
+            {
+                nagaScript.CrushingBlow();
+            }
+               
             StartCoroutine(handManagerScript.Call_TakeDamage(DamageDealt_toPlayer, "player"));
+        
         }
         //wait until all damage is finished being dealt before drawing new cards
         yield return new WaitForSecondsRealtime(1.2f * DamageDealt_toPlayer);
@@ -153,6 +159,7 @@ public class GameManager : MonoBehaviour {
         //player draws 3
         StartCoroutine(Delay(3, "player"));
         
+        if(level == 0)
         StartCoroutine(dummyScript.PlayerDialogue());
 
         //PLAYER ACTS
