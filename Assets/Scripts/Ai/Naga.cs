@@ -254,7 +254,7 @@ public class Naga : MonoBehaviour {
     public void CrushingBlow()
     {
         print("CRUSHING BLOW EFFECT");
-        int PlayerDefTotal = statsManagerScript.numDefense_player;
+        int PlayerDefTotal = statsManagerScript.numDefense;
         print("Player defence is : " + PlayerDefTotal);
         for (int i = 0; i < NumCBInPlay; i ++)
         {

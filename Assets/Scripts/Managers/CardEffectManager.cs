@@ -114,6 +114,7 @@ public class CardEffectManager : MonoBehaviour {
         else if(Card.CardName == "Eternal Will")
         {
             int enemyHandSize = handManagerScript.enemyHandlist.Count;
+            int playerHandSize = handManagerScript.playerHandList.Count;
             //Reaction: You and your opponent gather and shuffle your discard pile, hand and deck and draw cards equal to your previous hadn count. Draw 1 card.
             if (statManagerScript.phase_player == "reaction")
             {
@@ -149,7 +150,39 @@ public class CardEffectManager : MonoBehaviour {
                   
                     
                 }
+                //FOR PLAYER
+                for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
+                {
+                    print("i is " + i);
+                    playerTempDeck.Add(handManagerScript.playerDeckList[i]);
+
+                }
+                for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+                {
+                    playerTempDeck.Add(handManagerScript.playerHandList[i]);
+                    areaManagerScript.Call_DiscardCard(handManagerScript.playerHandList[i],"player");
+                  
+
+
+                }
+                for (int i = 0; i < areaManagerScript.enemy_DiscardCardList.Count; i++)
+                {
+                    playerTempDeck.Add(areaManagerScript.player_DiscardCardList[i]);
+
+                }
+
+                // handManagerScript.enemyDeckList[i] = new List<GameObject>();
+                for (int i = 0; i < enemyTempDeck.Count; i++)
+                {
+
+                    print("MAKE CARD");
+                    var playerTempCard = Instantiate(enemyTempDeck[i], enemyDeck.position, Quaternion.Euler(90, 0, 0));
+                    handManagerScript.playerDeckList.Add(playerTempCard);
+
+
+                }
                 StartCoroutine(handManagerScript.DrawCards(enemyHandSize, "enemy"));
+                StartCoroutine(handManagerScript.DrawCards(playerHandSize, "player"));
             }
 
 
@@ -198,6 +231,13 @@ public class CardEffectManager : MonoBehaviour {
         if(Card.CardName == "Poison")
         {
             cardObj.GetComponent<CardMovement>().PlayPlayerCard();
+        }
+        if(Card.CardName =="Wound")
+        {
+            cardObj.GetComponent<CardMovement>().PlayPlayerCard();
+            statManagerScript.UpdateAttack("player", -3);
+            statManagerScript.UpdateDefense("player", -3);
+
         }
     }
 
