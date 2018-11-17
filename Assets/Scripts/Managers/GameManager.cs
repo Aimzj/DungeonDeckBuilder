@@ -70,8 +70,8 @@ public class GameManager : MonoBehaviour {
         {
             StartCoroutine(DisplayPhase("Player Goes First"));
 
-            statManagerScript.SetPhase("player", "action");
-            statManagerScript.SetPhase("enemy", "waiting");
+           // statManagerScript.SetPhase("player", "action");
+            //statManagerScript.SetPhase("enemy", "waiting");
 
             StartCoroutine(handManagerScript.DrawCards(4, "player"));
             StartCoroutine(Delay(3, "enemy"));
@@ -282,10 +282,6 @@ public class GameManager : MonoBehaviour {
     
     }
 
-    public void OpenStore()
-    {
-        StartCoroutine(sceneManagerScript.FadeOut(2));
-    }
 
     public void DisplayBurnUI(GameObject cardObj)
     {

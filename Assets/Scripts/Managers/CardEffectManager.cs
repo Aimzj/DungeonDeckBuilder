@@ -94,7 +94,7 @@ public class CardEffectManager : MonoBehaviour {
 
             //Card.Attack += attack;
             playedCard.transform.Find("AttackCost").GetComponent<TextMeshPro>().text = (Card.Attack + attack).ToString();
-            statManagerScript.UpdateAttack("player", attack);
+            statManagerScript.UpdateAttack("player", Card.Attack + attack);
         }
         else if (Card.CardName == "Inner Strength")
         {

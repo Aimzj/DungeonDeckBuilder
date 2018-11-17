@@ -48,22 +48,6 @@ public class StatsManager : MonoBehaviour {
         }
     }
 
-    public void SetKindling(string target, int num)
-    {
-        if(target == "player")
-        {
-            numKindling_player = num;
-            numTotalKinding_player = num;
-            playerKindling.text = "Kindling: " + num+ "/"+num;
-        }
-        else if(target == "enemy")
-        {
-            numKindling_enemy = num;
-            numTotalKindling_enemy = num;
-            enemyKindling.text = "Kindling: " + num + "/" + num;
-        }
-    }
-
     public void ClearAttack()
     {
         numAttack = 0;
@@ -120,28 +104,12 @@ public class StatsManager : MonoBehaviour {
         }
     }
 
-    public void SetHealth(string target, int num)
-    {
-        if (target == "player")
-        {
-            totalHealth_player = num;
-            numHealth_player = num;
-            playerHealth.text = "Health: " + numHealth_player+"/"+totalHealth_player;
-
-        }
-        else if (target == "enemy")
-        {
-            totalHealth_enemy = num;
-            numHealth_enemy = num;
-            enemyHealth.text = "Health: " + numHealth_enemy+"/"+totalHealth_enemy;
-        }
-    }
-
-    public void UpdateHealth(string target, int num)
+    public void UpdateHealth(string target, int num, int total)
     {
         if(target == "player")
         {
             numHealth_player += num;
+            totalHealth_player += total;
             playerHealth.text = "Health: " + numHealth_player+ "/" +totalHealth_player;
 
             if (numHealth_player <= 0)
@@ -153,6 +121,7 @@ public class StatsManager : MonoBehaviour {
         else if (target == "enemy")
         {
             numHealth_enemy += num;
+            totalHealth_enemy += total;
             enemyHealth.text = "Health: " + numHealth_enemy +"/" + totalHealth_enemy;
 
             if (numHealth_enemy <= 0)

@@ -26,8 +26,8 @@ public class Dummy : MonoBehaviour {
         statsManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        statsManagerScript.SetHealth("player", 10);
-        statsManagerScript.SetHealth("enemy", 10);
+        statsManagerScript.UpdateHealth("player", 10,10);
+        statsManagerScript.UpdateHealth("enemy", 10,10);
         statsManagerScript.UpdateSigils("player", 3);
         statsManagerScript.UpdateSigils("enemy", 3);
         statsManagerScript.SetTotalCards("enemy", 10,0);
