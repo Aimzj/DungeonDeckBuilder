@@ -64,7 +64,7 @@ public class CardGenerator : MonoBehaviour {
 
 
 
-        InitialiseLevel(2);
+        InitialiseLevel(0);
 
 
     }

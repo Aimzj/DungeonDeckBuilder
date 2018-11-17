@@ -155,18 +155,23 @@ public class GameManager : MonoBehaviour {
         //play areas cleared after enemy reacts
         areaManagerScript.Call_DiscardPlayArea("player");
         areaManagerScript.Call_DiscardPlayArea("enemy");
-        if (nagaScript.numRemoveCards > 0)
+        if (level == 2)
         {
-
-            for (int i = 0; i < nagaScript.numRemoveCards - 1; i++)
+            if (nagaScript.numRemoveCards > 0)
             {
-                if (areaManagerScript.player_DiscardCardList.Count > 0)
-                {
-                    areaManagerScript.player_DiscardCardList.RemoveAt(areaManagerScript.player_DiscardCardList.Count - i);
-                }
 
+                for (int i = 0; i < nagaScript.numRemoveCards - 1; i++)
+                {
+                    if (areaManagerScript.player_DiscardCardList.Count > 0)
+                    {
+                        areaManagerScript.player_DiscardCardList.RemoveAt(areaManagerScript.player_DiscardCardList.Count - i);
+                    }
+
+                }
             }
+
         }
+       
         //enemy draws 1 card
         StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
         //end of enemy's turn
