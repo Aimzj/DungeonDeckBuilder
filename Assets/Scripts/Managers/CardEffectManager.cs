@@ -124,9 +124,10 @@ public class CardEffectManager : MonoBehaviour {
             //Undying: at the end of a turn shuffle your burn pile and draw one card from it.
 
         }
-        else if(Card.CardName == "Health Potion")
+        else if(Card.CardName == "Symbol of Faith")
         {
-            //Recover 5 burnt cards. This card is burnt immediately after use
+            //Recover 3 random cards from your discard pile into your hand. 
+            //Discard 1 status effect from your deck. If you have none regain a card from the flames and discard it.
 
         }
         else if(Card.CardName == "Eternal Will")
