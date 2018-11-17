@@ -101,7 +101,7 @@ public class Naga : MonoBehaviour {
 
     public IEnumerator Reaction()
     {
-        DamageTaken = statsManagerScript.numAttack_player;
+        DamageTaken = statsManagerScript.numAttack;
        print("DAMAGE:" + DamageTaken);
         print("START ENEMY REACTION");
         HP = statsManagerScript.numHealth_enemy;

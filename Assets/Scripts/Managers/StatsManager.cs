@@ -5,12 +5,12 @@ using TMPro;
 
 public class StatsManager : MonoBehaviour {
 
-    public TextMeshPro playerPhase, playerHealth, playerDefense, playerAttack, playerCardsInDeck, playerCycleTokens, playerDiscard, playerBurn, playerSigils, playerKindling;
+    public TextMeshPro playerPhase, playerHealth,  playerCardsInDeck, playerCycleTokens, playerDiscard, playerBurn, playerSigils, playerKindling;
     public TextMeshPro enemyPhase, enemyHealth, enemyDefense, enemyAttack, enemyCardsInDeck, enemyCycleTokens, enemyDiscard, enemyBurn, enemySigils, enemyKindling;
     public TextMeshPro endGameText, buttonText;
 
-    public int totalHealth_player, numHealth_player, numDefense_player, numAttack_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player, numSigilsRemaining_player, numKindling_player, numTotalKinding_player;
-    public int totalHealth_enemy, numHealth_enemy, numDefense_enemy, numAttack_enemy, numCardsInDeck_enemy, totalCards_enemy, numCycleTokens_enemy, numDiscard_enemy, numBurn_enemy, numSigilsRemaining_enemy, numKindling_enemy, numTotalKindling_enemy;
+    public int totalHealth_player, numHealth_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player, numSigilsRemaining_player, numKindling_player, numTotalKinding_player;
+    public int totalHealth_enemy, numHealth_enemy, numCardsInDeck_enemy, totalCards_enemy, numCycleTokens_enemy, numDiscard_enemy, numBurn_enemy, numSigilsRemaining_enemy, numKindling_enemy, numTotalKindling_enemy;
 
     public string phase_player, phase_enemy;
 
@@ -68,21 +68,11 @@ public class StatsManager : MonoBehaviour {
     {
         numAttack = 0;
         attackText.text = numAttack.ToString();
-
-        numAttack_player = 0;
-        numAttack_enemy = 0;
-        enemyAttack.text = "Attack: 0";
-        playerAttack.text = "Attack: 0";
     }
     public void ClearDefense()
     {
         numDefense = 0;
         defenseText.text = numDefense.ToString();
-
-        numDefense_player = 0;
-        numDefense_enemy = 0;
-        enemyDefense.text = "Defense: 0";
-        playerDefense.text = "Defense: 0";
     }
 
     public void SetPhase(string target, string phase)
@@ -177,35 +167,12 @@ public class StatsManager : MonoBehaviour {
     {
         numDefense += num;
         defenseText.text = numDefense.ToString();
-
-        if (target == "player")
-        {
-            numDefense_player += num;
-            playerDefense.text = "Defense: " + numDefense_player.ToString();
-        }
-        else if (target == "enemy")
-        {
-            numDefense_enemy += num;
-            enemyDefense.text = "Defense: " + numDefense_enemy;
-        }
     }
 
     public void UpdateAttack(string target, int num)
     {
         numAttack += num;
         attackText.text = numAttack.ToString();
-
-        if (target == "player")
-        {
-            numAttack_player += num;
-            playerAttack.text = "Attack: " + numAttack_player;
-
-        }
-        else if (target == "enemy")
-        {
-            numAttack_enemy += num;
-            enemyAttack.text = "Attack: " + numAttack_enemy;
-        }
     }
 
     public void SetTotalCards(string target, int num, int cardsInPlay)
@@ -271,12 +238,12 @@ public class StatsManager : MonoBehaviour {
         if (target == "player")
         {
             numDiscard_player += num;
-            playerDiscard.text = "Discard Pool: " + numDiscard_player;
+            playerDiscard.text = numDiscard_player.ToString();
         }
         else if (target == "enemy")
         {
             numDiscard_enemy += num;
-            enemyDiscard.text = "Discard Pool: " + numDiscard_enemy;
+            enemyDiscard.text = numDiscard_enemy.ToString();
         }
     }
 
@@ -285,12 +252,12 @@ public class StatsManager : MonoBehaviour {
         if (target == "player")
         {
             numBurn_player += num;
-            playerBurn.text = "Burn Pool: " + numBurn_player;
+            playerBurn.text = numBurn_player.ToString();
         }
         else if (target == "enemy")
         {
             numBurn_enemy += num;
-            enemyBurn.text = "Burn Pool: " + numBurn_enemy;
+            enemyBurn.text = numBurn_enemy.ToString();
         }
     }
 
@@ -304,7 +271,7 @@ public class StatsManager : MonoBehaviour {
             if (numSigilsRemaining_player <= 0)
             {
                 //PLAYER LOSES
-                endGameText.text = "YOU LOSE";
+                endGameText.text = "You Lose";
             }
         }
         else if (target == "enemy")
@@ -315,7 +282,7 @@ public class StatsManager : MonoBehaviour {
             if (numSigilsRemaining_enemy <= 0)
             {
                 //PLAYER WINS
-                endGameText.text = "PLAYER WINS!";
+                endGameText.text = "Player Wins!";
             }
         }
     }

@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         sceneManagerScript = GameObject.Find("GameManager").GetComponent<Scene_Manager>();
 
-        if (SceneManager.GetActiveScene().name == "BetaScene")
+        if (SceneManager.GetActiveScene().name.Contains("BetaScene"))
         {
             StartCoroutine(DisplayPhase("Player Goes First"));
 
@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour {
     public IEnumerator EndPlayerReact_wait()
     {
         //resolve attack and defense values and other effects
-        int DamageDealt_toPlayer = statManagerScript.numAttack_enemy - statManagerScript.numDefense_player;
+        int DamageDealt_toPlayer = statManagerScript.numAttack - statManagerScript.numDefense;
         if (DamageDealt_toPlayer > 0)
         {
            // statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour {
         //after the enemy reacts to player's cards, it is the enemy's turn
 
         //resolve attack and defense values and other effects
-        int DamageDealt_toEnemy = statManagerScript.numAttack_player - statManagerScript.numDefense_enemy;
+        int DamageDealt_toEnemy = statManagerScript.numAttack - statManagerScript.numDefense;
         if (DamageDealt_toEnemy > 0)
         {
            // statManagerScript.UpdateHealth("enemy", -DamageDealt_toEnemy);
