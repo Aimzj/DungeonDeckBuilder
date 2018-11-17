@@ -2111,7 +2111,7 @@ MonoBehaviour:
   m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -5516,7 +5516,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPos: {x: -7.05, y: -2.7271, z: 5.4895}
-  speed: 4
+  speed: 5
 --- !u!1 &1050083387
 GameObject:
   m_ObjectHideFlags: 0
@@ -11436,7 +11436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPos: {x: -7.1041, y: -2.7902, z: 2.18}
-  speed: 4
+  speed: 5
 --- !u!1 &1899719449
 GameObject:
   m_ObjectHideFlags: 0

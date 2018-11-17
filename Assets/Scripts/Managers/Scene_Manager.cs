@@ -18,6 +18,28 @@ public class Scene_Manager : MonoBehaviour {
         
     }
 
+    public void StartTutorial()
+    {
+        StartCoroutine(FadeOut(2));
+    }
+
+    public void QuitGame()
+    {
+        StartCoroutine(Quit());
+    }
+
+    public IEnumerator Quit()
+    {
+        float val = 0;
+        for (int i = 0; i < 30; i++)
+        {
+            val = val + 0.04f;
+            blackScreen.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, val);
+            yield return new WaitForSeconds(0.05f);
+        }
+        Application.Quit();
+    }
+
     private IEnumerator FadeIn()
     {
         float val = 1;
