@@ -175,8 +175,11 @@ public class Naga : MonoBehaviour {
                             if(DamageTaken > 0)
                             {
                                 //statsManagerScript.UpdateAttack("enemy", 1);
+                                yield return new WaitForSecondsRealtime(1);
                                 giveWound();
+                                yield return new WaitForSecondsRealtime(1);
                                 giveWound();
+                                yield return new WaitForSecondsRealtime(1);
                             }
                             numScale--;
                             yield return new WaitForSecondsRealtime(1);
@@ -239,7 +242,7 @@ public class Naga : MonoBehaviour {
     {
         print("GIVE WOUND");
         //Check for wound cards
-        if(cardGenScript.WoundDeck.Count < 0)
+        if(cardGenScript.WoundDeck.Count > 0)
         {
             int rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
             handManagerScript.playerDeckList.Insert(rand, cardGenScript.WoundDeck[0]);
