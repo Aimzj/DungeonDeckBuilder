@@ -28,6 +28,7 @@ public class Naga : MonoBehaviour {
 
     //Cards in play
     public int NumCBInPlay = 0;
+    public int numRemoveCards = 0;
 
 
     //UPDATED
@@ -256,23 +257,31 @@ public class Naga : MonoBehaviour {
 
     public void CrushingBlow()
     {
+        /*if(NumCBInPlay > areaManagerScript.player_PlayCardList.Count)
+        {
+            NumCBInPlay = areaManagerScript.player_PlayCardList.Count;
+        }*/
         print("CRUSHING BLOW EFFECT");
         int PlayerDefTotal = statsManagerScript.numDefense;
         print("Player defence is : " + PlayerDefTotal);
         for (int i = 0; i < NumCBInPlay; i ++)
         {
-            print("Player defence is : " + PlayerDefTotal);
+            PlayerDefTotal-=3;
+         
             if(PlayerDefTotal > 0)
             {
-
-                if(areaManagerScript.player_PlayCardList[i])
+                print("Player defence is : " + PlayerDefTotal);
+                if (areaManagerScript.player_PlayCardList.Count > 0)
                 {
+                    numRemoveCards++;
+                    print("Num Cards to Remove is :" + numRemoveCards);
                     areaManagerScript.Call_TrashCard(areaManagerScript.player_PlayCardList[i], "player");
-                    //areaManagerScript.player_TrashCardList.Add(areaManagerScript.player_PlayCardList[i]);
-                    /*for(int k = 0; k < areaManagerScript.player_PlayCardList.Count)
-                    {
-
-                    }*/
+                    //areaManagerScript.player_PlayCardList.RemoveAt(areaManagerScript.player_PlayCardList.Count);
+                    print("CARDS BIATCH");
+                 
+                    
+                   
+                   
                 }
 
             }
@@ -361,6 +370,8 @@ public class Naga : MonoBehaviour {
 
     public IEnumerator Action()
     {
+        numRemoveCards = 0;
+        NumCBInPlay = 0;
         print("ENEMY ACTION");
         UpdateEnemyHand();
         HP = statsManagerScript.numHealth_enemy;
@@ -404,6 +415,7 @@ public class Naga : MonoBehaviour {
                 {
                     if (NagaHand[k].GetComponent <CardObj>().CardName == "Crushing Blow")
                     {
+                        NumCBInPlay++;
                         NagaHand[k].GetComponent<CardMovement>().PlayEnemyCard();
                         statsManagerScript.UpdateAttack("enemy", 3);
                         numCrushBlow--;

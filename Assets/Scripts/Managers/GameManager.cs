@@ -109,6 +109,8 @@ public class GameManager : MonoBehaviour {
         //PLAYER REACT
         statManagerScript.SetPhase("player", "reaction");
         statManagerScript.SetPhase("enemy", "waiting");
+     
+
 
         endTurnButton.enabled = true;
     }
@@ -133,24 +135,38 @@ public class GameManager : MonoBehaviour {
         if (DamageDealt_toPlayer > 0)
         {
             // statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
-            if (level == 2)
-            {
-                nagaScript.CrushingBlow();
-            }
+           
                
             StartCoroutine(handManagerScript.Call_TakeDamage(DamageDealt_toPlayer, "player"));
         
         }
+        if (level == 2)
+        {
+            nagaScript.CrushingBlow();
+
+        }
         //wait until all damage is finished being dealt before drawing new cards
         yield return new WaitForSecondsRealtime(1.2f * DamageDealt_toPlayer);
-
+        print("NOMNOMNOM");
+       
         //clear attack and defense values
         statManagerScript.ClearAttack();
         statManagerScript.ClearDefense();
         //play areas cleared after enemy reacts
         areaManagerScript.Call_DiscardPlayArea("player");
         areaManagerScript.Call_DiscardPlayArea("enemy");
+        if (nagaScript.numRemoveCards > 0)
+        {
 
+            for (int i = 0; i < nagaScript.numRemoveCards - 1; i++)
+            {
+                if (areaManagerScript.player_DiscardCardList.Count > 0)
+                {
+                    areaManagerScript.player_DiscardCardList.RemoveAt(areaManagerScript.player_DiscardCardList.Count - i);
+                }
+
+            }
+        }
         //enemy draws 1 card
         StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
         //end of enemy's turn
