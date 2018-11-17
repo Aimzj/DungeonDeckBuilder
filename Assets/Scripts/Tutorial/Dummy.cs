@@ -27,12 +27,12 @@ public class Dummy : MonoBehaviour {
         statsManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        statsManagerScript.SetHealth("player", 10);
-        statsManagerScript.SetHealth("enemy", 10);
-        statsManagerScript.UpdateSigils("player", 3);
-        statsManagerScript.UpdateSigils("enemy", 3);
-        statsManagerScript.SetTotalCards("enemy", 10,0);
-        statsManagerScript.SetTotalCards("player", 10, 0);
+        statsManagerScript.SetHealth("player", 100);
+        statsManagerScript.SetHealth("enemy", 100);
+        statsManagerScript.UpdateSigils("player", 30);
+        statsManagerScript.UpdateSigils("enemy", 30);
+        statsManagerScript.SetTotalCards("enemy", 100,0);
+        statsManagerScript.SetTotalCards("player", 100, 0);
 
         StartCoroutine(handManagerScript.DrawCards(2, "player"));
         //statsManagerScript.numHealth_player = 100;
