@@ -79,7 +79,7 @@ public class CardEffectManager : MonoBehaviour {
                 && lastPlayedCard.GetComponent<CardObj>().Defense > 1)
             {
                 //Card.Defense += 2;
-                playedCard.transform.Find("DefenseCost").GetComponent<TextMeshPro>().text = Card.Defense.ToString();
+                playedCard.transform.Find("DefenseCost").GetComponent<TextMeshPro>().text = (Card.Defense+2).ToString();
                 statManagerScript.UpdateDefense("player", 2);
             }
 
@@ -205,6 +205,10 @@ public class CardEffectManager : MonoBehaviour {
     {
         CardObj Card = playedCard.GetComponent<CardObj>();
 
+        //subtract from the burn total
+        int burnVal = playedCard.GetComponent<CardObj>().BurnCost;
+        statManagerScript.UpdateBurn("player", -burnVal);
+
         //play effects with burn
         if (Card.CardName == "Focused Strike")
         {
@@ -262,9 +266,6 @@ public class CardEffectManager : MonoBehaviour {
                 //print("Draw " + tempCard.GetComponent<CardObj>().Defense );
             }
 
-
-           
-         
         }
         else if (Card.CardName == "Fireball")
         {
