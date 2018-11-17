@@ -166,7 +166,7 @@ public class GameManager : MonoBehaviour {
     //called by enemy script
     public IEnumerator EndEnemyReact()
     {
-        //print("WORK FFS");;
+
         //after the enemy reacts to player's cards, it is the enemy's turn
 
         //resolve attack and defense values and other effects
@@ -185,6 +185,14 @@ public class GameManager : MonoBehaviour {
         //play areas cleared after enemy reacts
         areaManagerScript.Call_DiscardPlayArea("player");
         areaManagerScript.Call_DiscardPlayArea("enemy");
+
+        //poison exists
+        if (level == 1)
+        {
+            int waitFor = cardEffectScript.PlayUndyingPoisonEffects();
+            print("WAIT FOR: " + waitFor.ToString());
+            yield return new WaitForSecondsRealtime(waitFor);
+        }
 
         //player draws 1 card
         StartCoroutine(handManagerScript.DrawCards(1, "player"));

@@ -162,8 +162,7 @@ public class AreaManager : MonoBehaviour {
         trashList.Add(cardObj);
 
         //subtract from total cards
-        statManagerScript.UpdateTotalCards(target, -1);
-        statManagerScript.UpdateCardsInDeck(target, -1);
+        statManagerScript.UpdateCardsInDeck(target, -1,-1);
 
         //add card to list of trashed cards
         trashList.Add(cardObj);
@@ -171,7 +170,7 @@ public class AreaManager : MonoBehaviour {
         //card has now been played
         trashList[trashList.Count - 1].GetComponent<CardMovement>().isPlayed = true;
 
-        StartCoroutine(TempDisplay(cardObj, tempDisplay, trashTrans, target));
+        StartCoroutine(TempDisplay(cardObj, tempDisplay, trashTrans));
 
         //damage player
         statManagerScript.UpdateHealth(target, -1);
@@ -182,7 +181,7 @@ public class AreaManager : MonoBehaviour {
         }
     }
 
-    public IEnumerator TempDisplay(GameObject card, Transform tempDisplay, Transform targetTrans, string target)
+    public IEnumerator TempDisplay(GameObject card, Transform tempDisplay, Transform targetTrans)
     {
         //change the card's order in layer
         card.GetComponent<CardMovement>().ChangeOrder(100);
@@ -229,7 +228,7 @@ public class AreaManager : MonoBehaviour {
         statManagerScript.UpdateBurn(target, 1);
 
         //subtract from total cards
-        statManagerScript.UpdateTotalCards(target, -1);
+        statManagerScript.UpdateCardsInDeck(target,0, -1);
 
         //add card to list of trashed cards
         trashList.Add(cardObj);

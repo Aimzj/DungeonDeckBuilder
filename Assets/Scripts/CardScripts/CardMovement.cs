@@ -205,6 +205,42 @@ public class CardMovement : MonoBehaviour {
         handManagerScript.ReorderHandLayers("enemy");
     }
 
+    public void PlayPlayerCard()
+    {
+        //place the card on the table
+
+        //only if the hand size is not exceeded
+        //and if the player can "afford" it
+        if (!handManagerScript.isExceedingHandSize
+            && gameObject.GetComponent<CardObj>().DiscardCost <= statManagerScript.numDiscard_player)
+        {
+            //play sound
+            soundScript.PlaySound_PlayCard();
+
+            //remove the card from the Hand List
+            handManagerScript.Call_RemoveCardFromHand(this.posInHand, "player");
+            posInHand = -1;
+
+            isPlayed = true;
+            isInHand = false;
+
+            areaManagerScript.Call_PlayCard(this.gameObject, "player");
+
+            //play the card's standard effects
+            cardEffectScript.PlayCard(this.gameObject, false);
+
+            //check if the card has burn effects and if the player can afford them
+            int burnCost = this.gameObject.GetComponent<CardObj>().BurnCost;
+            if (burnCost > 0
+                && statManagerScript.numBurn_player >= burnCost)
+            {
+                //ask the player if they want to use the effect
+                gameManagerScript.DisplayBurnUI(this.gameObject);
+            }
+
+        }
+    }
+
     private void OnMouseUp()
     {
         if (!isEnemyCard
@@ -225,39 +261,8 @@ public class CardMovement : MonoBehaviour {
                 //PLAY
                 if (areaSensorScript.isPlay)
                 {
-                    //place the card on the table
 
-                    //only if the hand size is not exceeded
-                    //and if the player can "afford" it
-                    if (!handManagerScript.isExceedingHandSize
-                        && gameObject.GetComponent<CardObj>().DiscardCost <= statManagerScript.numDiscard_player)
-                    {
-                        //play sound
-                        soundScript.PlaySound_PlayCard();
-
-                        //remove the card from the Hand List
-                        handManagerScript.Call_RemoveCardFromHand(this.posInHand, "player");
-                        posInHand = -1;
-
-                        isPlayed = true;
-                        isInHand = false;
-
-                        areaManagerScript.Call_PlayCard(this.gameObject, "player");
-
-                        //play the card's standard effects
-                        cardEffectScript.PlayCard(this.gameObject, false);
-
-                        //check if the card has burn effects and if the player can afford them
-                        int burnCost = this.gameObject.GetComponent<CardObj>().BurnCost;
-                        if (burnCost > 0
-                            && statManagerScript.numBurn_player >= burnCost)
-                        {
-                            //ask the player if they want to use the effect
-                            gameManagerScript.DisplayBurnUI(this.gameObject);
-                        }
-                        
-                    }
-
+                    PlayPlayerCard();
                 }
                 //DISCARD
                 else if (areaSensorScript.isDiscard)
