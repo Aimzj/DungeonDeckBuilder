@@ -13393,27 +13393,37 @@ MonoBehaviour:
   ArcanePack: []
   PrimusPack: []
   PlayerTutDeck:
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  - {fileID: 1194213479686936, guid: 045f679e42ee5ba41b188a05926a1896, type: 2}
+  - {fileID: 1194213479686936, guid: 045f679e42ee5ba41b188a05926a1896, type: 2}
+  - {fileID: 1194213479686936, guid: 045f679e42ee5ba41b188a05926a1896, type: 2}
+  - {fileID: 1194213479686936, guid: 045f679e42ee5ba41b188a05926a1896, type: 2}
+  - {fileID: 1194213479686936, guid: 045f679e42ee5ba41b188a05926a1896, type: 2}
+  - {fileID: 1194213479686936, guid: 045f679e42ee5ba41b188a05926a1896, type: 2}
   - {fileID: 1194213479686936, guid: 045f679e42ee5ba41b188a05926a1896, type: 2}
   - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
   - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
   - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  - {fileID: 1194213479686936, guid: fbc0e5e3fd425cb458e7818e0c6b45aa, type: 2}
   - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  - {fileID: 1194213479686936, guid: f921453005c0c534e8cee1b14af17ede, type: 2}
+  - {fileID: 1194213479686936, guid: f921453005c0c534e8cee1b14af17ede, type: 2}
   - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
-  - {fileID: 1194213479686936, guid: 5fe8325779c11c845aa4620cd005e3a0, type: 2}
   EnemyTutDeck:
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
+  - {fileID: 1194213479686936, guid: 2304a4bf7480fd24ba4c42ca48ec27e4, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
+  - {fileID: 1194213479686936, guid: 81879a25c64ee5d4fba57f3148494661, type: 2}
 --- !u!114 &2134202305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13486,8 +13496,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dummyHand: []
-  TurnCount: 1
-  timer: 0.25
+  TurnCount: -1
+  timer: 2
   dialogueText: {fileID: 44085157}
 --- !u!114 &2134202308
 MonoBehaviour:

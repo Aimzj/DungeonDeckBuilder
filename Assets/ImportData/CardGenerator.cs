@@ -100,7 +100,12 @@ public class CardGenerator : MonoBehaviour {
         int enemy_health = 0;
         int enemy_cardsInDeck = 0;
 
-        //looping through all unique cards
+        if(level == 0)
+        {
+            player_health = 10;
+            enemy_health = 10;
+        }
+        //looping through all unique cardss
         for (int i = 1; i < numUniqueCards + 1; i++)
         {
             tempObj = (GameObject)Instantiate(Card, Vector3.zero, Quaternion.identity);
@@ -128,6 +133,11 @@ public class CardGenerator : MonoBehaviour {
                 statManagerScript.SetKindling("enemy", 0);
                 statManagerScript.UpdateSigils("player", 1);
                 statManagerScript.SetKindling("player", 1);
+                enemy_health = 10;
+                enemy_cardsInDeck = 10;
+                player_health = 10;
+                player_cardsInDeck = 10;
+                  
             }
             else if (level == 1
                 && cardScript.CardType == "spider")

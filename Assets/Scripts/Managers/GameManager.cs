@@ -76,6 +76,17 @@ public class GameManager : MonoBehaviour {
             StartCoroutine(handManagerScript.DrawCards(4, "player"));
             StartCoroutine(Delay(3, "enemy"));
         }
+        else if(SceneManager.GetActiveScene().name.Contains("level0"))
+        {
+            StartCoroutine(DisplayPhase("Player Goes First"));
+
+            statManagerScript.SetPhase("player", "action");
+            statManagerScript.SetPhase("enemy", "waiting");
+
+            StartCoroutine(handManagerScript.DrawCards(2, "player"));
+            StartCoroutine(Delay(3, "enemy"));
+        }
+
 
         cycleTokens = 0;
         discardBank = 0;
@@ -147,7 +158,7 @@ public class GameManager : MonoBehaviour {
         }
         //wait until all damage is finished being dealt before drawing new cards
         yield return new WaitForSecondsRealtime(1.2f * DamageDealt_toPlayer);
-        print("NOMNOMNOM");
+        
        
         //clear attack and defense values
         statManagerScript.ClearAttack();
@@ -181,9 +192,13 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(Delay(3, "player"));
 
 
-        print("PLAYER INFO");
+       
         if(level==0)
+        {
+            print("DIALOGUE TINGS");
             StartCoroutine(dummyScript.PlayerDialogue());
+        }
+            
         //PLAYER ACTS
         statManagerScript.SetPhase("player", "action");
         statManagerScript.SetPhase("enemy", "waiting");
@@ -266,7 +281,6 @@ public class GameManager : MonoBehaviour {
        
         if(level == 0)
         {
-            print("CAN YOU WORK FFS");
             StartCoroutine(dummyScript.Action());
         }
        else  if (level == 1)
