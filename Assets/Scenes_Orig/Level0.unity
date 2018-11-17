@@ -13394,7 +13394,7 @@ MonoBehaviour:
   PrimusPack: []
   PlayerTutDeck:
   - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
-  - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
+  - {fileID: 1194213479686936, guid: 045f679e42ee5ba41b188a05926a1896, type: 2}
   - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
   - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}
   - {fileID: 1194213479686936, guid: c73b66fdae925df42afea4eaa0af0266, type: 2}

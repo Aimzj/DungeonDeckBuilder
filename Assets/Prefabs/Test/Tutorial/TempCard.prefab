@@ -765,9 +765,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36efb9a2e30f39544b150df38f3d0c65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardName: Pact of maggots
+  CardName: Lucky Charm
   DiscardCost: 0
-  BurnCost: 0
+  BurnCost: 1
   FlavourText: 
   Attack: 0
   Defense: 0

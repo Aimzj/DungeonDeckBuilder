@@ -324,9 +324,43 @@ public class CardEffectManager : MonoBehaviour {
         }
         else if (Card.CardName == "Lucky Charm")
         {
-            //Draw two random cards from your deck
-            int rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
-            StartCoroutine(handManagerScript.DrawCards(2, "player"));
+//          print("LUCKY CHARM");
+            GameObject highestValCard = handManagerScript.playerDeckList[0];
+            int index = 0;
+            //Draw highest card based on phase
+            if (statManagerScript.phase_player == "action")
+            {
+                
+                for (int i = 0; i < handManagerScript.playerDeckList.Count;i++)
+                {
+                    print("LUCKY CHARM");
+                    if (handManagerScript.playerDeckList[i].GetComponent<CardObj>().Attack > highestValCard.GetComponent<CardObj>().Attack)
+                    {
+                        highestValCard = handManagerScript.playerDeckList[i];
+                        index = i;
+                        print("SWAP");
+                    }
+                }
+            }
+            //Reaction - Draw your burnt card's defence value x2 from your deck 
+            else if (statManagerScript.phase_player == "reaction")
+            {
+                for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
+                {
+                    if (handManagerScript.playerDeckList[i].GetComponent<CardObj>().Defense > highestValCard.GetComponent<CardObj>().Defense)
+                    {
+                        highestValCard = handManagerScript.playerDeckList[i];
+                        index = i;
+                    }
+                }
+            }
+            handManagerScript.playerDeckList.RemoveAt(index);
+            handManagerScript.playerDeckList.Add(highestValCard);
+            StartCoroutine(handManagerScript.DrawCards(1, "player"));
+           // StartCoroutine(areaManagerScript.TempDisplay(highestValCard, tempDisplayPlayer, tempDisplayPlayer));
+
+            handManagerScript.playerHandList.Add(highestValCard);
+            handManagerScript.ReorderHandLayers("player");
         }
         else if (Card.CardName == "Second Wind")
         {
