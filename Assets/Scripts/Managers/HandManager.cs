@@ -223,9 +223,33 @@ public class HandManager : MonoBehaviour {
                 {
                     DrawCards("player", ref areaManagerScript.player_DiscardCardList, ref Player_HandPositions, ref player_x, player_yPos, ref playerHandList);
                 }
-               
+
             }
-            
+            else if (target == "enemy")
+            {
+                if (areaManagerScript.enemy_DiscardCardList.Count - numCards >= 0)
+                {
+                    DrawCards("enemy", ref areaManagerScript.enemy_DiscardCardList, ref Enemy_HandPositions, ref enemy_x, enemy_yPos, ref enemyHandlist);
+                }
+            }
+
+                yield return new WaitForSecondsRealtime(0.3f);
+        }
+
+    }
+
+    public IEnumerator DrawTrash(int numCards, string target)
+    {
+        for (int i = 0; i < numCards; i++)
+        {
+        
+           if (target == "enemy")
+            {
+                if (areaManagerScript.enemy_TrashCardList.Count - numCards >= 0)
+                {
+                    DrawCards("enemy", ref areaManagerScript.enemy_TrashCardList, ref Enemy_HandPositions, ref enemy_x, enemy_yPos, ref enemyHandlist);
+                }
+            }
 
             yield return new WaitForSecondsRealtime(0.3f);
         }

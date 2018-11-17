@@ -221,14 +221,21 @@ public class Naga : MonoBehaviour {
                         if(areaManagerScript.enemy_TrashCardList[i].GetComponent<CardObj>().SigilNum > 0)
                         {
                             numCard--;
-                            handManagerScript.enemyHandlist.Add(areaManagerScript.enemy_TrashCardList[i]);
+                            //handManagerScript.enemyHandlist.Add(areaManagerScript.enemy_TrashCardList[i]);
+                            var tempCard = areaManagerScript.enemy_TrashCardList[i];
+                            areaManagerScript.enemy_TrashCardList.RemoveAt(i);
+                            areaManagerScript.enemy_TrashCardList.Add(tempCard);
+                            StartCoroutine(handManagerScript.DrawTrash(1, "enemy"));
+
+                            foundSigil = true;
                             
                         }
                     }
                     else
                     {
                         numCard--;
-                        handManagerScript.enemyHandlist.Add(areaManagerScript.enemy_TrashCardList[i]);
+                        handManagerScript.Shuffle(ref areaManagerScript.enemy_DiscardCardList);
+                        StartCoroutine(handManagerScript.DrawTrash(1, "enemy"));
                     }
                 }
                 numCotD--;

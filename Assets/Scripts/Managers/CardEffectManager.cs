@@ -132,85 +132,8 @@ public class CardEffectManager : MonoBehaviour {
         else if(Card.CardName == "Eternal Will")
         {
             print("ETERNAL WILL");
-            int enemyHandSize = handManagerScript.enemyHandlist.Count;
-            int playerHandSize = handManagerScript.playerHandList.Count;
-            //Reaction: You and your opponent gather and shuffle your discard pile, hand and deck and draw cards equal to your previous hadn count. Draw 1 card.
-            if (statManagerScript.phase_player == "reaction")
-            {
-                //For enemy
-             
-                print("Eternal Will");
-                for (int i = 0; i < handManagerScript.enemyDeckList.Count; i++)
-                {
-                    //print("i is " + i);
-                    enemyTempDeck.Add(handManagerScript.enemyDeckList[i]);
-                      
-                }
-                for (int i = 0; i < handManagerScript.enemyHandlist.Count; i++)
-                {
-                    print("num discarded:  " + handManagerScript.enemyHandlist.Count);
-                    enemyTempDeck.Add(handManagerScript.enemyHandlist[i]);
-                    handManagerScript.enemyHandlist[i].GetComponent<CardMovement>().DiscardEnemyCard();
-                    i = 0;
-
-                }
-                for (int i = 0; i < areaManagerScript.enemy_DiscardCardList.Count; i++)
-                {
-                    enemyTempDeck.Add(areaManagerScript.enemy_DiscardCardList[i]);
-
-                }
-
-               // handManagerScript.enemyDeckList[i] = new List<GameObject>();
-                for (int i = 0; i < enemyTempDeck.Count; i++)
-                {
-
-                    //print("MAKE CARD");
-                    var enemyTempCard = Instantiate(enemyTempDeck[i], enemyDeck.position, Quaternion.Euler(90, 0, 0));
-                    handManagerScript.enemyDeckList.Add(enemyTempCard);
-                  
-                    
-                }
-                //FOR PLAYER
-                for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
-                {
-                   
-                    playerTempDeck.Add(handManagerScript.playerDeckList[i]);
-
-                }
-
-                for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
-                {
-                    playerTempDeck.Add(handManagerScript.playerHandList[i]);
-                    areaManagerScript.Call_DiscardCard(handManagerScript.playerHandList[i],"player");
-                    i = 0;
-                  
-
-
-                }
-                for (int i = 0; i < areaManagerScript.player_DiscardCardList.Count; i++)
-                {
-                   
-                    playerTempDeck.Add(areaManagerScript.player_DiscardCardList[i]);
-
-                }
-
-                // handManagerScript.enemyDeckList[i] = new List<GameObject>();
-                for (int i = 0; i < enemyTempDeck.Count; i++)
-                {
-
-                    print("MAKE CARD");
-                    var playerTempCard = Instantiate(enemyTempDeck[i], enemyDeck.position, Quaternion.Euler(90, 0, 0));
-                    handManagerScript.playerDeckList.Add(playerTempCard);
-
-
-                }
-                print("Enemy Handsize is:" + enemyHandSize);
-                handManagerScript.Shuffle(ref handManagerScript.enemyDeckList);
-                handManagerScript.Shuffle(ref handManagerScript.playerDeckList);
-
-                StartCoroutine(handManagerScript.DrawCards(enemyHandSize, "enemy"));
-                StartCoroutine(handManagerScript.DrawCards(playerHandSize, "player"));
-            }
+            eternalWill();
+           
 
 
         }
@@ -223,6 +146,89 @@ public class CardEffectManager : MonoBehaviour {
 
     }
 
+
+    void eternalWill()
+    {
+        int enemyHandSize = handManagerScript.enemyHandlist.Count;
+        int playerHandSize = handManagerScript.playerHandList.Count;
+        //Reaction: You and your opponent gather and shuffle your discard pile, hand and deck and draw cards equal to your previous hadn count. Draw 1 card.
+        if (statManagerScript.phase_player == "reaction")
+        {
+            //For enemy
+
+            print("Eternal Will");
+            for (int i = 0; i < handManagerScript.enemyDeckList.Count; i++)
+            {
+                //print("i is " + i);
+                enemyTempDeck.Add(handManagerScript.enemyDeckList[i]);
+
+            }
+            for (int i = 0; i < handManagerScript.enemyHandlist.Count; i++)
+            {
+                print("num discarded:  " + handManagerScript.enemyHandlist.Count);
+                enemyTempDeck.Add(handManagerScript.enemyHandlist[i]);
+                handManagerScript.enemyHandlist[i].GetComponent<CardMovement>().DiscardEnemyCard();
+                i = 0;
+
+            }
+            for (int i = 0; i < areaManagerScript.enemy_DiscardCardList.Count; i++)
+            {
+                enemyTempDeck.Add(areaManagerScript.enemy_DiscardCardList[i]);
+
+            }
+
+            // handManagerScript.enemyDeckList[i] = new List<GameObject>();
+            for (int i = 0; i < enemyTempDeck.Count; i++)
+            {
+
+                //print("MAKE CARD");
+                var enemyTempCard = Instantiate(enemyTempDeck[i], enemyDeck.position, Quaternion.Euler(90, 0, 0));
+                handManagerScript.enemyDeckList.Add(enemyTempCard);
+
+
+            }
+            //FOR PLAYER
+            for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
+            {
+
+                playerTempDeck.Add(handManagerScript.playerDeckList[i]);
+
+            }
+
+            for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+            {
+                playerTempDeck.Add(handManagerScript.playerHandList[i]);
+                areaManagerScript.Call_DiscardCard(handManagerScript.playerHandList[i], "player");
+                i = 0;
+
+
+
+            }
+            for (int i = 0; i < areaManagerScript.player_DiscardCardList.Count; i++)
+            {
+
+                playerTempDeck.Add(areaManagerScript.player_DiscardCardList[i]);
+
+            }
+
+            // handManagerScript.enemyDeckList[i] = new List<GameObject>();
+            for (int i = 0; i < enemyTempDeck.Count; i++)
+            {
+
+                print("MAKE CARD");
+                var playerTempCard = Instantiate(enemyTempDeck[i], enemyDeck.position, Quaternion.Euler(90, 0, 0));
+                handManagerScript.playerDeckList.Add(playerTempCard);
+
+
+            }
+            print("Enemy Handsize is:" + enemyHandSize);
+            handManagerScript.Shuffle(ref handManagerScript.enemyDeckList);
+            handManagerScript.Shuffle(ref handManagerScript.playerDeckList);
+
+            StartCoroutine(handManagerScript.DrawCards(enemyHandSize, "enemy"));
+            StartCoroutine(handManagerScript.DrawCards(playerHandSize, "player"));
+        }
+    }
     public int PlayUndyingPoisonEffects()
     {
 
