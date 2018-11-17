@@ -213,6 +213,25 @@ public class HandManager : MonoBehaviour {
 
     }
 
+    public IEnumerator DrawDiscard(int numCards, string target)
+    {
+        for (int i = 0; i < numCards; i++)
+        {
+            if (target == "player")
+            {
+                if (areaManagerScript.player_DiscardCardList.Count - numCards >= 0)
+                {
+                    DrawCards("player", ref areaManagerScript.player_DiscardCardList, ref Player_HandPositions, ref player_x, player_yPos, ref playerHandList);
+                }
+               
+            }
+            
+
+            yield return new WaitForSecondsRealtime(0.3f);
+        }
+
+    }
+
     private void DrawCards(string target, ref List<GameObject> deckList, ref List<float> handPositions, ref float x, float yPos, ref List<GameObject> handList)
     {
         //play sound

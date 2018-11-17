@@ -245,6 +245,18 @@ public class CardEffectManager : MonoBehaviour {
         return numDiscards;
     }
 
+    public void PactOfMaggot()
+    {
+        //StartCoroutine(handManagerScript.DrawCards(1, "player"));
+        if(areaManagerScript.player_DiscardCardList.Count > 0)
+        {
+            handManagerScript.Shuffle(ref areaManagerScript.player_DiscardCardList);
+            StartCoroutine(handManagerScript.DrawDiscard(1, "player"));
+        }
+       
+        
+    }
+
     public void PlayOnArrivalEffects(GameObject cardObj)
     {
         //retrieve card data

@@ -225,6 +225,16 @@ public class GameManager : MonoBehaviour {
 
         //player draws 1 card
         StartCoroutine(handManagerScript.DrawCards(1, "player"));
+        //Check for pact of maggots
+       for(int i = 0; i < areaManagerScript.player_DiscardCardList.Count; i ++)
+        {
+            print("PACT");
+            if (areaManagerScript.player_DiscardCardList[i].GetComponent<CardObj>().CardName == "Pact of maggots")
+            {
+                print("FOUND PACT");
+                cardEffectScript.PactOfMaggot();
+            }
+        }
         //END OF PLAYER TURN
 
         StartCoroutine(DisplayPhase("Enemy's Turn"));
