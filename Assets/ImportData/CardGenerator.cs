@@ -57,6 +57,8 @@ public class CardGenerator : MonoBehaviour {
     public List<GameObject> PlayerTutDeck, EnemyTutDeck;
 
     private int numPacks;
+
+    public int level = 0;
     // Use this for initialization
     void Start () {
         numPacks = 0;
@@ -79,7 +81,7 @@ public class CardGenerator : MonoBehaviour {
         PlayerTutDeck = new List<GameObject>();
 
 
-        InitialiseLevel(0);
+        InitialiseLevel(level);
     }
 
     private void InstantiateCard(ref GameObject temp, Vector3 pos, Quaternion rot, bool isKindling, ref List<GameObject> pack, int numCards, bool isSigil)

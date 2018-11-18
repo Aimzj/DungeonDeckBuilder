@@ -209,6 +209,7 @@ public class AreaManager : MonoBehaviour {
 
     public void Call_TrashCard(GameObject cardObj, string target)
     {
+    
         if(target == "player")
         {
             TrashCard(cardObj, target, ref player_TrashCardList, playerTrash);
@@ -269,15 +270,51 @@ public class AreaManager : MonoBehaviour {
     }
 
     public void Call_PlayCard(GameObject cardObj, string target)
+        
     {
-        if (target == "player")
+        if (level == 0)
         {
-            PlayCard(cardObj, ref player_numCardsInPlay, ref player_PlayAreaPositions, ref player_x, ref player_PlayCardList, "player", player_playAreaTrans);
+            if (dummyScript.TurnCount == 0)
+            {
+                if (cardObj.GetComponent<CardObj>().CardName == "Strike" || cardObj.GetComponent<CardObj>().CardName == "Lucky Charm" || cardObj.GetComponent<CardObj>().CardName == "Guard")
+                {
+                    if (target == "player")
+                    {
+                        PlayCard(cardObj, ref player_numCardsInPlay, ref player_PlayAreaPositions, ref player_x, ref player_PlayCardList, "player", player_playAreaTrans);
+                    }
+                    else if (target == "enemy")
+                    {
+                        PlayCard(cardObj, ref enemy_numCardsInPlay, ref enemy_PlayAreaPositions, ref enemy_x, ref enemy_PlayCardList, "enemy", enemy_playAreaTrans);
+                    }
+                }
+            }
+            else if(dummyScript.TurnCount == 1)
+            {
+                if (cardObj.GetComponent<CardObj>().CardName == "Strike" || cardObj.GetComponent<CardObj>().CardName == "Focused Strike" )
+                {
+                    if (target == "player")
+                    {
+                        PlayCard(cardObj, ref player_numCardsInPlay, ref player_PlayAreaPositions, ref player_x, ref player_PlayCardList, "player", player_playAreaTrans);
+                    }
+                    else if (target == "enemy")
+                    {
+                        PlayCard(cardObj, ref enemy_numCardsInPlay, ref enemy_PlayAreaPositions, ref enemy_x, ref enemy_PlayCardList, "enemy", enemy_playAreaTrans);
+                    }
+                }
+            }
         }
-        else if (target == "enemy")
+        else
         {
-            PlayCard(cardObj, ref enemy_numCardsInPlay, ref enemy_PlayAreaPositions, ref enemy_x, ref enemy_PlayCardList, "enemy", enemy_playAreaTrans);
+            if (target == "player")
+            {
+                PlayCard(cardObj, ref player_numCardsInPlay, ref player_PlayAreaPositions, ref player_x, ref player_PlayCardList, "player", player_playAreaTrans);
+            }
+            else if (target == "enemy")
+            {
+                PlayCard(cardObj, ref enemy_numCardsInPlay, ref enemy_PlayAreaPositions, ref enemy_x, ref enemy_PlayCardList, "enemy", enemy_playAreaTrans);
+            }
         }
+       
     }
 
     private void PlayCard(GameObject cardObj, ref int numCardsInPlay, ref List<float> playAreaPositions, ref float x, ref List<GameObject> playList, string target, Transform playAreaTrans)

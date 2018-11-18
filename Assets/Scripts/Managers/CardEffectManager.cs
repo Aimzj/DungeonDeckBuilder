@@ -115,7 +115,7 @@ public class CardEffectManager : MonoBehaviour {
             statManagerScript.UpdateCardsInDeck("player", 1, 1);
 
             newCard = Instantiate(playedCard, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0));
-            rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
+           
 
             handManagerScript.playerDeckList.Insert(rand, newCard);
             StartCoroutine(areaManagerScript.TempDisplay(newCard, tempDisplayPlayer, playerDeckTrans));

@@ -66,6 +66,10 @@ public class CardMovement : MonoBehaviour {
 
     public bool isKindling;
 
+    //for Tut
+    private Dummy dummyScript;
+    private CardGenerator cardGeneratorScript;
+
     // Use this for initialization
     void Start () {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
@@ -76,6 +80,14 @@ public class CardMovement : MonoBehaviour {
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
+        
+     
+        cardGeneratorScript = GameObject.Find("GameManager").GetComponent<CardGenerator>();
+        if(cardGeneratorScript.level == 0)
+        {
+            dummyScript = GameObject.Find("GameManager").GetComponent<Dummy>();
+        }
+      
 
         isFollowing = false;
 
@@ -215,8 +227,36 @@ public class CardMovement : MonoBehaviour {
 
         //only if the hand size is not exceeded
         //and if the player can "afford" it
+        if (cardGeneratorScript.level == 0)
+        {
+            print("TEST");
+            if (dummyScript.TurnCount == 0)
+            {
+                if (gameObject.GetComponent<CardObj>().CardName == "Strike" || gameObject.GetComponent<CardObj>().CardName == "Lucky Charm" || gameObject.GetComponent<CardObj>().CardName == "Guard")
+                {
+                    playerPlayCardFilter();
+                }
+            }
+            else if (dummyScript.TurnCount == 1)
+            {
+                if (gameObject.GetComponent<CardObj>().CardName == "Strike" || gameObject.GetComponent<CardObj>().CardName == "Focused Strike")
+                {
+                    playerPlayCardFilter();
+                }
+            }
+        }
+        else
+        {
+            playerPlayCardFilter();
+        }
+       
+    }
+
+
+    void playerPlayCardFilter()
+    {
         if (!handManagerScript.isExceedingHandSize
-            && gameObject.GetComponent<CardObj>().DiscardCost <= statManagerScript.numDiscard_player)
+           && gameObject.GetComponent<CardObj>().DiscardCost <= statManagerScript.numDiscard_player)
         {
             //play sound
             soundScript.PlaySound_PlayCard();
@@ -244,7 +284,6 @@ public class CardMovement : MonoBehaviour {
 
         }
     }
-
     private void OnMouseUp()
     {
         if (!isEnemyCard
