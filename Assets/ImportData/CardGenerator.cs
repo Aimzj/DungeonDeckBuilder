@@ -450,7 +450,7 @@ public class CardGenerator : MonoBehaviour {
     public IEnumerator ChosePack(int level)
     {
         numPacks++;
-        level = 0;
+        //level = 0;
         //fade the screen to black
         StartCoroutine(sceneManagerScript.FadeOutFadeIn());
         yield return new WaitForSecondsRealtime(1.5f);
