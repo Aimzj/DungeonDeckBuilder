@@ -276,6 +276,7 @@ public class CardEffectManager : MonoBehaviour {
         }
         if(Card.CardName == "Poison")
         {
+            statManagerScript.UpdateNumStatusCards(-1, 0);
             cardObj.GetComponent<CardMovement>().PlayPlayerCard();
         }
         if(Card.CardName =="Wound")

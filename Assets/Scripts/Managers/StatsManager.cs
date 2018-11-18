@@ -7,9 +7,9 @@ public class StatsManager : MonoBehaviour {
     public TextMeshPro endGameText;
 
     public TextMeshProUGUI playerHealth, enemyHealth, buttonText, playerSigils, enemySigils, playerCycleTokens, enemyCycleTokens, playerKindling, 
-        enemyKindling, playerPhase, enemyPhase, playerCardsInDeck, enemyCardsInDeck, playerDiscard, enemyDiscard, playerBurn, enemyBurn;
+        enemyKindling, playerPhase, enemyPhase, playerCardsInDeck, enemyCardsInDeck, playerDiscard, enemyDiscard, playerBurn, enemyBurn, statusDeck, statusDiscard;
 
-    public int totalHealth_player, numHealth_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player, numSigilsRemaining_player, numKindling_player, numTotalKinding_player;
+    public int totalHealth_player, numHealth_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player, numSigilsRemaining_player, numKindling_player, numTotalKinding_player, numStatusDeck, numStatusDiscard;
     public int totalHealth_enemy, numHealth_enemy, numCardsInDeck_enemy, totalCards_enemy, numCycleTokens_enemy, numDiscard_enemy, numBurn_enemy, numSigilsRemaining_enemy, numKindling_enemy, numTotalKindling_enemy;
 
     public string phase_player, phase_enemy;
@@ -20,6 +20,15 @@ public class StatsManager : MonoBehaviour {
 
     void Start () {
         
+    }
+
+    public void UpdateNumStatusCards(int numDeck, int numDiscard)
+    {
+        numStatusDeck += numDeck;
+        numStatusDiscard += numDiscard;
+
+        statusDeck.text = numStatusDeck.ToString();
+        statusDiscard.text = numStatusDiscard.ToString();
     }
 
     private void RotateSword(float angle)

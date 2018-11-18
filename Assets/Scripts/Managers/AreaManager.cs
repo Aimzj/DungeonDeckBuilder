@@ -369,6 +369,15 @@ public class AreaManager : MonoBehaviour {
             playList.Clear();
             numCardsInPlay = 0;
         }
+
+        //count how many status effects are in the discard
+        for(int i=0; i<player_DiscardCardList.Count; i++)
+        {
+            if (player_DiscardCardList[i].GetComponent<CardObj>().CardType == "status")
+            {
+                statManagerScript.UpdateNumStatusCards(0, 1);
+            }
+        }
     }
 
     public void Call_RenewDeck(string target)

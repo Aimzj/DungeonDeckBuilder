@@ -460,7 +460,7 @@ public class GeneratePacks : MonoBehaviour {
         //loop through pack 3 and add to the deck list
         for (int i = 0; i < pack3.Count; i++)
         {
-            cardGenScript.PlayerDeck.Add(pack1[i]);
+            cardGenScript.PlayerDeck.Add(pack3[i]);
             pack3[i].transform.position = playerDeckPos.position;
             //count sigils
             if (pack3[i].transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
