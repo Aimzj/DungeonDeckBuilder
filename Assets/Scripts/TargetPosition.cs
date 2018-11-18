@@ -13,6 +13,7 @@ public class TargetPosition : MonoBehaviour
     public void Start()
     {
         currentPos = transform.position;
+        targetPos = currentPos;
     }
 
     public void Update()

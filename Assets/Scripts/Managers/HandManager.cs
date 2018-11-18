@@ -341,6 +341,11 @@ public class HandManager : MonoBehaviour {
         {
             deckList.Add(discardList[j]);
 
+            if (discardList[j].GetComponent<CardObj>().CardType == "status")
+            {
+                statManagerScript.UpdateNumStatusCards(0, -1);
+            }
+
             //change target position of each card to the player's deck
             var obj = (GameObject)Instantiate(TempObj, new Vector3(deckPos.position.x, deckPos.position.y, deckPos.position.z), Quaternion.Euler(90, 0, 0));
             deckList[count].GetComponent<CardMovement>()._targetTransform = obj.transform;
@@ -358,24 +363,24 @@ public class HandManager : MonoBehaviour {
 
         statManagerScript.SetTotalCards(target, deckList.Count,0);
         discardList.Clear();
-
+        
 
         //deal damage for the cycle tokens
-      /*  if (target == "player")
-        {
-            if (statManagerScript.numCycleTokens_player - 1 > 0)
-            {
-                Call_TakeDamage(statManagerScript.numCycleTokens_player - 1, "player");
-            }
-        }
-        else if (target == "enemy")
-        {
-            if (statManagerScript.numCycleTokens_enemy - 1 > 0)
-            {
-                Call_TakeDamage(statManagerScript.numCycleTokens_enemy - 1, "enemy");
-            }
-        }*/
-        
+        /*  if (target == "player")
+          {
+              if (statManagerScript.numCycleTokens_player - 1 > 0)
+              {
+                  Call_TakeDamage(statManagerScript.numCycleTokens_player - 1, "player");
+              }
+          }
+          else if (target == "enemy")
+          {
+              if (statManagerScript.numCycleTokens_enemy - 1 > 0)
+              {
+                  Call_TakeDamage(statManagerScript.numCycleTokens_enemy - 1, "enemy");
+              }
+          }*/
+
     }
 
     public void ReorderHandLayers(string target)
@@ -486,6 +491,11 @@ public class HandManager : MonoBehaviour {
                 if (playerDeckList[0].GetComponent<CardMovement>().isKindling)
                 {
                     statManagerScript.UpdateKindling("player", -1, 0);
+                }
+                //check if the card was a status card
+                if (playerDeckList[0].GetComponent<CardObj>().CardType == "status")
+                {
+                    statManagerScript.UpdateNumStatusCards(-1, 1);
                 }
 
                 //remove from the decklist

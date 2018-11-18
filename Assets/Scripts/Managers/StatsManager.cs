@@ -4,14 +4,12 @@ using UnityEngine;
 using TMPro;
 
 public class StatsManager : MonoBehaviour {
-
-    public TextMeshPro playerCardsInDeck, playerDiscard, playerBurn;
-    public TextMeshPro enemyCardsInDeck, enemyDiscard, enemyBurn;
     public TextMeshPro endGameText;
 
-    public TextMeshProUGUI playerHealth, enemyHealth, buttonText, playerSigils, enemySigils, playerCycleTokens, enemyCycleTokens, playerKindling, enemyKindling, playerPhase, enemyPhase;
+    public TextMeshProUGUI playerHealth, enemyHealth, buttonText, playerSigils, enemySigils, playerCycleTokens, enemyCycleTokens, playerKindling, 
+        enemyKindling, playerPhase, enemyPhase, playerCardsInDeck, enemyCardsInDeck, playerDiscard, enemyDiscard, playerBurn, enemyBurn, statusDeck, statusDiscard;
 
-    public int totalHealth_player, numHealth_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player, numSigilsRemaining_player, numKindling_player, numTotalKinding_player;
+    public int totalHealth_player, numHealth_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player, numSigilsRemaining_player, numKindling_player, numTotalKinding_player, numStatusDeck, numStatusDiscard;
     public int totalHealth_enemy, numHealth_enemy, numCardsInDeck_enemy, totalCards_enemy, numCycleTokens_enemy, numDiscard_enemy, numBurn_enemy, numSigilsRemaining_enemy, numKindling_enemy, numTotalKindling_enemy;
 
     public string phase_player, phase_enemy;
@@ -22,6 +20,15 @@ public class StatsManager : MonoBehaviour {
 
     void Start () {
         
+    }
+
+    public void UpdateNumStatusCards(int numDeck, int numDiscard)
+    {
+        numStatusDeck += numDeck;
+        numStatusDiscard += numDiscard;
+
+        statusDeck.text = numStatusDeck.ToString();
+        statusDiscard.text = numStatusDiscard.ToString();
     }
 
     private void RotateSword(float angle)
@@ -152,13 +159,13 @@ public class StatsManager : MonoBehaviour {
         {
             totalCards_player = num;
             numCardsInDeck_player = num;
-            playerCardsInDeck.text = "Cards In Deck: " + (numCardsInDeck_player-cardsInPlay) + "/" + totalCards_player;
+            playerCardsInDeck.text = (numCardsInDeck_player-cardsInPlay) + "/" + totalCards_player;
         }
         else if (target == "enemy")
         {
             totalCards_enemy = num;
             numCardsInDeck_enemy = num;
-            enemyCardsInDeck.text = "Cards In Deck: " + (numCardsInDeck_enemy-cardsInPlay) + "/" + totalCards_enemy;
+            enemyCardsInDeck.text = (numCardsInDeck_enemy-cardsInPlay) + "/" + totalCards_enemy;
         }
     }
 
@@ -168,7 +175,7 @@ public class StatsManager : MonoBehaviour {
         {
             numCardsInDeck_player += numCards;
             totalCards_player += numTotal;
-            playerCardsInDeck.text = "Cards In Deck: " + numCardsInDeck_player + "/"+totalCards_player;
+            playerCardsInDeck.text =  numCardsInDeck_player + "/"+totalCards_player;
 
             if (totalCards_player <= 0)
             {
@@ -180,7 +187,7 @@ public class StatsManager : MonoBehaviour {
         {
             numCardsInDeck_enemy += numCards;
             totalCards_enemy += numTotal;
-            enemyCardsInDeck.text = "Cards In Deck: " + numCardsInDeck_enemy + "/" + totalCards_enemy;
+            enemyCardsInDeck.text = numCardsInDeck_enemy + "/" + totalCards_enemy;
 
             if (totalCards_enemy <= 0)
             {

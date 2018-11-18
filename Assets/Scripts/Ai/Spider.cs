@@ -169,6 +169,7 @@ public class Spider : MonoBehaviour {
             StartCoroutine(areaManagerScript.TempDisplay(cardGenScript.PoisonDeck[0], playerTempDisplay, playerDeck));
             cardGenScript.PoisonDeck.RemoveAt(0);
             statsManagerScript.UpdateCardsInDeck("player", 1, 1);
+            statsManagerScript.UpdateNumStatusCards(1, 0);
         }
     }
 

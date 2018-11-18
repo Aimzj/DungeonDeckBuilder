@@ -14,7 +14,8 @@ public class CardEffectManager : MonoBehaviour {
 
     private Transform  enemyDeck;
     private Transform  enemyTempDisplay;
-  
+    private Transform playerTrash, enemyTrash;
+
 
 
     List<GameObject> playerTempDeck = new List<GameObject>();
@@ -30,6 +31,9 @@ public class CardEffectManager : MonoBehaviour {
         tempDisplayPlayer = GameObject.Find("PlayerTempDisplay").GetComponent<Transform>();
         playerDeckTrans = GameObject.Find("Deck").GetComponent<Transform>();
         enemyDeck = GameObject.Find("EnemyDeck").GetComponent<Transform>();
+
+        playerTrash = GameObject.Find("Trash").GetComponent<Transform>();
+        enemyTrash = GameObject.Find("Trash").GetComponent<Transform>();
     }
 
     //play a card from the hand
@@ -126,8 +130,8 @@ public class CardEffectManager : MonoBehaviour {
         }
         else if(Card.CardName == "Symbol of Faith")
         {
-            //Recover 3 random cards from your discard pile into your hand. 
-            //Discard 1 status effect from your deck. If you have none regain a card from the flames and discard it.
+            symbolOfFaith();
+           
 
         }
         else if(Card.CardName == "Eternal Will")
@@ -147,6 +151,37 @@ public class CardEffectManager : MonoBehaviour {
 
     }
 
+    void symbolOfFaith()
+    {
+        bool isfound = false;
+        print("SYMBOL OF FAITH");
+        //Recover 3 random cards from your discard pile into your hand. 
+        for (int i = 0; i < 3; i++)
+        {
+            StartCoroutine(handManagerScript.DrawDiscard(1, "player"));
+            handManagerScript.Shuffle(ref areaManagerScript.enemy_DiscardCardList);
+        }
+
+        //Discard 1 status effect from your deck. If you have none regain a card from the flames and discard it.
+        for (int i = 0; i < handManagerScript.playerDeckList.Count; i ++)
+        {
+           
+            if(!isfound && handManagerScript.playerDeckList[i].GetComponent<CardObj>().CardName == "Wound" || handManagerScript.playerDeckList[i].GetComponent<CardObj>().CardName == "Poison")
+            {
+                isfound = true;
+                var tempCard = handManagerScript.playerDeckList[i];
+                StartCoroutine(areaManagerScript.TempDisplay(tempCard, tempDisplayPlayer, playerTrash));
+               
+                areaManagerScript.Call_TrashCard(tempCard, "player");
+                statManagerScript.UpdateCardsInDeck("player", -1, 1);
+                handManagerScript.playerDeckList.RemoveAt(i);
+            }
+        }
+        if(!isfound)
+        {
+            StartCoroutine(handManagerScript.DrawTrash(1, "player"));
+        }
+    }
 
     void eternalWill()
     {
@@ -276,6 +311,7 @@ public class CardEffectManager : MonoBehaviour {
         }
         if(Card.CardName == "Poison")
         {
+            statManagerScript.UpdateNumStatusCards(-1, 0);
             cardObj.GetComponent<CardMovement>().PlayPlayerCard();
         }
         if(Card.CardName =="Wound")
