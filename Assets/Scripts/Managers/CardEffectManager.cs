@@ -7,18 +7,29 @@ public class CardEffectManager : MonoBehaviour {
     private StatsManager statManagerScript;
     private HandManager handManagerScript;
     private AreaManager areaManagerScript;
+    private CardGenerator cardGenScript;
 
     private Transform tempDisplayPlayer;
     private Transform playerDeckTrans;
-	// Use this for initialization
-	void Start () {
+
+    private Transform  enemyDeck;
+    private Transform  enemyTempDisplay;
+  
+
+
+    List<GameObject> playerTempDeck = new List<GameObject>();
+    [SerializeField]
+    List<GameObject> enemyTempDeck = new List<GameObject>();
+    // Use this for initialization
+    void Start () {
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
+        cardGenScript = GameObject.Find("GameManager").GetComponent<CardGenerator>();
 
         tempDisplayPlayer = GameObject.Find("PlayerTempDisplay").GetComponent<Transform>();
         playerDeckTrans = GameObject.Find("Deck").GetComponent<Transform>();
-
+        enemyDeck = GameObject.Find("EnemyDeck").GetComponent<Transform>();
     }
 
     //play a card from the hand
@@ -47,30 +58,30 @@ public class CardEffectManager : MonoBehaviour {
         //check if action or reaction phase
 
         //ATTACK
-        if (Card.Attack > 0 && statManagerScript.phase_player == "action")
+        if(statManagerScript.phase_player == "action")
         {
             statManagerScript.UpdateAttack("player", Card.Attack);
+            
         }
 
         //DEFEND
-        if (Card.Defense > 0 && statManagerScript.phase_player=="reaction")
+        if(statManagerScript.phase_player == "reaction")
         {
             statManagerScript.UpdateDefense("player", Card.Defense);
+            
         }
+
 
         //play card effects
         if(Card.CardName=="Advanced Guard")
         {
-            //Action - Draw 1 card 
-            //Reaction - gain +2 def to this card until it goes to the discard
-            if (statManagerScript.phase_player == "action")
-            {
-                StartCoroutine(handManagerScript.DrawCards(1, "player"));
-            }
-            else if(statManagerScript.phase_player == "reaction")
+            //Reaction - if played after a card with a defense value higher than 1, add +2 defense to this card
+            GameObject lastPlayedCard = areaManagerScript.player_PlayCardList[areaManagerScript.player_PlayCardList.Count - 1];
+            if(statManagerScript.phase_player == "reaction"
+                && lastPlayedCard.GetComponent<CardObj>().Defense > 1)
             {
                 //Card.Defense += 2;
-                playedCard.transform.Find("DefenseCost").GetComponent<TextMeshPro>().text = Card.Defense.ToString();
+                playedCard.transform.Find("DefenseCost").GetComponent<TextMeshPro>().text = (Card.Defense+2).ToString();
                 statManagerScript.UpdateDefense("player", 2);
             }
 
@@ -85,34 +96,204 @@ public class CardEffectManager : MonoBehaviour {
 
             //Card.Attack += attack;
             playedCard.transform.Find("AttackCost").GetComponent<TextMeshPro>().text = (Card.Attack + attack).ToString();
-            statManagerScript.UpdateAttack("player", attack);
+            statManagerScript.UpdateAttack("player", Card.Attack + attack);
         }
         else if (Card.CardName == "Inner Strength")
         {
+            
             //gain 2x inner strength cards
             //Instantiate(Card, tempDisplayPlayer.transform.position, Quaternion.Euler(90, 0, 0));
+            GameObject newCard  = Instantiate(playedCard, new Vector3(1000,1000,1000), Quaternion.Euler(90, 0, 0));
+            int rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
+
+            handManagerScript.playerDeckList.Insert(rand, newCard);
+            StartCoroutine(areaManagerScript.TempDisplay(newCard,tempDisplayPlayer,playerDeckTrans));
+            statManagerScript.UpdateCardsInDeck("player", 1, 1);
+
+            newCard = Instantiate(playedCard, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0));
+            rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
+
+            handManagerScript.playerDeckList.Insert(rand, newCard);
+            StartCoroutine(areaManagerScript.TempDisplay(newCard, tempDisplayPlayer, playerDeckTrans));
+            statManagerScript.UpdateCardsInDeck("player", 1, 1);
+       
+
         }
         else if (Card.CardName == "Pact of Maggots")
         {
             //Undying: at the end of a turn shuffle your burn pile and draw one card from it.
 
         }
-        else if(Card.CardName == "Health Potion")
+        else if(Card.CardName == "Symbol of Faith")
         {
-            //Recover 5 burnt cards. This card is burnt immediately after use
+            //Recover 3 random cards from your discard pile into your hand. 
+            //Discard 1 status effect from your deck. If you have none regain a card from the flames and discard it.
 
         }
         else if(Card.CardName == "Eternal Will")
         {
-            //Reaction: You and your opponent gather and shuffle your discard pile, hand and deck and draw cards equal to your previous hadn count. Draw 1 card.
+            print("ETERNAL WILL");
+            eternalWill();
+           
+
 
         }
+        else if (Card.CardName == "Lucky Charm")
+        {
+            //Draw two random cards from your deck
+            int rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
+            StartCoroutine(handManagerScript.DrawCards(2, "player"));
+        }
 
+    }
+
+
+    void eternalWill()
+    {
+        int enemyHandSize = handManagerScript.enemyHandlist.Count;
+        int playerHandSize = handManagerScript.playerHandList.Count;
+        //Reaction: You and your opponent gather and shuffle your discard pile, hand and deck and draw cards equal to your previous hadn count. Draw 1 card.
+        if (statManagerScript.phase_player == "reaction")
+        {
+            //For enemy
+
+            print("Eternal Will");
+            for (int i = 0; i < handManagerScript.enemyDeckList.Count; i++)
+            {
+                //print("i is " + i);
+                enemyTempDeck.Add(handManagerScript.enemyDeckList[i]);
+
+            }
+            for (int i = 0; i < handManagerScript.enemyHandlist.Count; i++)
+            {
+                print("num discarded:  " + handManagerScript.enemyHandlist.Count);
+                enemyTempDeck.Add(handManagerScript.enemyHandlist[i]);
+                handManagerScript.enemyHandlist[i].GetComponent<CardMovement>().DiscardEnemyCard();
+                i = 0;
+
+            }
+            for (int i = 0; i < areaManagerScript.enemy_DiscardCardList.Count; i++)
+            {
+                enemyTempDeck.Add(areaManagerScript.enemy_DiscardCardList[i]);
+
+            }
+
+            // handManagerScript.enemyDeckList[i] = new List<GameObject>();
+            for (int i = 0; i < enemyTempDeck.Count; i++)
+            {
+
+                //print("MAKE CARD");
+                var enemyTempCard = Instantiate(enemyTempDeck[i], enemyDeck.position, Quaternion.Euler(90, 0, 0));
+                handManagerScript.enemyDeckList.Add(enemyTempCard);
+
+
+            }
+            //FOR PLAYER
+            for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
+            {
+
+                playerTempDeck.Add(handManagerScript.playerDeckList[i]);
+
+            }
+
+            for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+            {
+                playerTempDeck.Add(handManagerScript.playerHandList[i]);
+                areaManagerScript.Call_DiscardCard(handManagerScript.playerHandList[i], "player");
+                i = 0;
+
+
+
+            }
+            for (int i = 0; i < areaManagerScript.player_DiscardCardList.Count; i++)
+            {
+
+                playerTempDeck.Add(areaManagerScript.player_DiscardCardList[i]);
+
+            }
+
+            // handManagerScript.enemyDeckList[i] = new List<GameObject>();
+            for (int i = 0; i < enemyTempDeck.Count; i++)
+            {
+
+                print("MAKE CARD");
+                var playerTempCard = Instantiate(enemyTempDeck[i], enemyDeck.position, Quaternion.Euler(90, 0, 0));
+                handManagerScript.playerDeckList.Add(playerTempCard);
+
+
+            }
+            print("Enemy Handsize is:" + enemyHandSize);
+            handManagerScript.Shuffle(ref handManagerScript.enemyDeckList);
+            handManagerScript.Shuffle(ref handManagerScript.playerDeckList);
+
+            StartCoroutine(handManagerScript.DrawCards(enemyHandSize, "enemy"));
+            StartCoroutine(handManagerScript.DrawCards(playerHandSize, "player"));
+        }
+    }
+    public int PlayUndyingPoisonEffects()
+    {
+
+        //POISON UNDYING EFFECT
+        //loop through discard and count number of poisons
+        int numPoisons = 0;
+        for(int i=0; i<areaManagerScript.player_DiscardCardList.Count; i++)
+        {
+            if (areaManagerScript.player_DiscardCardList[i].GetComponent<CardObj>().CardName == "Poison")
+            {
+                numPoisons++;
+            }
+        }
+
+        //discard a card from bottom of player's deck for every poison in discard
+        int numDiscards = numPoisons / 2;
+
+        StartCoroutine(handManagerScript.DiscardFromBottomOfDeck(numDiscards));
+
+        return numDiscards;
+    }
+
+    public void PactOfMaggot()
+    {
+        //StartCoroutine(handManagerScript.DrawCards(1, "player"));
+        if(areaManagerScript.player_DiscardCardList.Count > 0)
+        {
+            handManagerScript.Shuffle(ref areaManagerScript.player_DiscardCardList);
+            StartCoroutine(handManagerScript.DrawDiscard(1, "player"));
+        }
+       
+        
+    }
+
+    public void PlayOnArrivalEffects(GameObject cardObj)
+    {
+        //retrieve card data
+        CardObj Card = cardObj.GetComponent<CardObj>();
+
+        if (Card.CardName == "Advanced Guard")
+        {
+            //draw 1 card
+            StartCoroutine(handManagerScript.DrawCards(1, "player"));
+        }
+        if(Card.CardName == "Poison")
+        {
+            cardObj.GetComponent<CardMovement>().PlayPlayerCard();
+        }
+        if(Card.CardName =="Wound")
+        {
+            cardObj.GetComponent<CardMovement>().PlayPlayerCard();
+            statManagerScript.UpdateAttack("player", -3);
+            statManagerScript.UpdateDefense("player", -3);
+
+        }
     }
 
     public void PlayBurn(GameObject playedCard)
     {
         CardObj Card = playedCard.GetComponent<CardObj>();
+
+        //subtract from the burn total
+        int burnVal = playedCard.GetComponent<CardObj>().BurnCost;
+        statManagerScript.UpdateBurn("player", -burnVal);
 
         //play effects with burn
         if (Card.CardName == "Focused Strike")
@@ -131,14 +312,16 @@ public class CardEffectManager : MonoBehaviour {
             //Regain a sigil card from the burnt pile
 
             //loop through the trash pile and return the first sigil card encountered to the player's hand
-            for(int i = 0; i< areaManagerScript.enemy_TrashCardList.Count; i++)
+            for(int i = 0; i< areaManagerScript.player_TrashCardList.Count; i++)
             {
-                //if the sigil on the card is enabled
-                if (areaManagerScript.enemy_TrashCardList[i].transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
+                //if the sigil on the card is enabled and it is the player's card
+                if (areaManagerScript.player_TrashCardList[i].transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
                 {
                     //add the card to the player's hand
-                    areaManagerScript.TempDisplay(areaManagerScript.enemy_TrashCardList[i], tempDisplayPlayer, playerDeckTrans, "player");
-                    handManagerScript.playerDeckList.Add(areaManagerScript.enemy_TrashCardList[i]);
+                    StartCoroutine(areaManagerScript.TempDisplay(areaManagerScript.player_TrashCardList[i], tempDisplayPlayer, playerDeckTrans));
+                    handManagerScript.playerDeckList.Add(areaManagerScript.player_TrashCardList[i]);
+                    
+                    statManagerScript.UpdateCardsInDeck("player", 1, 1);
 
                     //remove the card from the trash pile
                     areaManagerScript.player_TrashCardList.RemoveAt(i);
@@ -148,17 +331,73 @@ public class CardEffectManager : MonoBehaviour {
         }
         else if (Card.CardName == "Lucky Charm")
         {
-            //Draw one card of your choice from your deck
+//          print("LUCKY CHARM");
+            GameObject highestValCard = handManagerScript.playerDeckList[0];
+            int index = 0;
+            //Draw highest card based on phase
+            if (statManagerScript.phase_player == "action")
+            {
+                
+                for (int i = 0; i < handManagerScript.playerDeckList.Count;i++)
+                {
+                    print("LUCKY CHARM");
+                    if (handManagerScript.playerDeckList[i].GetComponent<CardObj>().Attack > highestValCard.GetComponent<CardObj>().Attack)
+                    {
+                        highestValCard = handManagerScript.playerDeckList[i];
+                        index = i;
+                        print("SWAP");
+                    }
+                }
+            }
+            //Reaction - Draw your burnt card's defence value x2 from your deck 
+            else if (statManagerScript.phase_player == "reaction")
+            {
+                for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
+                {
+                    if (handManagerScript.playerDeckList[i].GetComponent<CardObj>().Defense > highestValCard.GetComponent<CardObj>().Defense)
+                    {
+                        highestValCard = handManagerScript.playerDeckList[i];
+                        index = i;
+                    }
+                }
+            }
+            handManagerScript.playerDeckList.RemoveAt(index);
+            handManagerScript.playerDeckList.Add(highestValCard);
+            StartCoroutine(handManagerScript.DrawCards(1, "player"));
+           // StartCoroutine(areaManagerScript.TempDisplay(highestValCard, tempDisplayPlayer, tempDisplayPlayer));
+
+            handManagerScript.playerHandList.Add(highestValCard);
+            handManagerScript.ReorderHandLayers("player");
         }
         else if (Card.CardName == "Second Wind")
         {
+           
             //Action - Draw your burnt card's attack value x2 from your deck.
+            if (statManagerScript.phase_player == "action")
+            {
+                var tempCard = areaManagerScript.player_TrashCardList[areaManagerScript.player_TrashCardList.Count - 1];
+                StartCoroutine(handManagerScript.DrawCards(tempCard.GetComponent<CardObj>().Attack * 2, "player"));
+            }
             //Reaction - Draw your burnt card's defence value x2 from your deck 
+            else if (statManagerScript.phase_player == "reaction")
+            {
+                var tempCard = areaManagerScript.player_TrashCardList[areaManagerScript.player_TrashCardList.Count - 1];
+                StartCoroutine(handManagerScript.DrawCards(tempCard.GetComponent<CardObj>().Defense * 2, "player"));
+                //print("Draw " + tempCard.GetComponent<CardObj>().Defense );
+            }
+
         }
         else if (Card.CardName == "Fireball")
         {
-            //Burn the top two cards of your opponents deck
+            print("FIREBALL");
+            //var tempCard = areaManagerScript.enemy_DeckCardList[areaManagerScript.enemy_DeckCardList.Count - 1];
+            StartCoroutine(handManagerScript.Call_TakeDamage(2, "enemy"));
+            //tempCard = areaManagerScript.enemy_DeckCardList[areaManagerScript.enemy_DeckCardList.Count - 1];
+            //tempCard.GetComponent<CardMovement>().TrashEnemyCard();*/
+
+
         }
+
     }
 	
 	// Update is called once per frame

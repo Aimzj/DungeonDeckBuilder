@@ -50,8 +50,11 @@ public class HandManager : MonoBehaviour {
     private CardGenerator cardGenScript;
     private AreaManager areaManagerScript;
     private StatsManager statManagerScript;
+    private CardEffectManager cardEffectScript;
 
     private Spider spiderScript;
+
+    private Transform tempPlayerDisplay;
 
     // Use this for initialization
     void Start () {
@@ -62,10 +65,13 @@ public class HandManager : MonoBehaviour {
         enemyDiscard = GameObject.Find("EnemyDiscard").GetComponent<Transform>();
         enemyTrash = GameObject.Find("EnemyTrashPile").GetComponent<Transform>();
 
+        tempPlayerDisplay = GameObject.Find("PlayerTempDisplay").GetComponent<Transform>();
+
         soundScript = GameObject.Find("SoundMaker").GetComponent<SoundManager>();
         cardGenScript = GameObject.Find("GameManager").GetComponent<CardGenerator>();
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+        cardEffectScript = GameObject.Find("GameManager").GetComponent<CardEffectManager>();
 
         spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
 
@@ -96,7 +102,21 @@ public class HandManager : MonoBehaviour {
     public void InitialiseCards(int level)
     {
         playerDeckList = cardGenScript.PlayerDeck;
-        if (level == 1)
+        if(level == 0)
+        {
+            print("START TUT");
+            playerDeckList = cardGenScript.PlayerTutDeck;
+            enemyDeckList = cardGenScript.EnemyTutDeck;
+            //Generate Tut Decks
+            for(int i  = 0; i < playerDeckList.Count; i ++)
+            {
+                var playerTempCard = Instantiate(playerDeckList[i], playerDeck.position, Quaternion.Euler(90, 0, 0));
+                playerDeckList[i] = playerTempCard;
+                var enemyTempCard = Instantiate(enemyDeckList[i], enemyDeck.position, Quaternion.Euler(90, 0, 0));
+                enemyDeckList[i] = enemyTempCard;
+            }
+        }
+        else if (level == 1)
         {
             enemyDeckList = cardGenScript.SpiderDeck;
         } else if (level == 2)
@@ -104,9 +124,13 @@ public class HandManager : MonoBehaviour {
             enemyDeckList = cardGenScript.NagaDeck;
         }
 
-        //shuffle the card lists
-        Shuffle(ref playerDeckList);
-        Shuffle(ref enemyDeckList);
+        if(level != 0)
+        {
+            //shuffle the card lists
+            Shuffle(ref playerDeckList);
+            Shuffle(ref enemyDeckList);
+        }
+       
     }
 
     public void Call_RemoveCardFromHand(int pos, string target)
@@ -172,7 +196,6 @@ public class HandManager : MonoBehaviour {
             }
             else if (target == "enemy")
             {
-                print("draw enemy card!");
                 if (enemyDeckList.Count - numCards >= 0)
                 {
                     DrawCards("enemy", ref enemyDeckList, ref Enemy_HandPositions, ref enemy_x, enemy_yPos, ref enemyHandlist);
@@ -190,29 +213,64 @@ public class HandManager : MonoBehaviour {
 
     }
 
+    public IEnumerator DrawDiscard(int numCards, string target)
+    {
+        for (int i = 0; i < numCards; i++)
+        {
+            if (target == "player")
+            {
+                if (areaManagerScript.player_DiscardCardList.Count - numCards >= 0)
+                {
+                    DrawCards("player", ref areaManagerScript.player_DiscardCardList, ref Player_HandPositions, ref player_x, player_yPos, ref playerHandList);
+                }
+
+            }
+            else if (target == "enemy")
+            {
+                if (areaManagerScript.enemy_DiscardCardList.Count - numCards >= 0)
+                {
+                    DrawCards("enemy", ref areaManagerScript.enemy_DiscardCardList, ref Enemy_HandPositions, ref enemy_x, enemy_yPos, ref enemyHandlist);
+                }
+            }
+
+                yield return new WaitForSecondsRealtime(0.3f);
+        }
+
+    }
+
+    public IEnumerator DrawTrash(int numCards, string target)
+    {
+        for (int i = 0; i < numCards; i++)
+        {
+        
+           if (target == "enemy")
+            {
+                if (areaManagerScript.enemy_TrashCardList.Count - numCards >= 0)
+                {
+                    DrawCards("enemy", ref areaManagerScript.enemy_TrashCardList, ref Enemy_HandPositions, ref enemy_x, enemy_yPos, ref enemyHandlist);
+                }
+            }
+
+            yield return new WaitForSecondsRealtime(0.3f);
+        }
+
+    }
+
     private void DrawCards(string target, ref List<GameObject> deckList, ref List<float> handPositions, ref float x, float yPos, ref List<GameObject> handList)
     {
         //play sound
         soundScript.PlaySound_DrawCard();
 
-        statManagerScript.UpdateCardsInDeck(target, -1);
-
-        //playerHandList.Add(playerDeckList[numCardsInHand - 1]);
-        if (target == "player")
-        {
-            print("number of cards in hand before drawing: " + handList.Count);
-          //  print("position in hand before moving into player hand: " + deckList[numCardsInHand - 1].GetComponent<CardMovement>().posInHand);
-        }
-            
+        statManagerScript.UpdateCardsInDeck(target, -1,0);
         
         //add the card in the first position of the deck list to the hand list
-        handList.Add(deckList[0]);
+        handList.Add(deckList[deckList.Count-1]);
         //update positions in hand
         UpdatePosInHand(ref handList);
         //the card is now in the hand
         handList[handList.Count-1].GetComponent<CardMovement>().isInHand = true;
         //remove the card in the decklist that was just added to the hand list
-        deckList.RemoveAt(0);
+        deckList.RemoveAt(deckList.Count - 1);
 
         //check if the card drawn was kindling
         if(handList[handList.Count - 1].GetComponent<CardMovement>().isKindling)
@@ -232,6 +290,9 @@ public class HandManager : MonoBehaviour {
         //change the card's layering
         ReorderHandLayers(target);
 
+        //ON ARRIVAL PLAYER
+        cardEffectScript.PlayOnArrivalEffects(handList[handList.Count - 1]);
+
         //ON ARRIVAL
         if(target == "enemy")
         {
@@ -243,9 +304,16 @@ public class HandManager : MonoBehaviour {
                 handList[handList.Count - 1].GetComponent<CardMovement>().PlayEnemyCard();
 
             }
-        }
-        
+            else if (handList[handList.Count - 1].GetComponent<CardObj>().CardName == "Lesser Guard")
+            {
+                print("LesserGuard");
+                statManagerScript.UpdateDiscard("enemy", 1);
+                //Trigger Prompt
 
+                handList[handList.Count - 1].GetComponent<CardMovement>().PlayEnemyCard();
+
+            }
+        }
 
         //check if card hand size is exceeded
         if (handList.Count > maxHandSize)
@@ -258,7 +326,7 @@ public class HandManager : MonoBehaviour {
         }
     }
 
-    //shuffles the dsicard pile and adds cards back into the deck
+    //shuffles the discard pile and adds cards back into the deck
     private void RemakeDeck(string target, ref List<GameObject> discardList, ref List<GameObject> deckList, Transform deckPos )
     {
         //gain a cycle token
@@ -293,7 +361,7 @@ public class HandManager : MonoBehaviour {
 
 
         //deal damage for the cycle tokens
-        if (target == "player")
+      /*  if (target == "player")
         {
             if (statManagerScript.numCycleTokens_player - 1 > 0)
             {
@@ -306,7 +374,7 @@ public class HandManager : MonoBehaviour {
             {
                 Call_TakeDamage(statManagerScript.numCycleTokens_enemy - 1, "enemy");
             }
-        }
+        }*/
         
     }
 
@@ -402,6 +470,41 @@ public class HandManager : MonoBehaviour {
         }
     }
 
+    public IEnumerator DiscardFromBottomOfDeck(int value)
+    {
+        for(int i=0; i<value; i++)
+        {
+            //check that there are cards to discard in the deck
+            if (playerDeckList.Count > 0)
+            {
+                //choose the card at the bottom of the deck
+                areaManagerScript.player_DiscardCardList.Add(playerDeckList[0]);
+
+                StartCoroutine(areaManagerScript.TempDisplay(playerDeckList[0], tempPlayerDisplay, playerDiscard));
+
+                //check if the card was kindling
+                if (playerDeckList[0].GetComponent<CardMovement>().isKindling)
+                {
+                    statManagerScript.UpdateKindling("player", -1, 0);
+                }
+
+                //remove from the decklist
+                playerDeckList.RemoveAt(0);
+
+                yield return new WaitForSeconds(1);
+            }
+            else
+            {
+                RemakeDeck("player", ref areaManagerScript.player_DiscardCardList, ref playerDeckList, playerDeck);
+                yield return new WaitForSeconds(0.5f);
+                i--;
+            }
+        }
+        
+
+        
+    }
+
     public IEnumerator Call_TakeDamage(int value, string target)
     {
         int chosenIndex=0;
@@ -436,7 +539,6 @@ public class HandManager : MonoBehaviour {
                         }
                         //update kindling left in deck
                         statManagerScript.UpdateKindling(target, -1, -1);
-                        print("PLAYER'S KINDLING BURNT");
                     }
                     else
                     {
@@ -623,4 +725,6 @@ public class HandManager : MonoBehaviour {
 
         }
     }
+
+   
 }

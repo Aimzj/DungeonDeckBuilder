@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class Scene_Manager : MonoBehaviour {
 
     private GameObject blackScreen;
+
 	void Start () {
         blackScreen = GameObject.Find("BlackScreen");
         StartCoroutine(FadeIn());
@@ -14,8 +15,50 @@ public class Scene_Manager : MonoBehaviour {
 	
     public void StartGame()
     {
-        StartCoroutine(FadeOut(1));
+        StartCoroutine(FadeOut("PlayerPacks"));
         
+    }
+
+    public void StartTutorial()
+    {
+        StartCoroutine(FadeOut("level0"));
+    }
+
+    public void QuitGame()
+    {
+        StartCoroutine(Quit());
+    }
+
+    public IEnumerator Quit()
+    {
+        float val = 0;
+        for (int i = 0; i < 30; i++)
+        {
+            val = val + 0.04f;
+            blackScreen.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, val);
+            yield return new WaitForSeconds(0.05f);
+        }
+        Application.Quit();
+    }
+
+    public IEnumerator FadeOutFadeIn()
+    {
+        //fade out
+        float val = 0;
+        for (int i = 0; i < 30; i++)
+        {
+            val = val + 0.04f;
+            blackScreen.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, val);
+            yield return new WaitForSeconds(0.05f);
+        }
+        //fade in
+        val = 1;
+        for (int i = 0; i < 40; i++)
+        {
+            val = val - 0.025f;
+            blackScreen.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, val);
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 
     private IEnumerator FadeIn()
@@ -29,7 +72,7 @@ public class Scene_Manager : MonoBehaviour {
         }
     }
 
-    public IEnumerator FadeOut(int numScene)
+    public IEnumerator FadeOut(string sceneName)
     {
         float val = 0;
         for (int i = 0; i < 30; i++)
@@ -38,7 +81,7 @@ public class Scene_Manager : MonoBehaviour {
             blackScreen.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, val);
             yield return new WaitForSeconds(0.05f);
         }
-        SceneManager.LoadScene(numScene);
+        SceneManager.LoadScene(sceneName);
     }
 
     // Update is called once per frame
@@ -47,7 +90,7 @@ public class Scene_Manager : MonoBehaviour {
         {
             if (SceneManager.GetActiveScene().buildIndex >0)
             {
-                StartCoroutine(FadeOut(0));
+                StartCoroutine(FadeOut("Menu"));
             }
             else
             {

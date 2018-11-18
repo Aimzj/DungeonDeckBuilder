@@ -10,6 +10,10 @@ public class Spider : MonoBehaviour {
     private HandManager handManagerScript;
     private StatsManager statsManagerScript;
     private GameManager gameManagerScript;
+    private CardGenerator cardGenScript;
+
+    private Transform playerTempDisplay, enemyTempDisplay;
+    private Transform playerDeck;
 
     private int upperBound;
     private void Start()
@@ -18,7 +22,11 @@ public class Spider : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         statsManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
+        cardGenScript = GameObject.Find("GameManager").GetComponent<CardGenerator>();
 
+        playerTempDisplay = GameObject.Find("PlayerTempDisplay").GetComponent<Transform>();
+        enemyTempDisplay = GameObject.Find("EnemyTempDisplay").GetComponent<Transform>();
+        playerDeck = GameObject.Find("Deck").GetComponent<Transform>();
     }
 
     private void Update()
@@ -39,7 +47,16 @@ public class Spider : MonoBehaviour {
                 spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
                 statsManagerScript.UpdateDefense("enemy", 1);
 
+                //draw a card 
+                StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
+
                 yield return new WaitForSecondsRealtime(1);
+                UpdateEnemyHand();
+                yield return new WaitForSecondsRealtime(1);
+
+                i = -1;
+                upperBound = spiderHand.Count;
+
             }
         }
         UpdateEnemyHand();
@@ -67,36 +84,37 @@ public class Spider : MonoBehaviour {
         }
     }
 
-    private void Skitter()
+  /*  private void Skitter()
     {
         statsManagerScript.UpdateAttack("enemy", 1);
         statsManagerScript.UpdateDefense("enemy", 1);
 
-    }
+    }*/
 
-    private void Bite()
+  /*  private void Bite()
     {
         statsManagerScript.UpdateAttack("enemy", 1);
         statsManagerScript.UpdateDefense("enemy", 1);
 
         //ADD POISON TO PLAYER DECK
 
-    }
+    }*/
 
     //played as it arrives in enemy's hand
     public void Lethargy()
     {
         print("enemy phase: " + statsManagerScript.phase_enemy);
-        if(statsManagerScript.phase_enemy=="reaction")
+        if (statsManagerScript.phase_enemy == "reaction")
+        {
             statsManagerScript.UpdateDefense("enemy", 1);
-
+            UpdateEnemyHand();
+        }            
     }
 
 
     //For action phase
     public IEnumerator Action()
     {
-
         UpdateEnemyHand();
         print("Action #cards in hand: " + spiderHand.Count);
         //looping through hand of enemy hand
@@ -112,7 +130,15 @@ public class Spider : MonoBehaviour {
                 spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
                 statsManagerScript.UpdateAttack("enemy",1);
 
-                yield return new WaitForSecondsRealtime(2);
+                //draw a card 
+                StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
+
+                yield return new WaitForSecondsRealtime(1);
+                UpdateEnemyHand();
+                yield return new WaitForSecondsRealtime(1);
+                 
+                i = -1;
+                upperBound = spiderHand.Count;
             }
             else if (spiderHand[i].GetComponent<CardObj>().CardName == "Bite")
             {
@@ -120,13 +146,30 @@ public class Spider : MonoBehaviour {
                 spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
                 statsManagerScript.UpdateAttack("enemy", 1);
 
-                yield return new WaitForSecondsRealtime(2);
+                yield return new WaitForSecondsRealtime(1);
+                //give the player a poison card
+                GivePoison();
+                yield return new WaitForSecondsRealtime(1);
             }
 
         }
         print("DONE WITH ENEMY ACTION");
         gameManagerScript.EndEnemyTurn();
         
+    }
+
+    private void GivePoison()
+    {
+        //check if there are poison cards
+        if (cardGenScript.PoisonDeck.Count > 0)
+        {
+            int rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
+            handManagerScript.playerDeckList.Insert(rand, cardGenScript.PoisonDeck[0]);
+            
+            StartCoroutine(areaManagerScript.TempDisplay(cardGenScript.PoisonDeck[0], playerTempDisplay, playerDeck));
+            cardGenScript.PoisonDeck.RemoveAt(0);
+            statsManagerScript.UpdateCardsInDeck("player", 1, 1);
+        }
     }
 
     private void UpdateEnemyHand()

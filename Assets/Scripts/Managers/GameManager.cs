@@ -28,7 +28,8 @@ public class GameManager : MonoBehaviour {
     private TextMeshPro gamePhaseText;
     private GameObject gamePhaseDisplay;
 
-    private int level;
+    private int level = 0;
+    private int turnCount;
 
     private Canvas burnCanvas;
     public TextMeshProUGUI effectText, costText;
@@ -65,7 +66,17 @@ public class GameManager : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         sceneManagerScript = GameObject.Find("GameManager").GetComponent<Scene_Manager>();
 
-        if (SceneManager.GetActiveScene().name == "BetaScene")
+        if (SceneManager.GetActiveScene().name.Contains("BetaScene"))
+        {
+            StartCoroutine(DisplayPhase("Player Goes First"));
+
+           statManagerScript.SetPhase("player", "action");
+           statManagerScript.SetPhase("enemy", "waiting");
+
+            StartCoroutine(handManagerScript.DrawCards(4, "player"));
+            StartCoroutine(Delay(3, "enemy"));
+        }
+        else if(SceneManager.GetActiveScene().name.Contains("level0"))
         {
             StartCoroutine(DisplayPhase("Player Goes First"));
 
@@ -75,6 +86,7 @@ public class GameManager : MonoBehaviour {
             StartCoroutine(handManagerScript.DrawCards(2, "player"));
             StartCoroutine(Delay(3, "enemy"));
         }
+
 
         cycleTokens = 0;
         discardBank = 0;
@@ -108,6 +120,8 @@ public class GameManager : MonoBehaviour {
         //PLAYER REACT
         statManagerScript.SetPhase("player", "reaction");
         statManagerScript.SetPhase("enemy", "waiting");
+     
+
 
         endTurnButton.enabled = true;
     }
@@ -128,22 +142,47 @@ public class GameManager : MonoBehaviour {
     public IEnumerator EndPlayerReact_wait()
     {
         //resolve attack and defense values and other effects
-        int DamageDealt_toPlayer = statManagerScript.numAttack_enemy - statManagerScript.numDefense_player;
+        int DamageDealt_toPlayer = statManagerScript.numAttack - statManagerScript.numDefense;
         if (DamageDealt_toPlayer > 0)
         {
-           // statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
+            // statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
+           
+               
             StartCoroutine(handManagerScript.Call_TakeDamage(DamageDealt_toPlayer, "player"));
+        
+        }
+        if (level == 2)
+        {
+            nagaScript.CrushingBlow();
+
         }
         //wait until all damage is finished being dealt before drawing new cards
         yield return new WaitForSecondsRealtime(1.2f * DamageDealt_toPlayer);
-
+        
+       
         //clear attack and defense values
         statManagerScript.ClearAttack();
         statManagerScript.ClearDefense();
         //play areas cleared after enemy reacts
         areaManagerScript.Call_DiscardPlayArea("player");
         areaManagerScript.Call_DiscardPlayArea("enemy");
+        if (level == 2)
+        {
+            if (nagaScript.numRemoveCards > 0)
+            {
 
+                for (int i = 0; i < nagaScript.numRemoveCards - 1; i++)
+                {
+                    if (areaManagerScript.player_DiscardCardList.Count > 0)
+                    {
+                        areaManagerScript.player_DiscardCardList.RemoveAt(areaManagerScript.player_DiscardCardList.Count - i);
+                    }
+
+                }
+            }
+
+        }
+       
         //enemy draws 1 card
         StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
         //end of enemy's turn
@@ -152,6 +191,14 @@ public class GameManager : MonoBehaviour {
         //player draws 3
         StartCoroutine(Delay(3, "player"));
 
+
+       
+        if(level==0)
+        {
+            print("DIALOGUE TINGS");
+            StartCoroutine(dummyScript.PlayerDialogue());
+        }
+            
         //PLAYER ACTS
         statManagerScript.SetPhase("player", "action");
         statManagerScript.SetPhase("enemy", "waiting");
@@ -163,10 +210,11 @@ public class GameManager : MonoBehaviour {
     //called by enemy script
     public IEnumerator EndEnemyReact()
     {
+
         //after the enemy reacts to player's cards, it is the enemy's turn
 
         //resolve attack and defense values and other effects
-        int DamageDealt_toEnemy = statManagerScript.numAttack_player - statManagerScript.numDefense_enemy;
+        int DamageDealt_toEnemy = statManagerScript.numAttack - statManagerScript.numDefense;
         if (DamageDealt_toEnemy > 0)
         {
            // statManagerScript.UpdateHealth("enemy", -DamageDealt_toEnemy);
@@ -182,8 +230,26 @@ public class GameManager : MonoBehaviour {
         areaManagerScript.Call_DiscardPlayArea("player");
         areaManagerScript.Call_DiscardPlayArea("enemy");
 
+        //poison exists
+        if (level == 1)
+        {
+            int waitFor = cardEffectScript.PlayUndyingPoisonEffects();
+            print("WAIT FOR: " + waitFor.ToString());
+            yield return new WaitForSecondsRealtime(waitFor);
+        }
+
         //player draws 1 card
         StartCoroutine(handManagerScript.DrawCards(1, "player"));
+        //Check for pact of maggots
+       for(int i = 0; i < areaManagerScript.player_DiscardCardList.Count; i ++)
+        {
+            print("PACT");
+            if (areaManagerScript.player_DiscardCardList[i].GetComponent<CardObj>().CardName == "Pact of maggots")
+            {
+                print("FOUND PACT");
+                cardEffectScript.PactOfMaggot();
+            }
+        }
         //END OF PLAYER TURN
 
         StartCoroutine(DisplayPhase("Enemy's Turn"));
@@ -192,8 +258,9 @@ public class GameManager : MonoBehaviour {
         statManagerScript.SetPhase("enemy", "action");
         StartCoroutine(Delay(3, "enemy"));
 
-
+    
         StartCoroutine(EnemyWaitToAct());
+        //StartCoroutine(dummyScript.PlayerDialogue());
 
 
 
@@ -208,8 +275,10 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator EnemyWaitToAct()
     {
+       
         yield return new WaitForSeconds(3f);
         //ENEMY ACTS  
+       
         if(level == 0)
         {
             StartCoroutine(dummyScript.Action());
@@ -265,10 +334,6 @@ public class GameManager : MonoBehaviour {
     
     }
 
-    public void OpenStore()
-    {
-        StartCoroutine(sceneManagerScript.FadeOut(2));
-    }
 
     public void DisplayBurnUI(GameObject cardObj)
     {
