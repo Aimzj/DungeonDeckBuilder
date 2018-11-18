@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour {
     public void StartGame(int lvl)
     {
         level = lvl;
-
+        print("Level is :" + level);
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         sceneManagerScript = GameObject.Find("GameManager").GetComponent<Scene_Manager>();

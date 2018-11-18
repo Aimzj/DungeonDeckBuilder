@@ -206,7 +206,8 @@ public class CardMovement : MonoBehaviour {
         handManagerScript.ReorderHandLayers("enemy");
     }
 
-  
+ 
+
 
     public void PlayPlayerCard()
     {
