@@ -5,8 +5,12 @@ using UnityEngine.UI;
 
 public class SubtitleFunctions : MonoBehaviour {
     public float textLength = 2f;
+
+    [HideInInspector]
     public Text myText;
-    public float textTimer, textTimerLim, textPerc;
+    public float textTimer, textTimerLim;
+
+    float textPerc;
 
     [HideInInspector]
     public SubtitleList myParent;
@@ -14,7 +18,8 @@ public class SubtitleFunctions : MonoBehaviour {
 
     public float fadeInTimer = 0.5f, fadeOutTimer = 0.5f;
     public bool visible, turningOff = false;
-    public float ttoTimer = 0f, ttoTimerLim = 0f, ttoPerc; //tto stands for time till off
+    public float ttoTimer = 0f, ttoTimerLim = 0f;
+    float ttoPerc; //tto stands for time till off
     Color oriCol;
 
     // Use this for initialization
@@ -23,7 +28,7 @@ public class SubtitleFunctions : MonoBehaviour {
         myParent = transform.parent.GetComponent<SubtitleList>();
 
         myText = gameObject.GetComponent<Text>();
-        oriCol = new Color (0.2f,0.2f,0.2f,1f);
+        oriCol = new Color (0.35f,0.35f,0.35f,1f);
         myText.color = Color.clear;
         turningOff = false;
 

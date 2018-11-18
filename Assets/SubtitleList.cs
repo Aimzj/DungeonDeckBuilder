@@ -106,7 +106,7 @@ public class SubtitleList : MonoBehaviour {
 
     public void NextScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+        SceneManager.LoadScene("Menu");
     }
 
     public void Timer(ref float timer, float timerlim, ref float perc)
