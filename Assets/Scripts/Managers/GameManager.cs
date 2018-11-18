@@ -34,6 +34,15 @@ public class GameManager : MonoBehaviour {
     private Canvas burnCanvas;
     public TextMeshProUGUI effectText, costText;
 
+    //HELP CANVAS
+    public Canvas HelpCanvas;
+    public Canvas CheatSheetCanvas;
+    public SpriteRenderer CheatsheetSprite;
+    private GameObject[] HelpSprites;
+
+    bool isCheat = false;
+    bool isHelp = false;
+
     // Use this for initialization
     void Start () {
 
@@ -56,8 +65,12 @@ public class GameManager : MonoBehaviour {
         burnCanvas = GameObject.Find("Burn_Canvas").GetComponent<Canvas>();
         burnCanvas.enabled = false;
 
+        //HELP
+        HelpSprites = GameObject.FindGameObjectsWithTag("Help");
+
     }
 
+    
     public void StartGame(int lvl)
     {
         level = lvl;
@@ -330,6 +343,45 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.R))
         {
             areaManagerScript.Call_RenewDeck("player");
+        }
+        //For cheat sheet
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            if(isCheat == false)
+            {
+                isCheat = true;
+            CheatSheetCanvas.enabled = true;
+                CheatsheetSprite.enabled = true;
+            }
+            else
+            {
+                isCheat = false;
+                CheatSheetCanvas.enabled = false;
+                CheatsheetSprite.enabled = false;
+            }
+       
+        }
+        if(Input.GetKeyDown(KeyCode.H))
+        {
+            if(!isHelp)
+            {
+                isHelp = true;
+                HelpCanvas.enabled = true;
+                foreach (GameObject helpBoard in HelpSprites)
+                {
+                    helpBoard.GetComponent<SpriteRenderer>().enabled = true;
+                }
+
+            }
+            else
+            {
+                isHelp = false;
+                HelpCanvas.enabled = false;
+                foreach (GameObject helpBoard in HelpSprites)
+                {
+                    helpBoard.GetComponent<SpriteRenderer>().enabled = false;
+                }
+            }
         }
     
     }
