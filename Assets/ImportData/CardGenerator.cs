@@ -20,11 +20,15 @@ public class CardGenerator : MonoBehaviour {
 
     private GameManager gameManagerScript;
     private StatsManager statManagerScript;
+    private GeneratePacks generatePackScript;
+    private Scene_Manager sceneManagerScript;
 
     public Sprite PlayerSprite_Front, PlayerSprite_Back, SpiderSprite_Front, SpiderSprite_Back;
 
     //FOR TUTORIAL
     private SetDecks setTutDecks;
+
+    private Canvas packCanvas;
 
     //decks
     public List<GameObject>
@@ -48,9 +52,11 @@ public class CardGenerator : MonoBehaviour {
     //Tutorial packs
     public List<GameObject> PlayerTutDeck, EnemyTutDeck;
 
-
+    private int numPacks;
     // Use this for initialization
     void Start () {
+        numPacks = 0;
+
         playerDeckTrans = GameObject.Find("Deck").GetComponent<Transform>();
         enemyDeckTrans = GameObject.Find("EnemyDeck").GetComponent<Transform>();
         poisonDeckTrans = GameObject.Find("PoisonDeck").GetComponent<Transform>();
@@ -58,13 +64,17 @@ public class CardGenerator : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
+        sceneManagerScript = GameObject.Find("GameManager").GetComponent<Scene_Manager>();
+
+        generatePackScript = GameObject.Find("PackManager").GetComponent<GeneratePacks>();
+        packCanvas = GameObject.Find("Pack_Canvas").GetComponent<Canvas>();
 
         //For tutorial
         //setTutDecks = GameObject.Find("GameManager").GetComponent<SetDecks>();
 
 
 
-        InitialiseLevel(0);
+        InitialiseLevel(1);
 
 
     }
@@ -123,21 +133,20 @@ public class CardGenerator : MonoBehaviour {
                 if (numSigils > 0)
                     statManagerScript.UpdateSigils("player", numSigils);
                 if (numKindling > 0)
-                    statManagerScript.SetKindling("player", numKindling);
+                    statManagerScript.UpdateKindling("player", numKindling,numKindling);
                 player_health += cardScript.SigilNum * 5;
                 player_cardsInDeck += cardScript.NumInDeck;
             }
             else if (level == 0)
             {
                 statManagerScript.UpdateSigils("enemy", 1);
-                statManagerScript.SetKindling("enemy", 0);
+                statManagerScript.UpdateKindling("enemy", 0,0);
                 statManagerScript.UpdateSigils("player", 1);
-                statManagerScript.SetKindling("player", 1);
+                statManagerScript.UpdateKindling("player", 1,1);
                 enemy_health = 10;
                 enemy_cardsInDeck = 10;
                 player_health = 10;
                 player_cardsInDeck = 10;
-                  
             }
             else if (level == 1
                 && cardScript.CardType == "spider")
@@ -146,7 +155,7 @@ public class CardGenerator : MonoBehaviour {
                 if (numSigils > 0)
                     statManagerScript.UpdateSigils("enemy", numSigils);
                 if (numKindling > 0)
-                    statManagerScript.SetKindling("enemy", numKindling);
+                    statManagerScript.UpdateKindling("enemy", numKindling,numKindling);
                 enemy_health += cardScript.SigilNum * 5;
                 enemy_cardsInDeck += cardScript.NumInDeck;
             }
@@ -157,7 +166,7 @@ public class CardGenerator : MonoBehaviour {
                 if (numSigils > 0)
                     statManagerScript.UpdateSigils("enemy", numSigils);
                 if (numKindling > 0)
-                    statManagerScript.SetKindling("enemy", numKindling);
+                    statManagerScript.UpdateKindling("enemy", numKindling,numKindling);
                 enemy_health += cardScript.SigilNum * 5;
                 enemy_cardsInDeck += cardScript.NumInDeck;
             }
@@ -367,15 +376,30 @@ public class CardGenerator : MonoBehaviour {
         }
 
         //fill stats
-        statManagerScript.SetHealth("player", player_health);
+        statManagerScript.UpdateHealth("player", player_health, player_health);
         statManagerScript.SetTotalCards("player", player_cardsInDeck,0);
-        statManagerScript.SetHealth("enemy", enemy_health);
+        statManagerScript.UpdateHealth("enemy", enemy_health,enemy_health);
         statManagerScript.SetTotalCards("enemy", enemy_cardsInDeck,0);
+
+
+        //start the game
+        //make the player choose a deck before starting the game
+        generatePackScript.StartPackSelection();
+        generatePackScript.FindCurrentDeck();
+        
+    }
+
+    public IEnumerator ChosePack(int level)
+    {
+        numPacks++;
+
+        //fade the screen to black
+        StartCoroutine(sceneManagerScript.FadeOutFadeIn());
+        yield return new WaitForSecondsRealtime(1.5f);
+        packCanvas.enabled = false;
 
         //Initialise decks in their respective scripts
         handManagerScript.InitialiseCards(level);
-
-        //start the game
         gameManagerScript.StartGame(level);
     }
 

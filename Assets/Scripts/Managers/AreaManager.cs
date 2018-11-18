@@ -173,7 +173,7 @@ public class AreaManager : MonoBehaviour {
         StartCoroutine(TempDisplay(cardObj, tempDisplay, trashTrans));
 
         //damage player
-        statManagerScript.UpdateHealth(target, -1);
+        statManagerScript.UpdateHealth(target, -1,0);
         //check if burnt card was a Sigil card
         if (cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)
         {
@@ -241,7 +241,7 @@ public class AreaManager : MonoBehaviour {
         cardObj.GetComponent<CardMovement>()._targetTransform = obj.transform;
 
         //damage player
-        statManagerScript.UpdateHealth(target, -1);
+        statManagerScript.UpdateHealth(target, -1,0);
 
         //check if burnt card was a Sigil card
         if (cardObj.transform.Find("Sigil").GetComponent<SpriteRenderer>().enabled)

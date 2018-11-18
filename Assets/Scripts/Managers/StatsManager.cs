@@ -5,9 +5,11 @@ using TMPro;
 
 public class StatsManager : MonoBehaviour {
 
-    public TextMeshPro playerPhase, playerHealth,  playerCardsInDeck, playerCycleTokens, playerDiscard, playerBurn, playerSigils, playerKindling;
-    public TextMeshPro enemyPhase, enemyHealth, enemyDefense, enemyAttack, enemyCardsInDeck, enemyCycleTokens, enemyDiscard, enemyBurn, enemySigils, enemyKindling;
-    public TextMeshPro endGameText, buttonText;
+    public TextMeshPro playerCardsInDeck, playerDiscard, playerBurn;
+    public TextMeshPro enemyCardsInDeck, enemyDiscard, enemyBurn;
+    public TextMeshPro endGameText;
+
+    public TextMeshProUGUI playerHealth, enemyHealth, buttonText, playerSigils, enemySigils, playerCycleTokens, enemyCycleTokens, playerKindling, enemyKindling, playerPhase, enemyPhase;
 
     public int totalHealth_player, numHealth_player, numCardsInDeck_player, totalCards_player, numCycleTokens_player, numDiscard_player, numBurn_player, numSigilsRemaining_player, numKindling_player, numTotalKinding_player;
     public int totalHealth_enemy, numHealth_enemy, numCardsInDeck_enemy, totalCards_enemy, numCycleTokens_enemy, numDiscard_enemy, numBurn_enemy, numSigilsRemaining_enemy, numKindling_enemy, numTotalKindling_enemy;
@@ -19,7 +21,7 @@ public class StatsManager : MonoBehaviour {
     public int numAttack, numDefense;
 
     void Start () {
-
+        
     }
 
     private void RotateSword(float angle)
@@ -38,29 +40,13 @@ public class StatsManager : MonoBehaviour {
         {
             numKindling_player += numInDeck;
             numTotalKinding_player += numTotal;
-            playerKindling.text = "Kindling: " + numKindling_player + "/" + numTotalKinding_player;
+            playerKindling.text =numKindling_player + "/" + numTotalKinding_player;
         }
         else if (target == "enemy")
         {
             numKindling_enemy += numInDeck;
             numTotalKindling_enemy += numTotal;
-            enemyKindling.text = "Kindling: " + numKindling_enemy + "/" + numKindling_enemy;
-        }
-    }
-
-    public void SetKindling(string target, int num)
-    {
-        if(target == "player")
-        {
-            numKindling_player = num;
-            numTotalKinding_player = num;
-            playerKindling.text = "Kindling: " + num+ "/"+num;
-        }
-        else if(target == "enemy")
-        {
-            numKindling_enemy = num;
-            numTotalKindling_enemy = num;
-            enemyKindling.text = "Kindling: " + num + "/" + num;
+            enemyKindling.text = numKindling_enemy + "/" + numKindling_enemy;
         }
     }
 
@@ -82,9 +68,9 @@ public class StatsManager : MonoBehaviour {
             phase_player = phase;
 
             if(phase == "waiting")
-                playerPhase.text = phase.ToUpper();
+                playerPhase.text = phase;
             else
-                playerPhase.text = phase.ToUpper() + " phase";
+                playerPhase.text = phase+ " phase";
 
             if (phase == "action")
             {
@@ -108,9 +94,9 @@ public class StatsManager : MonoBehaviour {
             phase_enemy = phase;
 
             if (phase == "waiting")
-                enemyPhase.text = phase.ToUpper();
+                enemyPhase.text = phase;
             else
-                enemyPhase.text = phase.ToUpper() + " phase";
+                enemyPhase.text = phase + " phase";
 
             if (phase == "action")
             {
@@ -120,29 +106,13 @@ public class StatsManager : MonoBehaviour {
         }
     }
 
-    public void SetHealth(string target, int num)
-    {
-        if (target == "player")
-        {
-            totalHealth_player = num;
-            numHealth_player = num;
-            playerHealth.text = "Health: " + numHealth_player+"/"+totalHealth_player;
-
-        }
-        else if (target == "enemy")
-        {
-            totalHealth_enemy = num;
-            numHealth_enemy = num;
-            enemyHealth.text = "Health: " + numHealth_enemy+"/"+totalHealth_enemy;
-        }
-    }
-
-    public void UpdateHealth(string target, int num)
+    public void UpdateHealth(string target, int num, int total)
     {
         if(target == "player")
         {
             numHealth_player += num;
-            playerHealth.text = "Health: " + numHealth_player+ "/" +totalHealth_player;
+            totalHealth_player += total;
+            playerHealth.text = numHealth_player+ "/" +totalHealth_player;
 
             if (numHealth_player <= 0)
             {
@@ -153,7 +123,8 @@ public class StatsManager : MonoBehaviour {
         else if (target == "enemy")
         {
             numHealth_enemy += num;
-            enemyHealth.text = "Health: " + numHealth_enemy +"/" + totalHealth_enemy;
+            totalHealth_enemy += total;
+            enemyHealth.text = numHealth_enemy +"/" + totalHealth_enemy;
 
             if (numHealth_enemy <= 0)
             {
@@ -224,12 +195,12 @@ public class StatsManager : MonoBehaviour {
         if (target == "player")
         {
             numCycleTokens_player += num;
-            playerCycleTokens.text = "Cycle Tokens: " + numCycleTokens_player;
+            playerCycleTokens.text = numCycleTokens_player.ToString();
         }
         else if (target == "enemy")
         {
             numCycleTokens_enemy += num;
-            enemyCycleTokens.text = "Cycle Tokens: " + numCycleTokens_enemy;
+            enemyCycleTokens.text = numCycleTokens_enemy.ToString();
         }
     }
 
@@ -266,7 +237,7 @@ public class StatsManager : MonoBehaviour {
         if (target == "player")
         {
             numSigilsRemaining_player += num;
-            playerSigils.text = "Sigils Remaining: " + numSigilsRemaining_player;
+            playerSigils.text = numSigilsRemaining_player.ToString();
 
             if (numSigilsRemaining_player <= 0)
             {
@@ -277,7 +248,7 @@ public class StatsManager : MonoBehaviour {
         else if (target == "enemy")
         {
             numSigilsRemaining_enemy += num;
-            enemySigils.text = "Sigils Remaining: " + numSigilsRemaining_enemy;
+            enemySigils.text = numSigilsRemaining_enemy.ToString();
 
             if (numSigilsRemaining_enemy <= 0)
             {
