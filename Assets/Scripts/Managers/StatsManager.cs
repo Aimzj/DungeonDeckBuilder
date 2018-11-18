@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 public class StatsManager : MonoBehaviour {
-    public TextMeshPro endGameText;
+    public TextMeshPro endGameText, endGameReasonText;
 
     public TextMeshProUGUI playerHealth, enemyHealth, buttonText, playerSigils, enemySigils, playerCycleTokens, enemyCycleTokens, playerKindling, 
         enemyKindling, playerPhase, enemyPhase, playerCardsInDeck, enemyCardsInDeck, playerDiscard, enemyDiscard, playerBurn, enemyBurn, statusDeck, statusDiscard;
@@ -124,7 +124,8 @@ public class StatsManager : MonoBehaviour {
             if (numHealth_player <= 0)
             {
                 //PLAYER LOSES
-                endGameText.text = "You Lose";
+                endGameText.text = "You Lost!";
+                endGameReasonText.text = "You ran out of health";
             }
         }
         else if (target == "enemy")
@@ -137,6 +138,7 @@ public class StatsManager : MonoBehaviour {
             {
                 //PLAYER WINS
                 endGameText.text = "You Win!";
+                endGameReasonText.text = "You depleted the enemy's health";
             }
         }
     }
@@ -180,7 +182,8 @@ public class StatsManager : MonoBehaviour {
             if (totalCards_player <= 0)
             {
                 //PLAYER WINS
-                endGameText.text = "You Lose";
+                endGameText.text = "You Lost!";
+                endGameReasonText.text = "You burnt all of your cards";
             }
         }
         else if (target == "enemy")
@@ -193,6 +196,7 @@ public class StatsManager : MonoBehaviour {
             {
                 //PLAYER WINS
                 endGameText.text = "You Win!";
+                endGameReasonText.text = "You burnt all of the enemy's cards";
             }
         }
     }
@@ -249,7 +253,8 @@ public class StatsManager : MonoBehaviour {
             if (numSigilsRemaining_player <= 0)
             {
                 //PLAYER LOSES
-                endGameText.text = "You Lose";
+                endGameText.text = "You Lost!";
+                endGameReasonText.text = "All of your sigil-marked cards were burned";
             }
         }
         else if (target == "enemy")
@@ -260,7 +265,8 @@ public class StatsManager : MonoBehaviour {
             if (numSigilsRemaining_enemy <= 0)
             {
                 //PLAYER WINS
-                endGameText.text = "Player Wins!";
+                endGameText.text = "You Win!";
+                endGameReasonText.text = "You burned all of the enemy's sigil-marked cards";
             }
         }
     }
