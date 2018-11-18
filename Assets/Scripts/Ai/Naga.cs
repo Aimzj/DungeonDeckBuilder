@@ -60,7 +60,12 @@ public class Naga : MonoBehaviour {
 
     }
 
-  
+    public void StopEverything()
+    {
+        StopAllCoroutines();
+        NagaHand.Clear();
+    }
+
     IEnumerator reactionDiscard(int cost, int index)
     {
         while (cost != 0)

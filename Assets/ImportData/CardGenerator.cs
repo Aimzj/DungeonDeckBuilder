@@ -8,6 +8,7 @@ public class CardGenerator : MonoBehaviour {
 
     //transforms of decks
     public Transform playerDeckTrans, enemyDeckTrans, poisonDeckTrans;
+    public Transform extraCardsTrans;
 
     private int numUniqueCards=22;
 
@@ -21,7 +22,7 @@ public class CardGenerator : MonoBehaviour {
     private GameManager gameManagerScript;
     private StatsManager statManagerScript;
     private GeneratePacks generatePackScript;
-    private Scene_Manager sceneManagerScript;
+    private Menu menuScript;
 
     public Sprite PlayerSprite_Front, PlayerSprite_Back, SpiderSprite_Front, SpiderSprite_Back, StatusSprite, NagaSprite;
 
@@ -56,7 +57,11 @@ public class CardGenerator : MonoBehaviour {
     //Tutorial packs
     public List<GameObject> PlayerTutDeck, EnemyTutDeck;
 
+    public List<GameObject> chosenPack1, chosenPack2;
+
     private int numPacks;
+
+    public int level;
     // Use this for initialization
     void Start () {
         numPacks = 0;
@@ -68,7 +73,7 @@ public class CardGenerator : MonoBehaviour {
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
-        sceneManagerScript = GameObject.Find("GameManager").GetComponent<Scene_Manager>();
+        menuScript = GameObject.Find("GameManager").GetComponent<Menu>();
 
         generatePackScript = GameObject.Find("PackManager").GetComponent<GeneratePacks>();
         packCanvas = GameObject.Find("Pack_Canvas").GetComponent<Canvas>();
@@ -78,8 +83,8 @@ public class CardGenerator : MonoBehaviour {
         EnemyTutDeck = new List<GameObject>();
         PlayerTutDeck = new List<GameObject>();
 
-
-        InitialiseLevel(0);
+        level = PlayerPrefs.GetInt("Level");
+        InitialiseLevel(level);
     }
 
     private void InstantiateCard(ref GameObject temp, Vector3 pos, Quaternion rot, bool isKindling, ref List<GameObject> pack, int numCards, bool isSigil)
@@ -87,8 +92,8 @@ public class CardGenerator : MonoBehaviour {
         for(int i = 0; i<numCards; i++)
         {
             cardObj = (GameObject)Instantiate(tempObj);
-            cardObj.transform.position = pos;
-            cardObj.transform.rotation = rot;
+            cardObj.transform.position = playerDeckTrans.position;
+            cardObj.transform.rotation = Quaternion.Euler(90, 90, 0);
 
             if (isKindling)
             {
@@ -234,13 +239,13 @@ public class CardGenerator : MonoBehaviour {
                 if (cardScript.CardName=="Advanced Guard")
                 {
                     //x2 reinforcement1
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0),false, ref ReinforcementPack1,2, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles),false, ref ReinforcementPack1,2, false);
 
                     //x1 healing pack
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref HealingPack, 1, false);
 
                     //x1 primus (kindled)
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref PrimusPack, 1, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), true, ref PrimusPack, 1, false);
 
                     //TUTORIAL
                     if (level == 0)
@@ -258,22 +263,22 @@ public class CardGenerator : MonoBehaviour {
                 if (cardScript.CardName == "Guard")
                 {
                     //x1 reinforcement1
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack1,1, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref ReinforcementPack1,1, false);
 
                     //x1 reinforcement2
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref ReinforcementPack2, 1, false);
 
                     //x1 healing pack
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref HealingPack, 1, false);
 
                     //x2 Necromancer
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref NecromancerPack, 2, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref NecromancerPack, 2, false);
 
                     //x4 arcane (4 kindled)
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref ArcanePack, 4, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), true, ref ArcanePack, 4, false);
 
                     //x1 primus (kindled)
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref PrimusPack, 1, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), true, ref PrimusPack, 1, false);
 
                     //TUTORIAL
                     if (level == 0)
@@ -290,7 +295,7 @@ public class CardGenerator : MonoBehaviour {
                 if(cardScript.CardName == "Lucky Charm")
                 {
                     //x2 reinforcement1
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack1,2, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref ReinforcementPack1,2, false);
 
                     //TUTORIAL
                     if (level == 0)
@@ -305,18 +310,18 @@ public class CardGenerator : MonoBehaviour {
                 if(cardScript.CardName == "Fireball")
                 {
                     //x1 ash
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,1, true);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref AshPack,1, true);
                 }
                 if(cardScript.CardName == "Focused Strike")
                 {
                     //x2 reinforcement pack 2
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2,2, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref ReinforcementPack2,2, false);
 
                     //x1 ash
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,1, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref AshPack,1, false);
 
                     //x1 primus
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref PrimusPack, 1, false);
 
                     //TUTORIAL
                     if (level == 0)
@@ -333,20 +338,20 @@ public class CardGenerator : MonoBehaviour {
                 if(cardScript.CardName == "Strike")
                 {
                     //x3 ash (1 kindling)
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref AshPack,1, false);
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref AshPack,2, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), true, ref AshPack,1, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref AshPack,2, false);
 
                     //x1 reinforcement2
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref ReinforcementPack2, 1, false);
 
                     //x2 healing (2 kindled)
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref HealingPack, 2, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), true, ref HealingPack, 2, false);
 
                     //x2 necromancer (2 kindled)
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), true, ref NecromancerPack, 2, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), true, ref NecromancerPack, 2, false);
 
                     //x1 primus
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref PrimusPack, 1, false);
 
                     //TUTORIAL
                     if (level == 0)
@@ -378,27 +383,27 @@ public class CardGenerator : MonoBehaviour {
                 if(cardScript.CardName == "Second Wind")
                 {
                     //x1 reinforcement2
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ReinforcementPack2, 1, false);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref ReinforcementPack2, 1, false);
                 }
                 if(cardScript.CardName == "Symbol of Faith")
                 {
                     //x1 healing pack
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref HealingPack, 1, true);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref HealingPack, 1, true);
                 }
                 if(cardScript.CardName == "Pact of Maggots")
                 {
                     //x1 Necromancer
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref NecromancerPack, 1, true);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref NecromancerPack, 1, true);
                 }
                 if(cardScript.CardName == "Inner Strength")
                 {
                     //x1 arcane
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref ArcanePack, 1, true);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref ArcanePack, 1, true);
                 }
                 if(cardScript.CardName == "Eternal Will")
                 {
                     //x1 primus pack
-                    InstantiateCard(ref tempObj, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0), false, ref PrimusPack, 1, true);
+                    InstantiateCard(ref tempObj, extraCardsTrans.position, Quaternion.Euler(extraCardsTrans.eulerAngles), false, ref PrimusPack, 1, true);
                 }
             }
 
@@ -520,7 +525,7 @@ public class CardGenerator : MonoBehaviour {
         {
             //make the player choose a deck before starting the game
             //if it is not the tutorial
-            generatePackScript.StartPackSelection();
+            generatePackScript.StartPackSelection(level);
             generatePackScript.FindCurrentDeck();
         }
         else
@@ -534,10 +539,11 @@ public class CardGenerator : MonoBehaviour {
 
     public IEnumerator ChosePack(int level)
     {
+        print("Start Level: " + level.ToString());
         numPacks++;
         //level = 0;
         //fade the screen to black
-        StartCoroutine(sceneManagerScript.FadeOutFadeIn());
+        StartCoroutine(menuScript.FadeOutFadeIn());
         yield return new WaitForSecondsRealtime(1.5f);
         packCanvas.enabled = false;
 

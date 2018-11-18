@@ -12,8 +12,6 @@ public class GeneratePacks : MonoBehaviour {
     public Button card2_1, card2_2, card2_3, card2_4, card2_5;
     public Button card3_1, card3_2, card3_3, card3_4, card3_5;
 
-    public int level;
-
     private Canvas packCanvas;
     private CardGenerator cardGenScript;
 
@@ -25,8 +23,11 @@ public class GeneratePacks : MonoBehaviour {
 
     private StatsManager statsManagerScript;
 
+
+    private int level;
     void Start () {
         level = 0;
+
         packCanvas = GameObject.Find("Pack_Canvas").GetComponent<Canvas>();
         cardGenScript = GameObject.Find("GameManager").GetComponent<CardGenerator>();
 
@@ -155,14 +156,14 @@ public class GeneratePacks : MonoBehaviour {
         cardList.text = finalList;
     }
 
-    public void StartPackSelection()
+    public void StartPackSelection(int lvl)
     {
+        level = lvl;
         packCanvas.enabled = true;
-        level++;
-        GenPacks(level);
+        GenPacks(lvl);
     }
 
-	public void GenPacks(int level)
+	public void GenPacks(int lvl)
     {
         List<string> packNames = new List<string>();
         packNames.Add("Reinforcement 1");
@@ -172,7 +173,7 @@ public class GeneratePacks : MonoBehaviour {
         packNames.Add("Arcane");
         packNames.Add("Primus");
         int random;
-        if (level == 1)
+        if (lvl == 1)
         {
             //PACK 1
             SetHealingPack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);

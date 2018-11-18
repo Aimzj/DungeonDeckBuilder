@@ -301,7 +301,7 @@ public class CardMovement : MonoBehaviour {
             }
             else
             {
-                if (SceneManager.GetActiveScene().name == "BetaScene")
+                if (SceneManager.GetActiveScene().name == "FinalScene")
                 {
                     isHovering = true;
                     _targetTransform.position = new Vector3(_targetTransform.position.x, _targetTransform.position.y, -0.83f);
@@ -309,7 +309,18 @@ public class CardMovement : MonoBehaviour {
 
             }
         }
-        
+
+
+        if (isHovering
+            && !isEnemyCard
+            && !isFrozen
+            && !isPlayed)
+        {
+            isHovering = false;
+            _targetTransform.position = new Vector3(_targetTransform.position.x, _targetTransform.position.y - hoverHeight, -0.83f);
+
+            handManagerScript.ReorderHandLayers("player");
+        }
     }
 
     private void OnMouseEnter()
@@ -338,7 +349,8 @@ public class CardMovement : MonoBehaviour {
         // move the card to it's original transform only if it is already hovering
         if (isHovering
             && !isEnemyCard
-            && !isFrozen)
+            && !isFrozen
+            && !isPlayed)
         {
             isHovering = false;
             _targetTransform.position = new Vector3(_targetTransform.position.x, _targetTransform.position.y-hoverHeight, -0.83f);

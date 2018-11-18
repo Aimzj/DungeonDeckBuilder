@@ -33,7 +33,13 @@ public class Spider : MonoBehaviour {
     {
  
     }
-    
+
+    public void StopEverything()
+    {
+        StopAllCoroutines();
+        spiderHand.Clear();
+    }
+
     //For reaction phase
     public IEnumerator Reaction()
     {

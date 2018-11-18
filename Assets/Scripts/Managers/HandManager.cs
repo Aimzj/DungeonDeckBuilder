@@ -97,12 +97,17 @@ public class HandManager : MonoBehaviour {
         maxHandSize = 10;
     }
 
+    public void StopEverything()
+    {
+        StopAllCoroutines();
+    }
+
     //called at the start of the game to initialise cards
     //the enemyDeckList changes according to the level - spider or level 1 and Naga for level 2
     public void InitialiseCards(int level)
     {
+
         print("LEVEL: " + level.ToString());
-        level = 0;
         playerDeckList = cardGenScript.PlayerDeck;
         if(level == 0)
         {

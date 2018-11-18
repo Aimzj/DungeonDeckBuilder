@@ -12,9 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes_Orig/Menu.unity
     guid: bf23df352323b7040a67720bb322f3a6
   - enabled: 1
-    path: Assets/Scenes_Orig/BetaScene.unity
-    guid: 044e22f89f565f94aaa605a51f5a4859
+    path: Assets/Scenes_Orig/FinalScene.unity
+    guid: d1ffb14c1336255438c9d79e0e215b1b
   - enabled: 1
-    path: Assets/Scenes_Orig/PlayerPacks.unity
-    guid: 8c868481c67a21445a11aa775a34338f
+    path: Assets/Scenes_Orig/Level0.unity
+    guid: e5230a2667a5cf14aa1aff951799866f
   m_configObjects: {}

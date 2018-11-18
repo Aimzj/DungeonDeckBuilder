@@ -8,7 +8,6 @@ using TMPro;
 public class GameManager : MonoBehaviour {
     private AreaManager areaManagerScript;
     private HandManager handManagerScript;
-    private Scene_Manager sceneManagerScript;
 
     private bool isActionPhase;
     private bool isReactionPhase;
@@ -17,9 +16,12 @@ public class GameManager : MonoBehaviour {
     private int attackVal, defenseVal;
 
     private Button endTurnButton;
+    public Button NextBossButton;
 
     private StatsManager statManagerScript;
     private CardEffectManager cardEffectScript;
+    private CardGenerator cardGenScript;
+    private Menu menuScript;
 
     private Spider spiderScript;
     private Naga nagaScript;
@@ -43,6 +45,8 @@ public class GameManager : MonoBehaviour {
     bool isCheat = false;
     bool isHelp = false;
 
+    private Canvas endGameCanvas;
+
     // Use this for initialization
     void Start () {
 
@@ -53,14 +57,15 @@ public class GameManager : MonoBehaviour {
 
         statManagerScript = GameObject.Find("GameManager").GetComponent<StatsManager>();
         cardEffectScript = GameObject.Find("GameManager").GetComponent<CardEffectManager>();
+        menuScript = GameObject.Find("GameManager").GetComponent<Menu>();
 
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
         spiderScript = GameObject.Find("GameManager").GetComponent<Spider>();
 
-        nagaScript = GameObject.Find("GameManager").GetComponent<Naga>(); ;
+        nagaScript = GameObject.Find("GameManager").GetComponent<Naga>();
         dummyScript = GameObject.Find("GameManager").GetComponent<Dummy>();
 
-        
+        cardGenScript = GameObject.Find("GameManager").GetComponent<CardGenerator>();
 
         burnCanvas = GameObject.Find("Burn_Canvas").GetComponent<Canvas>();
         burnCanvas.enabled = false;
@@ -68,18 +73,76 @@ public class GameManager : MonoBehaviour {
         //HELP
         HelpSprites = GameObject.FindGameObjectsWithTag("Help");
 
+        endGameCanvas = GameObject.Find("GameOver_Canvas").GetComponent<Canvas>();
     }
 
-    
+    public void RestartButton()
+    {
+        int level = PlayerPrefs.GetInt("Level");
+        StartCoroutine(menuScript.LoadLevel(2));
+    }
+
+    public void NextLevel()
+    {
+        int level = PlayerPrefs.GetInt("Level");
+        level++;
+        PlayerPrefs.SetInt("Level", level);
+        if (level >2)
+        {
+            StartCoroutine(menuScript.LoadLevel(3));
+        }
+        else
+        {
+            StartCoroutine(menuScript.LoadLevel(2));
+        }
+
+    }
+
+    public void StopEverything()
+    {
+        StopAllCoroutines();
+    }
+
+    public void EndLevel(int win)
+    {
+        endGameCanvas.enabled = true;
+
+        //stop all the coroutines from running
+        StopEverything();
+        spiderScript.StopEverything();
+        areaManagerScript.StopEverything();
+        nagaScript.StopEverything();
+
+        //freeze the player cards
+        for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+        {
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isFrozen = true;
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isPlayed = true;
+        }
+
+        endTurnButton.enabled = false;
+
+        if (win == 0)
+        {
+            //disable the buttons except for "next boss" button
+            NextBossButton.enabled = true;
+        }
+        else
+        {
+            NextBossButton.enabled = false;
+            
+        }
+
+    }
+
     public void StartGame(int lvl)
     {
         level = lvl;
         print("Level is :" + level);
         areaManagerScript = GameObject.Find("GameManager").GetComponent<AreaManager>();
         handManagerScript = GameObject.Find("GameManager").GetComponent<HandManager>();
-        sceneManagerScript = GameObject.Find("GameManager").GetComponent<Scene_Manager>();
 
-        if (SceneManager.GetActiveScene().name.Contains("BetaScene"))
+        if (level>0)
         {
             StartCoroutine(DisplayPhase("Player Goes First"));
 
@@ -89,7 +152,7 @@ public class GameManager : MonoBehaviour {
             StartCoroutine(handManagerScript.DrawCards(4, "player"));
             StartCoroutine(Delay(3, "enemy"));
         }
-        else if(SceneManager.GetActiveScene().name.Contains("level0"))
+        else
         {
             StartCoroutine(DisplayPhase("Player Goes First"));
 
@@ -335,6 +398,19 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            //win
+            EndLevel(0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            //lose
+            EndLevel(1);
+        }
+
         if (Input.GetKeyDown(KeyCode.D))
         {
             areaManagerScript.Call_DiscardPlayArea("player");

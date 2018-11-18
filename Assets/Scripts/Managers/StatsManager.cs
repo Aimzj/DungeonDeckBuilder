@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 public class StatsManager : MonoBehaviour {
-    public TextMeshPro endGameText, endGameReasonText;
+    public TextMeshProUGUI endGameText, endGameReasonText;
 
     public TextMeshProUGUI playerHealth, enemyHealth, buttonText, playerSigils, enemySigils, playerCycleTokens, enemyCycleTokens, playerKindling, 
         enemyKindling, playerPhase, enemyPhase, playerCardsInDeck, enemyCardsInDeck, playerDiscard, enemyDiscard, playerBurn, enemyBurn, statusDeck, statusDiscard;
@@ -18,8 +18,14 @@ public class StatsManager : MonoBehaviour {
     public TextMeshPro attackText, defenseText;
     public int numAttack, numDefense;
 
+    private GameManager gameManagerScript;
+
+    private Canvas gameOverCanvas;
     void Start () {
-        
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameOverCanvas = GameObject.Find("GameOver_Canvas").GetComponent<Canvas>();
+
+        gameOverCanvas.enabled = false;
     }
 
     public void UpdateNumStatusCards(int numDeck, int numDiscard)
@@ -123,9 +129,11 @@ public class StatsManager : MonoBehaviour {
 
             if (numHealth_player <= 0)
             {
+                gameOverCanvas.enabled = true;
                 //PLAYER LOSES
                 endGameText.text = "You Lost!";
                 endGameReasonText.text = "You ran out of health";
+                gameManagerScript.EndLevel(1);
             }
         }
         else if (target == "enemy")
@@ -136,9 +144,11 @@ public class StatsManager : MonoBehaviour {
 
             if (numHealth_enemy <= 0)
             {
+                gameOverCanvas.enabled = true;
                 //PLAYER WINS
                 endGameText.text = "You Win!";
                 endGameReasonText.text = "You depleted the enemy's health";
+                gameManagerScript.EndLevel(0);
             }
         }
     }
@@ -181,9 +191,11 @@ public class StatsManager : MonoBehaviour {
 
             if (totalCards_player <= 0)
             {
+                gameOverCanvas.enabled = true;
                 //PLAYER WINS
                 endGameText.text = "You Lost!";
                 endGameReasonText.text = "You burnt all of your cards";
+                gameManagerScript.EndLevel(1);
             }
         }
         else if (target == "enemy")
@@ -194,9 +206,11 @@ public class StatsManager : MonoBehaviour {
 
             if (totalCards_enemy <= 0)
             {
+                gameOverCanvas.enabled = true;
                 //PLAYER WINS
                 endGameText.text = "You Win!";
                 endGameReasonText.text = "You burnt all of the enemy's cards";
+                gameManagerScript.EndLevel(0);
             }
         }
     }
@@ -252,9 +266,11 @@ public class StatsManager : MonoBehaviour {
 
             if (numSigilsRemaining_player <= 0)
             {
+                gameOverCanvas.enabled = true;
                 //PLAYER LOSES
                 endGameText.text = "You Lost!";
-                endGameReasonText.text = "All of your sigil-marked cards were burned";
+                endGameReasonText.text = "All of your sigil cards were burned";
+                gameManagerScript.EndLevel(1);
             }
         }
         else if (target == "enemy")
@@ -264,9 +280,11 @@ public class StatsManager : MonoBehaviour {
 
             if (numSigilsRemaining_enemy <= 0)
             {
+                gameOverCanvas.enabled = true;
                 //PLAYER WINS
                 endGameText.text = "You Win!";
-                endGameReasonText.text = "You burned all of the enemy's sigil-marked cards";
+                endGameReasonText.text = "You burned all of the enemy's sigil cards";
+                gameManagerScript.EndLevel(0);
             }
         }
     }

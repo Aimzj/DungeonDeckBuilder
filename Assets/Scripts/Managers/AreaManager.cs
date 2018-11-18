@@ -71,6 +71,11 @@ public class AreaManager : MonoBehaviour {
         boundaryValue = 5;
     }
 
+    public void StopEverything()
+    {
+        StopAllCoroutines();
+    }
+
     public void Call_DiscardCard(GameObject cardObj, string target)
     {
         if (target == "player")
