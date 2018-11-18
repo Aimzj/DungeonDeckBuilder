@@ -115,7 +115,7 @@ public class CardEffectManager : MonoBehaviour {
             statManagerScript.UpdateCardsInDeck("player", 1, 1);
 
             newCard = Instantiate(playedCard, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0));
-            rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
+           
 
             handManagerScript.playerDeckList.Insert(rand, newCard);
             StartCoroutine(areaManagerScript.TempDisplay(newCard, tempDisplayPlayer, playerDeckTrans));
@@ -193,20 +193,21 @@ public class CardEffectManager : MonoBehaviour {
             //For enemy
 
             print("Eternal Will");
+            //Add deck to temp deck
             for (int i = 0; i < handManagerScript.enemyDeckList.Count; i++)
             {
                 //print("i is " + i);
                 enemyTempDeck.Add(handManagerScript.enemyDeckList[i]);
 
             }
+            //discard hand
             for (int i = 0; i < handManagerScript.enemyHandlist.Count; i++)
             {
                 print("num discarded:  " + handManagerScript.enemyHandlist.Count);
-                enemyTempDeck.Add(handManagerScript.enemyHandlist[i]);
-                handManagerScript.enemyHandlist[i].GetComponent<CardMovement>().DiscardEnemyCard();
-                i = 0;
-
+              
+                 handManagerScript.enemyHandlist[i].GetComponent<CardMovement>().DiscardEnemyCard();               
             }
+            //Add discard list to tempdeck
             for (int i = 0; i < areaManagerScript.enemy_DiscardCardList.Count; i++)
             {
                 enemyTempDeck.Add(areaManagerScript.enemy_DiscardCardList[i]);
@@ -214,6 +215,7 @@ public class CardEffectManager : MonoBehaviour {
             }
 
             // handManagerScript.enemyDeckList[i] = new List<GameObject>();
+            //Recreate Deck
             for (int i = 0; i < enemyTempDeck.Count; i++)
             {
 
@@ -223,23 +225,28 @@ public class CardEffectManager : MonoBehaviour {
 
 
             }
+           
             //FOR PLAYER
+            //Add deck to tempdeck
             for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
             {
 
                 playerTempDeck.Add(handManagerScript.playerDeckList[i]);
 
             }
+   
 
+            //Discard Hand
             for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
             {
-                playerTempDeck.Add(handManagerScript.playerHandList[i]);
+                //playerTempDeck.Add(handManagerScript.playerHandList[i]);
+                handManagerScript.playerHandList[i].GetComponent<CardMovement>().isInHand = false;
+                handManagerScript.playerHandList[i].GetComponent<CardMovement>().isPlayed = true;
                 areaManagerScript.Call_DiscardCard(handManagerScript.playerHandList[i], "player");
-                i = 0;
-
-
+           
 
             }
+            //Add discard to tempdeck
             for (int i = 0; i < areaManagerScript.player_DiscardCardList.Count; i++)
             {
 
@@ -248,6 +255,7 @@ public class CardEffectManager : MonoBehaviour {
             }
 
             // handManagerScript.enemyDeckList[i] = new List<GameObject>();
+            //Generate new deck
             for (int i = 0; i < enemyTempDeck.Count; i++)
             {
 

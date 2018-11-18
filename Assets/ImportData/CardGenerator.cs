@@ -62,6 +62,7 @@ public class CardGenerator : MonoBehaviour {
     private int numPacks;
 
     public int level;
+
     // Use this for initialization
     void Start () {
         numPacks = 0;
@@ -84,6 +85,7 @@ public class CardGenerator : MonoBehaviour {
         PlayerTutDeck = new List<GameObject>();
 
         level = PlayerPrefs.GetInt("Level");
+
         InitialiseLevel(level);
     }
 
