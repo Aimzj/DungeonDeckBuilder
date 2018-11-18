@@ -227,10 +227,19 @@ public class CardMovement : MonoBehaviour {
 
         //only if the hand size is not exceeded
         //and if the player can "afford" it
+
+        //IF LEVEL IS 0 THEN STOP PLAYER FROM PLAYING WRONG CARDS
         if (cardGeneratorScript.level == 0)
         {
             print("TEST");
-            if (dummyScript.TurnCount == 0)
+            if (dummyScript.TurnCount == -1)
+            {
+                if (gameObject.GetComponent<CardObj>().CardName == "Strike" )
+                {
+                    playerPlayCardFilter();
+                }
+            }
+            else if (dummyScript.TurnCount == 0)
             {
                 if (gameObject.GetComponent<CardObj>().CardName == "Strike" || gameObject.GetComponent<CardObj>().CardName == "Lucky Charm" || gameObject.GetComponent<CardObj>().CardName == "Guard")
                 {
@@ -243,6 +252,13 @@ public class CardMovement : MonoBehaviour {
                 {
                     playerPlayCardFilter();
                 }
+            }
+            else
+            {
+                handManagerScript.Call_SetPositionsInHand("player");
+                handManagerScript.Call_UpdateCardPositionsInHand("player");
+
+             areaManagerScript.ReorderPlayAreaLayers("player");
             }
         }
         else
