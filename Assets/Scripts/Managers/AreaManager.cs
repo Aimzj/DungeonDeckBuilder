@@ -193,7 +193,7 @@ public class AreaManager : MonoBehaviour {
         yield return new WaitForSecondsRealtime(1);
 
         //move the card's position to target position
-        obj = (GameObject)Instantiate(TempObj, new Vector3(targetTrans.position.x, targetTrans.position.y, targetTrans.position.z), Quaternion.Euler(90, 90, 0));
+        obj = (GameObject)Instantiate(TempObj, new Vector3(targetTrans.position.x, targetTrans.position.y, targetTrans.position.z), Quaternion.Euler(90, targetTrans.eulerAngles.y, 0));
         card.GetComponent<CardMovement>()._targetTransform = obj.transform;       
 
         if(targetTrans.position == playerTrash.position || targetTrans.position == enemyTrash.position)

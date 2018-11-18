@@ -148,6 +148,7 @@ public class CardMovement : MonoBehaviour {
         gameObject.transform.Find("AttackCost").GetComponent<TextMeshPro>().sortingOrder = num + 1;
         gameObject.transform.Find("DefenseCost").GetComponent<TextMeshPro>().sortingOrder = num + 1;
         gameObject.transform.Find("Sigil").GetComponent<SpriteRenderer>().sortingOrder = num + 1;
+        gameObject.transform.Find("Image").GetComponent<SpriteRenderer>().sortingOrder = num + 1;
 
     }
     

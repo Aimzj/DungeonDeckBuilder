@@ -23,7 +23,7 @@ public class CardGenerator : MonoBehaviour {
     private GeneratePacks generatePackScript;
     private Scene_Manager sceneManagerScript;
 
-    public Sprite PlayerSprite_Front, PlayerSprite_Back, SpiderSprite_Front, SpiderSprite_Back;
+    public Sprite PlayerSprite_Front, PlayerSprite_Back, SpiderSprite_Front, SpiderSprite_Back, StatusSprite, NagaSprite;
 
     //FOR TUTORIAL
     private SetDecks setTutDecks;
@@ -48,6 +48,10 @@ public class CardGenerator : MonoBehaviour {
         NecromancerPack,
         ArcanePack,
         PrimusPack;
+
+    //Images on cards
+    public Sprite strike, focStrike, guard, advGuard, nagaREG, luckCharm, secondWind, innerStrength, pactOfMaggots,
+        firball, eternalWill, innerStrengthEcho, poison, wound, bite, skitter, lethargy, serpentScale, crushingBlow, callOfTheDeep, eldritchOath, symbolOfFaith;
 
     //Tutorial packs
     public List<GameObject> PlayerTutDeck, EnemyTutDeck;
@@ -102,6 +106,55 @@ public class CardGenerator : MonoBehaviour {
         
     }
 
+    private void SetImage(ref GameObject card)
+    {
+        string name = card.GetComponent<CardObj>().CardName;
+        if (name == "Strike")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = strike;
+        else if(name == "Focused Strike")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = focStrike;
+        else if (name == "Advanced Guard")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = advGuard;
+        else if (name == "Naga Red Eye Gem")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = nagaREG;
+        else if (name == "Guard")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = guard;
+        else if (name == "Lucky Charm")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = luckCharm;
+        else if (name == "Second Wind")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = secondWind;
+        else if (name == "Inner Strength")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = innerStrength;
+        else if (name == "Inner Strength (Echo)")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = innerStrengthEcho;
+        else if (name == "Pact of Maggots")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = pactOfMaggots;
+        else if (name == "Fireball")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = firball;
+        else if (name == "Eternal Will")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = eternalWill;
+        else if (name == "Symbol of Faith")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = symbolOfFaith;
+        else if (name == "Poison")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = poison;
+        else if (name == "Wound")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = wound;
+        else if (name == "Skitter")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = skitter;
+        else if (name == "Bite")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = bite;
+        else if (name == "Lethargy")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = lethargy;
+        else if (name == "Serpent's Scale")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = serpentScale;
+        else if (name == "Crushing Blow")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = crushingBlow;
+        else if (name == "Call of the Deep")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = callOfTheDeep;
+        else if (name == "Eldritch Oath")
+            card.transform.Find("Image").GetComponent<SpriteRenderer>().sprite = eldritchOath;
+    }
+
     public void InitialiseLevel(int level)
     {
         int player_health = 0;
@@ -127,6 +180,9 @@ public class CardGenerator : MonoBehaviour {
             int numKindling = cardScript.Kindling;
 
             //set stats
+
+            SetImage(ref tempObj);
+
             if (cardScript.CardType == "player_starting" && level != 0)
             {
 
@@ -342,12 +398,13 @@ public class CardGenerator : MonoBehaviour {
                     cardObj.transform.position = enemyDeckTrans.position;
                     cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
 
-                    cardObj.GetComponent<SpriteRenderer>().sprite = SpiderSprite_Front;
+                    cardObj.GetComponent<SpriteRenderer>().sprite = NagaSprite;
                     cardObj.GetComponent<CardMovement>().isEnemyCard = true;
                     NagaDeck.Add(cardObj);
                 }
                 else if (cardScript.CardType == "status")
                 {
+                    cardObj.GetComponent<SpriteRenderer>().sprite = StatusSprite;
                     if (cardScript.CardName == "Poison")
                     {
                         cardObj.transform.position = poisonDeckTrans.position;
@@ -355,6 +412,7 @@ public class CardGenerator : MonoBehaviour {
 
                         cardObj.GetComponent<CardMovement>().isEnemyCard = false;
                         PoisonDeck.Add(cardObj);
+
                     }else if(cardScript.CardName == "Wound")
                     {
                         cardObj.transform.position = poisonDeckTrans.position;
