@@ -169,9 +169,9 @@ public class Naga : MonoBehaviour {
                             isfound = true;
                             NagaHand[z].GetComponent<CardMovement>().PlayEnemyCard();
 
-                            statsManagerScript.UpdateDefense("enemy", 3);
+                            statsManagerScript.UpdateDefense("enemy", NagaHand[z].GetComponent<CardObj>().Defense);
                            // i = NagaHand.Count - 1;
-                            DamageTaken -= 3;
+                            DamageTaken -= NagaHand[z].GetComponent<CardObj>().Defense;
                             print("Damage Taken by Naga:" + DamageTaken);
                             if(DamageTaken > 0)
                             {
@@ -395,8 +395,8 @@ public class Naga : MonoBehaviour {
                     {
                         NagaHand[x].GetComponent<CardMovement>().PlayEnemyCard();
                         statsManagerScript.UpdateAttack("enemy", NagaHand[x].GetComponent<CardObj>().Attack);
-                        NagaHand[x].GetComponent<CardObj>().Attack += 2;
-                        NagaHand[x].GetComponent<CardObj>().Defense += 1;
+                        NagaHand[x].GetComponent<CardObj>().Attack += 3;
+                        NagaHand[x].GetComponent<CardObj>().Defense += 2;
                         print("ELDRITCH OATH");
 
 
@@ -424,7 +424,7 @@ public class Naga : MonoBehaviour {
                     {
                         NumCBInPlay++;
                         NagaHand[k].GetComponent<CardMovement>().PlayEnemyCard();
-                        statsManagerScript.UpdateAttack("enemy", 3);
+                        statsManagerScript.UpdateAttack("enemy", NagaHand[k].GetComponent<CardObj>().Attack);
                         numCrushBlow--;
                         yield return new WaitForSecondsRealtime(1);
                     }
