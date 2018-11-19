@@ -42,6 +42,7 @@ public class Naga : MonoBehaviour {
     private Transform playerTempDisplay, enemyTempDisplay;
     private Transform playerDeck;
 
+
     [SerializeField]
     private List<GameObject> NagaHand = new List<GameObject>();
 
@@ -216,6 +217,7 @@ public class Naga : MonoBehaviour {
 
         if(NumSigilsInBurn <= 2 && areaManagerScript.enemy_TrashCardList.Count >= 5 &&  enemyHand.Count >= 3)
         {
+            StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
            //StartCoroutine(CalloftheDeep());
           
         }
