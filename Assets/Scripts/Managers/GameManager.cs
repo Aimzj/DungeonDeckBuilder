@@ -126,7 +126,9 @@ public class GameManager : MonoBehaviour {
 
         if (win == 0)
         {
-            NextBossButton.transform.Find("Label").GetComponent<TextMeshProUGUI>().text = "End Game";
+            level = PlayerPrefs.GetInt("Level");
+            if(level==2)
+                NextBossButton.transform.Find("Label").GetComponent<TextMeshProUGUI>().text = "End Game";
             NextBossButton.enabled = true;
         }
         else
