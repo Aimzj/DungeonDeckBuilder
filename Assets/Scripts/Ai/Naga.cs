@@ -248,6 +248,8 @@ public class Naga : MonoBehaviour {
                 yield return new WaitForSecondsRealtime(1);
             }
         }
+        //SetCard bools
+        StartCoroutine(handManagerScript.DrawCards(2, "player"));
         for (int i = 0; i < handManagerScript.enemyHandlist.Count; i++)
         {
             handManagerScript.enemyHandlist[i].GetComponent<CardMovement>().isPlayed = false;

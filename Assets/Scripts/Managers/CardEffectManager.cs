@@ -376,10 +376,18 @@ public class CardEffectManager : MonoBehaviour {
         {
             statManagerScript.UpdateNumStatusCards(-1, 0);
             cardObj.GetComponent<CardMovement>().PlayPlayerCard();
-            statManagerScript.UpdateAttack("player", -3);
-            statManagerScript.UpdateDefense("player", -3);
+            if (statManagerScript.phase_player== "Action")
+            {
+                statManagerScript.UpdateAttack("player", -1 * Card.Attack);
+            }
+            else
+            {
+                statManagerScript.UpdateDefense("player", -1 * Card.Defense);
+            }
 
-        }
+
+
+            }
     }
 
     public void PlayBurn(GameObject playedCard)
