@@ -135,7 +135,7 @@ public class Spider : MonoBehaviour {
 
                 //play skitter card
                 spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
-                statsManagerScript.UpdateAttack("enemy",1);
+             //   statsManagerScript.UpdateAttack("enemy",1);
 
                 //draw a card 
                 StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
