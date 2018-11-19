@@ -2263,6 +2263,7 @@ GameObject:
   - component: {fileID: 1976136820}
   - component: {fileID: 1976136821}
   - component: {fileID: 1976136819}
+  - component: {fileID: 1976136822}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2281,6 +2282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 082cc04caf9f4154da4723de67217ad1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneManagerScript: {fileID: 1976136822}
   level: 0
 --- !u!4 &1976136820
 Transform:
@@ -2390,3 +2392,14 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1976136822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1976136818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f9266eac7e14e4ebc4bdd9b51f0254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

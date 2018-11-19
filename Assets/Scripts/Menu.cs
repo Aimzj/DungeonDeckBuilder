@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour {
 
-    private Scene_Manager sceneManagerScript;
+    public Scene_Manager sceneManagerScript;
     private CardGenerator cardGenScript;
 
     private GameObject blackScreen;
