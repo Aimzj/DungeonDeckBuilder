@@ -118,20 +118,40 @@ public class AreaManager : MonoBehaviour {
     }
 
     private void OrderLayerDiscard(ref List<GameObject> discardList)
-    {       
-        //loop through discard list
-        for (int i=0; i < discardList.Count; i++)
+    {
+        if (discardList.Count > 1)
         {
-            discardList[i].GetComponent<CardMovement>().ChangeOrder(11);
+            //loop through discard list
+            for (int i = 0; i < discardList.Count; i++)
+            {
+                discardList[i].GetComponent<CardMovement>().ChangeOrder(11);
+            }
+            discardList[discardList.Count - 1].GetComponent<CardMovement>().ChangeOrder(13);
         }
-        discardList[discardList.Count - 1].GetComponent<CardMovement>().ChangeOrder(13);
+        
     }
 
     private void DiscardCard(GameObject cardObj, string target, ref List<GameObject> discardList, Transform discardTrans)
     {
-      
-        //add 1 to the discard pool
-        statManagerScript.UpdateDiscard(target, 1);
+
+        //check that the hand list has 10 or less otherwise do not give discard rewards
+        if (target == "player")
+        {
+            if (handManagerScript.playerHandList.Count <= 10)
+            {
+                //add 1 to the discard pool
+                statManagerScript.UpdateDiscard(target, 1);
+            }
+        }
+        else if(target == "enemy")
+        {
+            if (handManagerScript.enemyHandlist.Count <= 10)
+            {
+                //add 1 to the discard pool
+                statManagerScript.UpdateDiscard(target, 1);
+            }
+        }
+        
 
         //add card to list of discards
         discardList.Add(cardObj);
@@ -210,7 +230,13 @@ public class AreaManager : MonoBehaviour {
 
         //change order in layer
         if(targetTrans == playerDiscard || targetTrans == enemyDiscard)
+        {
             card.GetComponent<CardMovement>().ChangeOrder(11);
+            if (targetTrans == playerDiscard)
+                OrderLayerDiscard(ref player_DiscardCardList);
+            else
+                OrderLayerDiscard(ref enemy_DiscardCardList);
+        }
         else
             card.GetComponent<CardMovement>().ChangeOrder(0);
     }
@@ -236,7 +262,25 @@ public class AreaManager : MonoBehaviour {
         //add 1 to the burn pool
         if(cardObj.GetComponent<CardObj>().CardName != "Poison" && cardObj.GetComponent<CardObj>().CardName != "Wound")
         {
-            statManagerScript.UpdateBurn(target, 1);
+            //check that the hand list has 10 or less otherwise do not give burn rewards
+            if (target == "player")
+            {
+                if (handManagerScript.playerHandList.Count <= 10)
+                {
+                    //add 1 to the burn pool
+                    statManagerScript.UpdateBurn(target, 1);
+                }
+            }
+            else if (target == "enemy")
+            {
+                if (handManagerScript.enemyHandlist.Count <= 10)
+                {
+                    //add 1 to the burn pool
+                    statManagerScript.UpdateBurn(target, 1);
+                }
+            }
+
+           // statManagerScript.UpdateBurn(target, 1);
         }
        
 
@@ -378,6 +422,7 @@ public class AreaManager : MonoBehaviour {
                 playList[i].transform.Find("BurnBorder").GetComponent<SpriteRenderer>().enabled = false;
 
                 playList[i].GetComponent<CardMovement>().ChangeOrder(11);
+                OrderLayerDiscard(ref discardList);
 
                 discardList.Add(playList[i]);
 

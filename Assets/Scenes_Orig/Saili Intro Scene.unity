@@ -23795,7 +23795,7 @@ MonoBehaviour:
   visible: 0
   turningOff: 0
   ttoTimer: 0
-  ttoTimerLim: 0
+  ttoTimerLim: 6.25
 --- !u!114 &523261188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33427,7 +33427,7 @@ MonoBehaviour:
   visible: 0
   turningOff: 0
   ttoTimer: 0
-  ttoTimerLim: 3
+  ttoTimerLim: 5
 --- !u!114 &740853855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38309,7 +38309,7 @@ MonoBehaviour:
   visible: 0
   turningOff: 0
   ttoTimer: 0
-  ttoTimerLim: 1
+  ttoTimerLim: 1.75
 --- !u!114 &914204603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43389,7 +43389,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a2690371834e4cb4bbdca074f8e386e9, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 2cc4e73978bf2a24eb8cfd514508f043, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -48165,7 +48165,7 @@ MonoBehaviour:
   visible: 0
   turningOff: 0
   ttoTimer: 0
-  ttoTimerLim: 1
+  ttoTimerLim: 1.5
 --- !u!114 &1299263423
 MonoBehaviour:
   m_ObjectHideFlags: 0
