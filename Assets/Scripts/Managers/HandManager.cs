@@ -209,6 +209,7 @@ public class HandManager : MonoBehaviour {
                 }
                 else
                 {
+                    print("I'm trying to draw");
                     RemakeDeck("enemy", ref areaManagerScript.enemy_DiscardCardList, ref enemyDeckList, enemyDeck);
                     yield return new WaitForSecondsRealtime(0.3f);
                     i--;
@@ -610,12 +611,13 @@ public class HandManager : MonoBehaviour {
                 }
                 else if (target == "enemy")
                 {
+                    print("I need to reshuffle to burn a card");
                     RemakeDeck(target, ref areaManagerScript.enemy_DiscardCardList, ref enemyDeckList, enemyDeck); 
                 }
 
-                yield return new WaitForSecondsRealtime(1f);
-                InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, target);
                 yield return new WaitForSecondsRealtime(0.5f);
+                InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, target);
+                yield return new WaitForSecondsRealtime(0.2f);
                 i--;
             }
             //check if there are cards in the player's hand
