@@ -66,6 +66,8 @@ public class CardMovement : MonoBehaviour {
 
     public bool isKindling;
 
+
+    public bool ToPlay = false;
     //for Tut
     private Dummy dummyScript;
     private CardGenerator cardGeneratorScript;

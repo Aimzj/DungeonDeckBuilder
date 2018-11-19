@@ -393,7 +393,7 @@ public class CardEffectManager : MonoBehaviour {
 
 
 
-            }
+          }
     }
 
     public void PlayBurn(GameObject playedCard)

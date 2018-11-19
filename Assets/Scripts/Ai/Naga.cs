@@ -106,7 +106,7 @@ public class Naga : MonoBehaviour {
             {
                 for (int k = 0; k > NagaHand.Count; k++)
                 {
-                    if (cost > 0 && NagaHand[k].GetComponent<CardObj>().CardName == "Call of the Deep" && k != index)
+                    if (cost > 0 && NagaHand[k].GetComponent<CardObj>().CardName == "Call of the Deep" && NagaHand[k].GetComponent<CardMovement>().ToPlay == false)
                     {
                         numCotD--;
                         cost--;
@@ -137,16 +137,18 @@ public class Naga : MonoBehaviour {
         {
 
 
-            if (numEldritchOath > 0 && NagaHand.Count >= 2 && HP < DamageTaken)
+            if (numEldritchOath > 0 && NagaHand.Count >= 3 && HP < DamageTaken)
             {
                 for (int x = 0; x <= NagaHand.Count - 1; x++)
                 {
                     if (NagaHand[x].GetComponent<CardObj>().CardName == "Eldritch Oath")
                     {
                         // int cost = 1;
-                     
 
-
+                        NagaHand[i].GetComponent<CardMovement>().ToPlay = true;
+                        StartCoroutine(attackDiscard(1, x));
+                        NagaHand[i].GetComponent<CardMovement>().ToPlay = false;
+                        
                         NagaHand[i].GetComponent<CardMovement>().PlayEnemyCard();
                         statsManagerScript.UpdateAttack("enemy", NagaHand[i].GetComponent<CardObj>().Attack);
                         DamageTaken -= NagaHand[x].GetComponent<CardObj>().Defense;
@@ -154,7 +156,7 @@ public class Naga : MonoBehaviour {
                         NagaHand[i].GetComponent<CardObj>().Defense += 2;
                         print("ELDRITCH OATH");
 
-                        StartCoroutine(attackDiscard(1, x));
+                       
                         //TRIGGER DISCARD Last
                         numEldritchOath--;
                         print("EE:" + numEldritchOath);
@@ -203,7 +205,7 @@ public class Naga : MonoBehaviour {
             }
         }
 
-        if(NumSigilsInBurn <= 2 && areaManagerScript.enemy_TrashCardList.Count >= 5)
+        if(NumSigilsInBurn <= 2 && areaManagerScript.enemy_TrashCardList.Count >= 5 &&  enemyHand.Count >= 3)
         {
            StartCoroutine(CalloftheDeep());
           
@@ -223,9 +225,13 @@ public class Naga : MonoBehaviour {
         {
             if (NagaHand[k].GetComponent<CardObj>().CardName == "Call of the Deep")
             {
-                
-                NagaHand[k].GetComponent<CardMovement>().PlayEnemyCard();
+
+                NagaHand[k].GetComponent<CardMovement>().ToPlay = true;
                 StartCoroutine(reactionDiscard(1, k));
+                NagaHand[k].GetComponent<CardMovement>().ToPlay = false;
+
+                NagaHand[k].GetComponent<CardMovement>().PlayEnemyCard();
+              
                 //statsManagerScript.UpdateAttack("enemy", 1);
                 for (int i = 0; i < areaManagerScript.enemy_TrashCardList.Count; i++)
                 {
@@ -410,13 +416,18 @@ public class Naga : MonoBehaviour {
         for (int i = 0; i < NagaHand.Count ; i++)
         {
 
-            if (numEldritchOath > 0 && NagaHand.Count >= 2)
+            if (numEldritchOath > 0 && NagaHand.Count >= 3)
             {
                 
-                for (int x = 0; x <= NagaHand.Count - 1; x++)
+                for (int x = 0; x < NagaHand.Count ; x++)
                 {
                     if (NagaHand[x].GetComponent<CardObj>().CardName == "Eldritch Oath")
                     {
+
+                        NagaHand[x].GetComponent<CardMovement>().ToPlay = true;
+                        StartCoroutine(attackDiscard(1, x));
+                        NagaHand[x].GetComponent<CardMovement>().ToPlay = false;
+
                         NagaHand[x].GetComponent<CardMovement>().PlayEnemyCard();
                         statsManagerScript.UpdateAttack("enemy", NagaHand[x].GetComponent<CardObj>().Attack);
                         NagaHand[x].GetComponent<CardObj>().Attack += 3;
@@ -430,8 +441,7 @@ public class Naga : MonoBehaviour {
                         int counter = 0;
                         int cost = 1;
 
-                        //DISCARD
-                        StartCoroutine (attackDiscard(1, x));
+             
                         
                     
                                                 
