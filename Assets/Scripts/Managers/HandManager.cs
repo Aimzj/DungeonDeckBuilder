@@ -541,10 +541,11 @@ public class HandManager : MonoBehaviour {
     {
         int chosenIndex=0;
         List<GameObject> tempDeckPileList = new List<GameObject>();
-        List<GameObject> tempHandList = new List<GameObject>(); ;
-        List<GameObject> tempDiscardList = new List<GameObject>(); ;
+        List<GameObject> tempHandList = new List<GameObject>();
+        List<GameObject> tempDiscardList = new List<GameObject>();
+        List<GameObject> tempPlayList = new List<GameObject>();
 
-        InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, target);
+        InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList,ref tempPlayList, target);
 
         //loop through deck and randomly burn cards
         for (int i = 0; i < value; i++)
@@ -624,7 +625,7 @@ public class HandManager : MonoBehaviour {
                 }
 
                 yield return new WaitForSecondsRealtime(0.5f);
-                InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, target);
+                InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList,ref tempPlayList, target);
                 yield return new WaitForSecondsRealtime(0.2f);
                 i--;
             }
@@ -638,7 +639,7 @@ public class HandManager : MonoBehaviour {
                 for(int k =0; k<tempHandList.Count; k++)
                 {
                     //is this card kindling?
-                    if (tempDeckPileList[k].GetComponent<CardMovement>().isKindling)
+                    if (tempHandList[k].GetComponent<CardMovement>().isKindling)
                     {
                         chosenIndex = k;
                         isFound = true;
@@ -661,6 +662,33 @@ public class HandManager : MonoBehaviour {
                 Call_SetPositionsInHand(target);
                 Call_UpdateCardPositionsInHand(target);
             }
+            //check if there are cards in play
+            else if (tempPlayList.Count > 0)
+            {
+                bool isFound = false;
+                //check if there is kindling in play
+                for (int k = 0; k < tempPlayList.Count; k++)
+                {
+                    //is this card kindling?
+                    if (tempPlayList[k].GetComponent<CardMovement>().isKindling)
+                    {
+                        chosenIndex = k;
+                        isFound = true;
+                    }
+                }
+                if(!isFound)
+                {
+                    chosenIndex = Random.Range(0, tempPlayList.Count);
+                }
+
+                //burn them
+                print("index: " + chosenIndex);
+                areaManagerScript.Call_TakeDamage(tempPlayList[chosenIndex], target);
+                tempPlayList.RemoveAt(chosenIndex);
+
+                Call_SetPositionsInHand(target);
+                Call_UpdateCardPositionsInHand(target);
+            }
             
             yield return new WaitForSecondsRealtime(1.1f);
 
@@ -668,19 +696,21 @@ public class HandManager : MonoBehaviour {
 
     }
 
-    private void InitialiseDeck(ref List<GameObject> tempDeckPileList, ref List<GameObject> tempHandList, ref List<GameObject> tempDiscardList,  string target)
+    private void InitialiseDeck(ref List<GameObject> tempDeckPileList, ref List<GameObject> tempHandList, ref List<GameObject> tempDiscardList,ref List<GameObject> tempPlayList, string target)
     {
         if (target == "player")
         {
             tempDeckPileList = playerDeckList;
             tempHandList = playerHandList;
             tempDiscardList = areaManagerScript.player_DiscardCardList;
+            tempPlayList = areaManagerScript.player_PlayCardList;
         }
         else if(target == "enemy")
         {
             tempDeckPileList = enemyDeckList;
             tempHandList = enemyHandlist;
             tempDiscardList = areaManagerScript.enemy_DiscardCardList;
+            tempPlayList = areaManagerScript.enemy_PlayCardList;
         }
 
     }
