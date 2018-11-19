@@ -42,6 +42,7 @@ public class Naga : MonoBehaviour {
     private Transform playerTempDisplay, enemyTempDisplay;
     private Transform playerDeck;
 
+
     [SerializeField]
     private List<GameObject> NagaHand = new List<GameObject>();
 
@@ -214,10 +215,24 @@ public class Naga : MonoBehaviour {
             }
         }
 
-        if(NumSigilsInBurn <= 2 && areaManagerScript.enemy_TrashCardList.Count >= 5 &&  enemyHand.Count >= 3)
+        if(numCotD > 0)
         {
-           //StartCoroutine(CalloftheDeep());
-          
+
+            for (int x = 0; x <= NagaHand.Count - 1; x++)
+            {
+                if (NagaHand[x].GetComponent<CardObj>().CardName == "Call of the Deep")
+                {
+
+                    numCotD--;
+                    NagaHand[x].GetComponent<CardMovement>().PlayEnemyCard();
+                    statsManagerScript.UpdateAttack("enemy", NagaHand[x].GetComponent<CardObj>().Attack);
+                    StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
+                    UpdateEnemyHand();
+                  
+                    yield return new WaitForSecondsRealtime(1);
+                }
+            }
+
         }
 
         print("DONE WITH ENEMY REACTION");
