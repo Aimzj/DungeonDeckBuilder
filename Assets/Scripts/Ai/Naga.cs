@@ -200,7 +200,7 @@ public class Naga : MonoBehaviour {
 
         if(NumSigilsInBurn <= 2 && areaManagerScript.enemy_TrashCardList.Count >= 5)
         {
-           StartCoroutine(CalloftheDeep());
+           //StartCoroutine(CalloftheDeep());
           
         }
 
