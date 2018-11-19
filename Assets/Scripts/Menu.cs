@@ -37,8 +37,6 @@ public class Menu : MonoBehaviour {
 
     public IEnumerator FadeOutFadeIn()
     {
-        //if the scene is still fading in
-        StopCoroutine(FadeIn());
 
         //fade out
         float val = 0;
@@ -79,6 +77,9 @@ public class Menu : MonoBehaviour {
     {
         PlayerPrefs.SetString("Pack", "none");
         PlayerPrefs.SetInt("Level", 0);
+        StopCoroutine(FadeOutFadeIn());
+        StopCoroutine(FadeIn());
+
         StartCoroutine(LoadLevel(3));
     }
 
@@ -86,11 +87,16 @@ public class Menu : MonoBehaviour {
     {
         PlayerPrefs.SetString("Pack", "none");
         PlayerPrefs.SetInt("Level", 1);
+        StopCoroutine(FadeOutFadeIn());
+        StopCoroutine(FadeIn());
+
         StartCoroutine(LoadLevel(2));
     }
 
     private IEnumerator GoBack(int scene)
     {
+        StopCoroutine(FadeOutFadeIn());
+        StopCoroutine(FadeIn());
         StartCoroutine(FadeOutFadeIn());
         yield return new WaitForSecondsRealtime(1.5f);
         SceneManager.LoadScene(scene);
@@ -100,16 +106,25 @@ public class Menu : MonoBehaviour {
     {
         PlayerPrefs.SetString("Pack", "none");
         PlayerPrefs.SetInt("Level", 0);
+        StopCoroutine(FadeOutFadeIn());
+        StopCoroutine(FadeIn());
+
         StartCoroutine(sceneManagerScript.FadeOut_Quit());
     }
 
     public void WatchOpening()
     {
+        StopCoroutine(FadeOutFadeIn());
+        StopCoroutine(FadeIn());
+
         StartCoroutine(LoadLevel(0));
     }
 
     public void ViewCredits()
     {
+        StopCoroutine(FadeOutFadeIn());
+        StopCoroutine(FadeIn());
+
         StartCoroutine(LoadLevel(4));
     }
 	// Update is called once per frame
@@ -120,6 +135,9 @@ public class Menu : MonoBehaviour {
             {
                 //fade out and reload the scene
                 PlayerPrefs.SetInt("Level", 0);
+                StopCoroutine(FadeOutFadeIn());
+                StopCoroutine(FadeIn());
+
                 StartCoroutine(LoadLevel(1));
             }
             else

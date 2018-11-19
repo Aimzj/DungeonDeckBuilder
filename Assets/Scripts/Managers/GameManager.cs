@@ -426,6 +426,48 @@ public class GameManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        if (level == 0)
+        {
+            //For cheat sheet
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (isCheat == false)
+                {
+                    isCheat = true;
+                    CheatSheetCanvas.enabled = true;
+                    CheatsheetSprite.enabled = true;
+                }
+                else
+                {
+                    isCheat = false;
+                    CheatSheetCanvas.enabled = false;
+                    CheatsheetSprite.enabled = false;
+                }
+
+            }
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                if (!isHelp)
+                {
+                    isHelp = true;
+                    HelpCanvas.enabled = true;
+                    foreach (GameObject helpBoard in HelpSprites)
+                    {
+                        helpBoard.GetComponent<SpriteRenderer>().enabled = true;
+                    }
+
+                }
+                else
+                {
+                    isHelp = false;
+                    HelpCanvas.enabled = false;
+                    foreach (GameObject helpBoard in HelpSprites)
+                    {
+                        helpBoard.GetComponent<SpriteRenderer>().enabled = false;
+                    }
+                }
+            }
+        }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -448,45 +490,7 @@ public class GameManager : MonoBehaviour {
         {
             areaManagerScript.Call_RenewDeck("player");
         }
-        //For cheat sheet
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            if(isCheat == false)
-            {
-                isCheat = true;
-            CheatSheetCanvas.enabled = true;
-                CheatsheetSprite.enabled = true;
-            }
-            else
-            {
-                isCheat = false;
-                CheatSheetCanvas.enabled = false;
-                CheatsheetSprite.enabled = false;
-            }
-       
-        }
-        if(Input.GetKeyDown(KeyCode.H))
-        {
-            if(!isHelp)
-            {
-                isHelp = true;
-                HelpCanvas.enabled = true;
-                foreach (GameObject helpBoard in HelpSprites)
-                {
-                    helpBoard.GetComponent<SpriteRenderer>().enabled = true;
-                }
-
-            }
-            else
-            {
-                isHelp = false;
-                HelpCanvas.enabled = false;
-                foreach (GameObject helpBoard in HelpSprites)
-                {
-                    helpBoard.GetComponent<SpriteRenderer>().enabled = false;
-                }
-            }
-        }
+        
     
     }
 
