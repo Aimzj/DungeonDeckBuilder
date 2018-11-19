@@ -267,7 +267,7 @@ public class Naga : MonoBehaviour {
         }
     }
 
-    public void CrushingBlow(int damageDealt)
+    public void CrushingBlow()
     {
         /*if(NumCBInPlay > areaManagerScript.player_PlayCardList.Count)
         {
@@ -278,9 +278,9 @@ public class Naga : MonoBehaviour {
         print("Player defence is : " + PlayerDefTotal);
         for (int i = 0; i < NumCBInPlay; i ++)
         {
-            //PlayerDefTotal-=3;
+            PlayerDefTotal-=3;
          
-            if(damageDealt > 0)
+            if(PlayerDefTotal > 0)
             {
                 print("Player defence is : " + PlayerDefTotal);
                 if (areaManagerScript.player_PlayCardList.Count > 0)

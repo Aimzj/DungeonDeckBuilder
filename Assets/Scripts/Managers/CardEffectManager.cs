@@ -100,7 +100,7 @@ public class CardEffectManager : MonoBehaviour {
 
             //Card.Attack += attack;
             playedCard.transform.Find("AttackCost").GetComponent<TextMeshPro>().text = (Card.Attack + attack).ToString();
-            statManagerScript.UpdateAttack("player", Card.Attack + attack);
+            statManagerScript.UpdateAttack("player", attack);
         }
         else if (Card.CardName == "Inner Strength")
         {
@@ -120,12 +120,8 @@ public class CardEffectManager : MonoBehaviour {
             handManagerScript.playerDeckList.Insert(rand, newCard);
             StartCoroutine(areaManagerScript.TempDisplay(newCard, tempDisplayPlayer, playerDeckTrans));
             statManagerScript.UpdateCardsInDeck("player", 1, 1);
+       
 
-            for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
-            {
-                handManagerScript.playerHandList[i].GetComponent<CardMovement>().isPlayed = false;
-                handManagerScript.playerHandList[i].GetComponent<CardMovement>().isInHand = true;
-            }
         }
         else if (Card.CardName == "Pact of Maggots")
         {
@@ -151,6 +147,11 @@ public class CardEffectManager : MonoBehaviour {
             //Draw two random cards from your deck
             int rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
             StartCoroutine(handManagerScript.DrawCards(2, "player"));
+        }
+        else if(Card.CardName == "Second Wind")
+        {
+            //draw 1 card
+            StartCoroutine(handManagerScript.DrawCards(1, "player"));
         }
 
     }
@@ -185,13 +186,6 @@ public class CardEffectManager : MonoBehaviour {
         {
             StartCoroutine(handManagerScript.DrawTrash(1, "player"));
         }
-
-        for(int i = 0; i < handManagerScript.playerHandList.Count; i ++)
-        {
-            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isPlayed = false;
-            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isInHand = true;
-        }
-        handManagerScript.ReorderHandLayers("player");
     }
 
     void eternalWill()
@@ -236,13 +230,7 @@ public class CardEffectManager : MonoBehaviour {
 
 
             }
-
-            for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
-            {
-                handManagerScript.enemyHandlist[i].GetComponent<CardMovement>().isPlayed = false;
-                handManagerScript.enemyHandlist[i].GetComponent<CardMovement>().isInHand = true;
-            }
-
+           
             //FOR PLAYER
             //Add deck to tempdeck
             for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
@@ -252,11 +240,7 @@ public class CardEffectManager : MonoBehaviour {
 
             }
    
-               for(int i = 0; i < handManagerScript.playerHandList.Count; i ++)
-        {
-            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isPlayed = false;
-            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isInHand = true;
-        }
+
             //Discard Hand
             for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
             {
@@ -285,11 +269,6 @@ public class CardEffectManager : MonoBehaviour {
                 handManagerScript.playerDeckList.Add(playerTempCard);
 
 
-            }
-            for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
-            {
-                handManagerScript.playerHandList[i].GetComponent<CardMovement>().isPlayed = false;
-                handManagerScript.playerHandList[i].GetComponent<CardMovement>().isInHand = true;
             }
             print("Enemy Handsize is:" + enemyHandSize);
             handManagerScript.Shuffle(ref handManagerScript.enemyDeckList);
@@ -329,13 +308,8 @@ public class CardEffectManager : MonoBehaviour {
             handManagerScript.Shuffle(ref areaManagerScript.player_DiscardCardList);
             StartCoroutine(handManagerScript.DrawDiscard(1, "player"));
         }
-        for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
-        {
-            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isPlayed = false;
-            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isInHand = true;
-        }
-
-
+       
+        
     }
 
     public void PlayOnArrivalEffects(GameObject cardObj)
