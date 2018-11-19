@@ -14267,11 +14267,11 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: ebef8142b2ad6c145aadea668b237d47, type: 3}
-    m_FontSize: 50
+    m_Font: {fileID: 12800000, guid: 77448e9d92a24924a8d9b9588f07ab4f, type: 3}
+    m_FontSize: 35
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 1
+    m_MinSize: 0
     m_MaxSize: 100
     m_Alignment: 1
     m_AlignByGeometry: 0
@@ -23606,11 +23606,11 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: ebef8142b2ad6c145aadea668b237d47, type: 3}
-    m_FontSize: 50
+    m_Font: {fileID: 12800000, guid: 77448e9d92a24924a8d9b9588f07ab4f, type: 3}
+    m_FontSize: 35
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 1
+    m_MinSize: 0
     m_MaxSize: 100
     m_Alignment: 1
     m_AlignByGeometry: 0
@@ -23619,7 +23619,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Aimee Handley\n\nLead Programmer\r\nLead Quality Assurance\r\nLead User
-    Experience Developer\r\nAssociate Project Manager\r\n"
+    Experience Developer\r\nAssociate Sound Designer\nAssociate Project Manager\r\n"
 --- !u!222 &640467267
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -28303,7 +28303,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: ebef8142b2ad6c145aadea668b237d47, type: 3}
+    m_Font: {fileID: 12800000, guid: 77448e9d92a24924a8d9b9588f07ab4f, type: 3}
     m_FontSize: 80
     m_FontStyle: 0
     m_BestFit: 0
@@ -28423,8 +28423,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: ebef8142b2ad6c145aadea668b237d47, type: 3}
-    m_FontSize: 50
+    m_Font: {fileID: 12800000, guid: 77448e9d92a24924a8d9b9588f07ab4f, type: 3}
+    m_FontSize: 35
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -37762,11 +37762,11 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: ebef8142b2ad6c145aadea668b237d47, type: 3}
-    m_FontSize: 50
+    m_Font: {fileID: 12800000, guid: 77448e9d92a24924a8d9b9588f07ab4f, type: 3}
+    m_FontSize: 35
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 1
+    m_MinSize: 0
     m_MaxSize: 100
     m_Alignment: 1
     m_AlignByGeometry: 0
@@ -37774,8 +37774,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Kenrick James\n\nLead Artist\r\nLead Character Designer\r\nAssociate UI
-    Designer\r\nAssociate Project Manager\r\n"
+  m_Text: "Kenrick James\n\nLead Artist\r\nLead Character Designer\r\nLead Writer\nAssociate
+    UI Designer\r\nAssociate Project Manager\r\n"
 --- !u!222 &917187541
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -42481,8 +42481,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: ebef8142b2ad6c145aadea668b237d47, type: 3}
-    m_FontSize: 40
+    m_Font: {fileID: 12800000, guid: 77448e9d92a24924a8d9b9588f07ab4f, type: 3}
+    m_FontSize: 35
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -84544,8 +84544,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: ebef8142b2ad6c145aadea668b237d47, type: 3}
-    m_FontSize: 50
+    m_Font: {fileID: 12800000, guid: 77448e9d92a24924a8d9b9588f07ab4f, type: 3}
+    m_FontSize: 35
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -84599,7 +84599,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 6, y: 95}
+  m_AnchoredPosition: {x: 6, y: 120}
   m_SizeDelta: {x: 1000, y: 500}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2035477607
@@ -84644,8 +84644,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: ebef8142b2ad6c145aadea668b237d47, type: 3}
-    m_FontSize: 40
+    m_Font: {fileID: 12800000, guid: 77448e9d92a24924a8d9b9588f07ab4f, type: 3}
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -84657,7 +84657,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Voice Acting\r\nThe lovely - Kate De Villiers.  \\(^ O  ^)/\r\n\r\nMusic\r\nLamentation,
-    Oppresive Gloom, Enter The Maze, and Super Natural \nby \nKevin MacLeod (incompetech.com)\r\nLicensed
+    Oppresive Gloom, \nEnter The Maze, and Super Natural \nby \nKevin MacLeod (incompetech.com)\r\nLicensed
     under Creative Commons: By Attribution 3.0 License\r\nhttp://creativecommons.org/licenses/by/3.0/\r\n"
 --- !u!222 &2035477609
 CanvasRenderer:
@@ -84744,11 +84744,11 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: ebef8142b2ad6c145aadea668b237d47, type: 3}
-    m_FontSize: 50
+    m_Font: {fileID: 12800000, guid: 77448e9d92a24924a8d9b9588f07ab4f, type: 3}
+    m_FontSize: 35
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 1
+    m_MinSize: 0
     m_MaxSize: 100
     m_Alignment: 1
     m_AlignByGeometry: 0
@@ -84757,7 +84757,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Saili Chola\r\n\nLead Game Designer\r\nLead Sound Designer\r\nLead Project
-    Manager\r\nAssociate UI Designer\r\n"
+    Manager\r\nAssociate Writer\nAssociate UI Designer\r\n"
 --- !u!222 &2057061085
 CanvasRenderer:
   m_ObjectHideFlags: 0
