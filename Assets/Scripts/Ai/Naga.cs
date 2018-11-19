@@ -290,7 +290,7 @@ public class Naga : MonoBehaviour {
                 print("Player defence is : " + PlayerDefTotal);
                 if (areaManagerScript.player_PlayCardList.Count > 0)
                 {
-                    numRemoveCards++;
+                    //numRemoveCards++;
                     print("Num Cards to Remove is :" + numRemoveCards);
                     areaManagerScript.Call_TrashCard(areaManagerScript.player_PlayCardList[i], "player");
                     //areaManagerScript.player_PlayCardList.RemoveAt(areaManagerScript.player_PlayCardList.Count);

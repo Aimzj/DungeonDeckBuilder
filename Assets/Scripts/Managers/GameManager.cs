@@ -228,7 +228,11 @@ public class GameManager : MonoBehaviour {
         }
         if (level == 2)
         {
-            nagaScript.CrushingBlow(DamageDealt_toPlayer);
+            if(DamageDealt_toPlayer > 0)
+            {
+                nagaScript.CrushingBlow(DamageDealt_toPlayer);
+            }
+           
 
         }
         //wait until all damage is finished being dealt before drawing new cards

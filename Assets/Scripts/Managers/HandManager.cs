@@ -218,6 +218,18 @@ public class HandManager : MonoBehaviour {
             yield return new WaitForSecondsRealtime(0.3f);
         }
 
+        for (int i = 0; i < playerHandList.Count; i++)
+        {
+          playerHandList[i].GetComponent<CardMovement>().isPlayed = false;
+          playerHandList[i].GetComponent<CardMovement>().isInHand = true;
+        }
+
+        for (int i = 0; i < enemyHandlist.Count; i++)
+        {
+            enemyHandlist[i].GetComponent<CardMovement>().isPlayed = false;
+            enemyHandlist[i].GetComponent<CardMovement>().isInHand = true;
+        }
+
     }
 
     public IEnumerator DrawDiscard(int numCards, string target)
