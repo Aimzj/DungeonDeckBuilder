@@ -226,7 +226,13 @@ public class AreaManager : MonoBehaviour {
 
         //change order in layer
         if(targetTrans == playerDiscard || targetTrans == enemyDiscard)
+        {
             card.GetComponent<CardMovement>().ChangeOrder(11);
+            if (targetTrans == playerDiscard)
+                OrderLayerDiscard(ref player_DiscardCardList);
+            else
+                OrderLayerDiscard(ref enemy_DiscardCardList);
+        }
         else
             card.GetComponent<CardMovement>().ChangeOrder(0);
     }
@@ -412,6 +418,7 @@ public class AreaManager : MonoBehaviour {
                 playList[i].transform.Find("BurnBorder").GetComponent<SpriteRenderer>().enabled = false;
 
                 playList[i].GetComponent<CardMovement>().ChangeOrder(11);
+                OrderLayerDiscard(ref discardList);
 
                 discardList.Add(playList[i]);
 
