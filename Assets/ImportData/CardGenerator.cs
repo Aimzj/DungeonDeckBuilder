@@ -48,7 +48,9 @@ public class CardGenerator : MonoBehaviour {
         AshPack,
         NecromancerPack,
         ArcanePack,
-        PrimusPack;
+        PrimusPack,
+        //echo
+        InnerStengthEcho;
 
     //Images on cards
     public Sprite strike, focStrike, guard, advGuard, nagaREG, luckCharm, secondWind, innerStrength, pactOfMaggots,
@@ -439,6 +441,14 @@ public class CardGenerator : MonoBehaviour {
                     cardObj.GetComponent<SpriteRenderer>().sprite = PlayerSprite_Front;
                     cardObj.GetComponent<CardMovement>().isEnemyCard = false;
                     PlayerDeck.Add(cardObj);
+                }
+                else if(cardScript.CardName=="Inner Strength (Echo)")
+                {
+                    cardObj.transform.position = new Vector3(100,100,100);
+                    cardObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+                    cardObj.GetComponent<CardMovement>().isEnemyCard = false;
+                    InnerStengthEcho.Add(cardObj);
                 }
                 else if (level == 1 && cardScript.CardType == "spider")
                 {

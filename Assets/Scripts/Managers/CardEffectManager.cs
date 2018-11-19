@@ -17,7 +17,6 @@ public class CardEffectManager : MonoBehaviour {
     private Transform playerTrash, enemyTrash;
 
 
-
     List<GameObject> playerTempDeck = new List<GameObject>();
     [SerializeField]
     List<GameObject> enemyTempDeck = new List<GameObject>();
@@ -81,9 +80,8 @@ public class CardEffectManager : MonoBehaviour {
             
         }
 
-
         //play card effects
-        if(Card.CardName=="Advanced Guard")
+        if (Card.CardName=="Advanced Guard")
         {
             //Reaction - if played after a card with a defense value higher than 1, add +2 defense to this card
             if (areaManagerScript.player_PlayCardList.Count > 1)
@@ -114,10 +112,12 @@ public class CardEffectManager : MonoBehaviour {
         }
         else if (Card.CardName == "Inner Strength")
         {
-            
+
             //gain 2x inner strength cards
+            StartCoroutine(GiveInnerStrengthEcho(2));
+           
             //Instantiate(Card, tempDisplayPlayer.transform.position, Quaternion.Euler(90, 0, 0));
-            GameObject newCard  = Instantiate(playedCard, new Vector3(1000,1000,1000), Quaternion.Euler(90, 0, 0));
+            /*GameObject newCard  = Instantiate(playedCard, new Vector3(1000,1000,1000), Quaternion.Euler(90, 0, 0));
             int rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
 
             handManagerScript.playerDeckList.Insert(rand, newCard);
@@ -135,7 +135,7 @@ public class CardEffectManager : MonoBehaviour {
             {
                 handManagerScript.playerHandList[i].GetComponent<CardMovement>().isPlayed = false;
                 handManagerScript.playerHandList[i].GetComponent<CardMovement>().isInHand = true;
-            }
+            }*/
         }
         else if (Card.CardName == "Pact of Maggots")
         {
@@ -169,6 +169,28 @@ public class CardEffectManager : MonoBehaviour {
         }
 
     }
+
+    private IEnumerator GiveInnerStrengthEcho(int num)
+    {
+        for(int i=0; i<num; i++)
+        {           
+            //check if there are inner strength echo cards
+            if (cardGenScript.InnerStengthEcho.Count > 0)
+            {
+                print("GIVE THE PLAYER A FREAKING INNER STRENGTH");
+                int rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
+                handManagerScript.playerDeckList.Insert(rand, cardGenScript.InnerStengthEcho[0]);
+
+                StartCoroutine(areaManagerScript.TempDisplay(cardGenScript.InnerStengthEcho[0], tempDisplayPlayer, playerDeckTrans));
+                cardGenScript.InnerStengthEcho.RemoveAt(0);
+                statManagerScript.UpdateCardsInDeck("player", 1, 1);
+
+                yield return new WaitForSecondsRealtime(1);
+            }
+        }
+        
+    }
+
 
     void symbolOfFaith()
     {
