@@ -274,10 +274,10 @@ public class Naga : MonoBehaviour {
 
     public void CrushingBlow( int damagedealt)
     {
-        /*if(NumCBInPlay > areaManagerScript.player_PlayCardList.Count)
+        if(NumCBInPlay > areaManagerScript.player_PlayCardList.Count)
         {
             NumCBInPlay = areaManagerScript.player_PlayCardList.Count;
-        }*/
+        }
         print("CRUSHING BLOW EFFECT");
         int PlayerDefTotal = statsManagerScript.numDefense;
         print("Player defence is : " + PlayerDefTotal);
@@ -290,7 +290,7 @@ public class Naga : MonoBehaviour {
                 print("Player defence is : " + PlayerDefTotal);
                 if (areaManagerScript.player_PlayCardList.Count > 0)
                 {
-                    numRemoveCards++;
+                    //numRemoveCards++;
                     print("Num Cards to Remove is :" + numRemoveCards);
                     areaManagerScript.Call_TrashCard(areaManagerScript.player_PlayCardList[i], "player");
                     //areaManagerScript.player_PlayCardList.RemoveAt(areaManagerScript.player_PlayCardList.Count);

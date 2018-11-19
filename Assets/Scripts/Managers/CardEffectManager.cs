@@ -374,6 +374,7 @@ public class CardEffectManager : MonoBehaviour {
         }
         if(Card.CardName =="Wound")
         {
+            statManagerScript.UpdateNumStatusCards(-1, 0);
             cardObj.GetComponent<CardMovement>().PlayPlayerCard();
             statManagerScript.UpdateAttack("player", -3);
             statManagerScript.UpdateDefense("player", -3);
