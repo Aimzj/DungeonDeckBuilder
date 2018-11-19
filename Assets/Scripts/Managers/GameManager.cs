@@ -228,7 +228,7 @@ public class GameManager : MonoBehaviour {
         }
         if (level == 2)
         {
-            if(DamageDealt_toPlayer > 0)
+            if(DamageDealt_toPlayer <= -2)
             {
                 nagaScript.CrushingBlow(DamageDealt_toPlayer);
             }

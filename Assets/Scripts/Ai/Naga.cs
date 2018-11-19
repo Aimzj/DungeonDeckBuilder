@@ -287,7 +287,7 @@ public class Naga : MonoBehaviour {
         {
             //PlayerDefTotal-=3;
          
-            if(damagedealt > 0)
+            if(damagedealt <= -2)
             {
                 print("Player defence is : " + PlayerDefTotal);
                 if (areaManagerScript.player_PlayCardList.Count > 0)
