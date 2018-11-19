@@ -11,6 +11,7 @@ public class GeneratePacks : MonoBehaviour {
     public Button card1_1, card1_2, card1_3, card1_4, card1_5;
     public Button card2_1, card2_2, card2_3, card2_4, card2_5;
     public Button card3_1, card3_2, card3_3, card3_4, card3_5;
+    public Button Choose1, Choose2, Choose3;
 
     private Canvas packCanvas;
     private CardGenerator cardGenScript;
@@ -448,6 +449,10 @@ public class GeneratePacks : MonoBehaviour {
 
     public void ChoosePack1()
     {
+        Choose1.enabled = false;
+        Choose2.enabled = false;
+        Choose3.enabled = false;
+
         level = PlayerPrefs.GetInt("Level");
         if (level == 1)
         {
@@ -486,6 +491,10 @@ public class GeneratePacks : MonoBehaviour {
 
     public void ChoosePack2()
     {
+        Choose1.enabled = false;
+        Choose2.enabled = false;
+        Choose3.enabled = false;
+
         level = PlayerPrefs.GetInt("Level");
         if (level == 1)
         {
@@ -524,6 +533,10 @@ public class GeneratePacks : MonoBehaviour {
 
     public void ChoosePack3()
     {
+        Choose1.enabled = false;
+        Choose2.enabled = false;
+        Choose3.enabled = false;
+
         level = PlayerPrefs.GetInt("Level");
         if (level == 1)
         {
