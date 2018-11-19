@@ -398,11 +398,11 @@ public class CardEffectManager : MonoBehaviour {
         {
             statManagerScript.UpdateNumStatusCards(-1, 0);
             cardObj.GetComponent<CardMovement>().PlayPlayerCard();
-            if (statManagerScript.phase_player== "Action")
+            if (statManagerScript.phase_player== "action")
             {
                 statManagerScript.UpdateAttack("player",  Card.Attack);
             }
-            else
+            else if (statManagerScript.phase_player == "reaction")
             {
                 statManagerScript.UpdateDefense("player",  Card.Defense);
             }
