@@ -77,12 +77,14 @@ public class Menu : MonoBehaviour {
 
     public void StartTutorial()
     {
+        PlayerPrefs.SetString("Pack", "none");
         PlayerPrefs.SetInt("Level", 0);
         StartCoroutine(LoadLevel(3));
     }
 
     public void StartLevel1()
     {
+        PlayerPrefs.SetString("Pack", "none");
         PlayerPrefs.SetInt("Level", 1);
         StartCoroutine(LoadLevel(2));
     }
@@ -96,6 +98,7 @@ public class Menu : MonoBehaviour {
 
     public void ExitGame()
     {
+        PlayerPrefs.SetString("Pack", "none");
         PlayerPrefs.SetInt("Level", 0);
         StartCoroutine(sceneManagerScript.FadeOut_Quit());
     }

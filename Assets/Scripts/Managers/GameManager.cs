@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour {
     public void RestartButton()
     {
         PlayerPrefs.SetInt("Level",1);
+        PlayerPrefs.SetString("Pack", "none");
         StartCoroutine(menuScript.LoadLevel(2));
     }
 
@@ -88,13 +89,13 @@ public class GameManager : MonoBehaviour {
         int level = PlayerPrefs.GetInt("Level");
         level++;
         PlayerPrefs.SetInt("Level", level);
-        if (level >2)
+        if (level > 2)
         {
             StartCoroutine(menuScript.LoadLevel(3));
         }
         else
         {
-            StartCoroutine(menuScript.LoadLevel(2));
+            StartCoroutine(menuScript.LoadLevel(5));
         }
 
     }

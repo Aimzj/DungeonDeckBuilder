@@ -37,6 +37,62 @@ public class GeneratePacks : MonoBehaviour {
 
     public void FindCurrentDeck()
     {
+        level = PlayerPrefs.GetInt("Level");
+        if (level == 2)
+        {
+            string prevPack = PlayerPrefs.GetString("Pack");
+
+            if (prevPack == "Healing Pack")
+            {
+                for(int i=0; i<cardGenScript.HealingPack.Count; i++)
+                {
+                    cardGenScript.PlayerDeck.Add(cardGenScript.HealingPack[i]);
+                }
+            }
+            else if (prevPack == "Reinforcement 1 Pack")
+            {
+                for (int i = 0; i < cardGenScript.ReinforcementPack1.Count; i++)
+                {
+                    cardGenScript.PlayerDeck.Add(cardGenScript.ReinforcementPack1[i]);
+                }
+            }
+            else if (prevPack == "Reinforcement 1 Pack")
+            {
+                for (int i = 0; i < cardGenScript.ReinforcementPack2.Count; i++)
+                {
+                    cardGenScript.PlayerDeck.Add(cardGenScript.ReinforcementPack2[i]);
+                }
+            }
+            else if (prevPack == "Ash Pack")
+            {
+                for (int i = 0; i < cardGenScript.AshPack.Count; i++)
+                {
+                    cardGenScript.PlayerDeck.Add(cardGenScript.AshPack[i]);
+                }
+            }
+            else if (prevPack == "Necromancer Pack")
+            {
+                for (int i = 0; i < cardGenScript.NecromancerPack.Count; i++)
+                {
+                    cardGenScript.PlayerDeck.Add(cardGenScript.NecromancerPack[i]);
+                }
+            }
+            else if (prevPack == "Arcane Pack")
+            {
+                for (int i = 0; i < cardGenScript.ArcanePack.Count; i++)
+                {
+                    cardGenScript.PlayerDeck.Add(cardGenScript.ArcanePack[i]);
+                }
+            }
+            else if (prevPack == "Primus Pack")
+            {
+                for (int i = 0; i < cardGenScript.PrimusPack.Count; i++)
+                {
+                    cardGenScript.PlayerDeck.Add(cardGenScript.PrimusPack[i]);
+                }
+            }
+        }
+
         List<GameObject> playerList = cardGenScript.PlayerDeck;
 
         int numGuard = 0, numStrike = 0, numAdvancedGuard = 0, numFStrike = 0, numNREG = 0, numEternalWill = 0, numInnerStrength = 0,
@@ -322,7 +378,7 @@ public class GeneratePacks : MonoBehaviour {
 
     private void SetReinf1Pack(TextMeshProUGUI Title, Button btn1, Button btn2, Button btn3, Button btn4, Button btn5)
     {
-        Title.text = "Reinforcement 1";
+        Title.text = "Reinforcement 1 Pack";
         btn1.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x2 Advanced Guard";
         btn2.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x1 Guard";
         btn3.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x1 Lucky Charm";
@@ -334,7 +390,7 @@ public class GeneratePacks : MonoBehaviour {
 
     private void SetReinf2Pack(TextMeshProUGUI Title, Button btn1, Button btn2, Button btn3, Button btn4, Button btn5)
     {
-        Title.text = "Reinforcement 2";
+        Title.text = "Reinforcement 2 Pack";
         btn1.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x2 Focused Strike";
         btn2.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x1 Second Wind";
         btn3.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x1 Strike";
@@ -345,7 +401,7 @@ public class GeneratePacks : MonoBehaviour {
 
     private void SetAshPack(TextMeshProUGUI Title, Button btn1, Button btn2, Button btn3, Button btn4, Button btn5)
     {
-        Title.text = "Ash";
+        Title.text = "Ash Pack";
         btn1.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x1 Fireball (sigil)";
         btn2.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x1 Focused Strike";
         btn3.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x3 Strike (1/3 kindled)";
@@ -357,7 +413,7 @@ public class GeneratePacks : MonoBehaviour {
 
     private void SetNecroPack(TextMeshProUGUI Title, Button btn1, Button btn2, Button btn3, Button btn4, Button btn5)
     {
-        Title.text = "Necromancer";
+        Title.text = "Necromancer Pack";
         btn1.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x1 Pact of Maggots (sigil)";
         btn2.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x2 Guard";
         btn3.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x2 Strike (kindled)";
@@ -369,7 +425,7 @@ public class GeneratePacks : MonoBehaviour {
 
     private void SetArcanePack(TextMeshProUGUI Title, Button btn1, Button btn2, Button btn3, Button btn4, Button btn5)
     {
-        Title.text = "Arcane";
+        Title.text = "Arcane Pack";
         btn1.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "Inner Strength (sigil)";
         btn2.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x4 Guard (kindled)";
         btn3.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = " ";
@@ -392,6 +448,12 @@ public class GeneratePacks : MonoBehaviour {
 
     public void ChoosePack1()
     {
+        level = PlayerPrefs.GetInt("Level");
+        if (level == 1)
+        {
+            PlayerPrefs.SetString("Pack", Title1.text);
+        }
+
         int numSigils = 0;
         int numKindling = 0;
         //loop through pack 1 and add to the deck list
@@ -424,6 +486,12 @@ public class GeneratePacks : MonoBehaviour {
 
     public void ChoosePack2()
     {
+        level = PlayerPrefs.GetInt("Level");
+        if (level == 1)
+        {
+            PlayerPrefs.SetString("Pack", Title2.text);
+        }
+
         int numSigils = 0;
         int numKindling = 0;
         //loop through pack 2 and add to the deck list
@@ -456,6 +524,12 @@ public class GeneratePacks : MonoBehaviour {
 
     public void ChoosePack3()
     {
+        level = PlayerPrefs.GetInt("Level");
+        if (level == 1)
+        {
+            PlayerPrefs.SetString("Pack", Title3.text);
+        }
+
         int numSigils = 0;
         int numKindling = 0;
         //loop through pack 3 and add to the deck list

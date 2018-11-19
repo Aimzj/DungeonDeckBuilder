@@ -100,6 +100,7 @@ public class CardGenerator : MonoBehaviour {
             if (isKindling)
             {
                 cardObj.GetComponent<CardMovement>().isKindling = true;
+                cardObj.transform.Find("Kindling").GetComponent<SpriteRenderer>().enabled = true;
             }
 
             if (isSigil)
@@ -428,6 +429,7 @@ public class CardGenerator : MonoBehaviour {
                     {
                         //put the kindling mark on the card
                         cardObj.GetComponent<CardMovement>().isKindling = true;
+                        cardObj.transform.Find("Kindling").GetComponent<SpriteRenderer>().enabled = true;
                         numKindling--;
                     }
 
@@ -450,6 +452,7 @@ public class CardGenerator : MonoBehaviour {
                     {
                         //put the kindling mark on the card
                         cardObj.GetComponent<CardMovement>().isKindling = true;
+                        cardObj.transform.Find("Kindling").GetComponent<SpriteRenderer>().enabled = true;
                         numKindling--;
                     }
 
@@ -474,6 +477,7 @@ public class CardGenerator : MonoBehaviour {
                     {
                         //put the kindling mark on the card
                         cardObj.GetComponent<CardMovement>().isKindling = true;
+                        cardObj.transform.Find("Kindling").GetComponent<SpriteRenderer>().enabled = true;
                         numKindling--;
                     }
 
