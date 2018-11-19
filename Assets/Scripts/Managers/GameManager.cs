@@ -324,7 +324,7 @@ public class GameManager : MonoBehaviour {
        for(int i = 0; i < areaManagerScript.player_DiscardCardList.Count; i ++)
         {
             print("PACT");
-            if (areaManagerScript.player_DiscardCardList[i].GetComponent<CardObj>().CardName == "Pact of maggots")
+            if (areaManagerScript.player_DiscardCardList[i].GetComponent<CardObj>().CardName == "Pact of Maggots")
             {
                 print("FOUND PACT");
                 cardEffectScript.PactOfMaggot();
