@@ -88,14 +88,8 @@ public class GameManager : MonoBehaviour {
         int level = PlayerPrefs.GetInt("Level");
         level++;
         PlayerPrefs.SetInt("Level", level);
-        if (level > 2)
-        {
-            StartCoroutine(menuScript.LoadLevel(3));
-        }
-        else
-        {
-            StartCoroutine(menuScript.LoadLevel(5));
-        }
+
+         StartCoroutine(menuScript.LoadLevel(4));
 
     }
 
@@ -126,8 +120,8 @@ public class GameManager : MonoBehaviour {
         if (win == 0)
         {
             level = PlayerPrefs.GetInt("Level");
-            if(level==2)
-                NextBossButton.transform.Find("Label").GetComponent<TextMeshProUGUI>().text = "End Game";
+
+            NextBossButton.transform.Find("Label").GetComponent<TextMeshProUGUI>().text = "End Game";
             NextBossButton.enabled = true;
         }
         else
