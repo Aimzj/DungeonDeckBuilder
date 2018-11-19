@@ -100,15 +100,19 @@ public class CardEffectManager : MonoBehaviour {
         }
         else if(Card.CardName=="Naga Red Eye Gem")
         {
-            //Add the attack and defence values as well as the discard and burn costs of the last card that you discarded to this cards attack
-            int attack = 0;
-            attack += areaManagerScript.player_DiscardCardList[areaManagerScript.player_DiscardCardList.Count - 1].GetComponent<CardObj>().Attack;
-            attack += areaManagerScript.player_DiscardCardList[areaManagerScript.player_DiscardCardList.Count - 1].GetComponent<CardObj>().Defense;
-            attack += areaManagerScript.player_DiscardCardList[areaManagerScript.player_DiscardCardList.Count - 1].GetComponent<CardObj>().DiscardCost;
+            //check if the player is in the action phase
+            if (statManagerScript.phase_player == "action")
+            {
+                //Add the attack and defence values as well as the discard and burn costs of the last card that you discarded to this cards attack
+                int attack = 0;
+                attack += areaManagerScript.player_DiscardCardList[areaManagerScript.player_DiscardCardList.Count - 1].GetComponent<CardObj>().Attack;
+                attack += areaManagerScript.player_DiscardCardList[areaManagerScript.player_DiscardCardList.Count - 1].GetComponent<CardObj>().Defense;
+                attack += areaManagerScript.player_DiscardCardList[areaManagerScript.player_DiscardCardList.Count - 1].GetComponent<CardObj>().DiscardCost;
 
-            //Card.Attack += attack;
-            playedCard.transform.Find("AttackCost").GetComponent<TextMeshPro>().text = (Card.Attack + attack).ToString();
-            statManagerScript.UpdateAttack("player", attack);
+                //Card.Attack += attack;
+                playedCard.transform.Find("AttackCost").GetComponent<TextMeshPro>().text = (Card.Attack + attack).ToString();
+                statManagerScript.UpdateAttack("player", attack);
+            }
         }
         else if (Card.CardName == "Inner Strength")
         {
@@ -116,26 +120,6 @@ public class CardEffectManager : MonoBehaviour {
             //gain 2x inner strength cards
             StartCoroutine(GiveInnerStrengthEcho(2));
            
-            //Instantiate(Card, tempDisplayPlayer.transform.position, Quaternion.Euler(90, 0, 0));
-            /*GameObject newCard  = Instantiate(playedCard, new Vector3(1000,1000,1000), Quaternion.Euler(90, 0, 0));
-            int rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
-
-            handManagerScript.playerDeckList.Insert(rand, newCard);
-            StartCoroutine(areaManagerScript.TempDisplay(newCard,tempDisplayPlayer,playerDeckTrans));
-            statManagerScript.UpdateCardsInDeck("player", 1, 1);
-
-            newCard = Instantiate(playedCard, new Vector3(1000, 1000, 1000), Quaternion.Euler(90, 0, 0));
-           
-
-            handManagerScript.playerDeckList.Insert(rand, newCard);
-            StartCoroutine(areaManagerScript.TempDisplay(newCard, tempDisplayPlayer, playerDeckTrans));
-            statManagerScript.UpdateCardsInDeck("player", 1, 1);
-
-            for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
-            {
-                handManagerScript.playerHandList[i].GetComponent<CardMovement>().isPlayed = false;
-                handManagerScript.playerHandList[i].GetComponent<CardMovement>().isInHand = true;
-            }*/
         }
         else if (Card.CardName == "Pact of Maggots")
         {
@@ -447,6 +431,7 @@ public class CardEffectManager : MonoBehaviour {
                     handManagerScript.playerDeckList.Add(areaManagerScript.player_TrashCardList[i]);
                     
                     statManagerScript.UpdateCardsInDeck("player", 1, 1);
+                    statManagerScript.UpdateSigils("player", 1);
 
                     //remove the card from the trash pile
                     areaManagerScript.player_TrashCardList.RemoveAt(i);
@@ -498,21 +483,22 @@ public class CardEffectManager : MonoBehaviour {
         }
         else if (Card.CardName == "Second Wind")
         {
-           
-            //Action - Draw your burnt card's attack value x2 from your deck.
-            if (statManagerScript.phase_player == "action")
+            //check if there is a burnt card
+            if (areaManagerScript.player_TrashCardList.Count > 0)
             {
-                var tempCard = areaManagerScript.player_TrashCardList[areaManagerScript.player_TrashCardList.Count - 1];
-                StartCoroutine(handManagerScript.DrawCards(tempCard.GetComponent<CardObj>().Attack * 2, "player"));
+                //Action - Draw your burnt card's attack value from your deck.
+                if (statManagerScript.phase_player == "action")
+                {
+                    StartCoroutine(handManagerScript.DrawCards(areaManagerScript.player_TrashCardList[areaManagerScript.player_TrashCardList.Count - 1].GetComponent<CardObj>().Attack , "player"));
+                }
+                //Reaction - Draw your burnt card's defence value from your deck 
+                else if (statManagerScript.phase_player == "reaction")
+                {
+                    StartCoroutine(handManagerScript.DrawCards(areaManagerScript.player_TrashCardList[areaManagerScript.player_TrashCardList.Count - 1].GetComponent<CardObj>().Defense , "player"));
+                    //print("Draw " + tempCard.GetComponent<CardObj>().Defense );
+                }
             }
-            //Reaction - Draw your burnt card's defence value x2 from your deck 
-            else if (statManagerScript.phase_player == "reaction")
-            {
-                var tempCard = areaManagerScript.player_TrashCardList[areaManagerScript.player_TrashCardList.Count - 1];
-                StartCoroutine(handManagerScript.DrawCards(tempCard.GetComponent<CardObj>().Defense * 2, "player"));
-                //print("Draw " + tempCard.GetComponent<CardObj>().Defense );
-            }
-
+            
         }
         else if (Card.CardName == "Fireball")
         {
