@@ -265,10 +265,11 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(DisplayPhase("Player's Turn"));
         //player draws 3
         StartCoroutine(Delay(3, "player"));
+        EnableInteractions();
 
 
-       
-        if(level==0)
+
+        if (level==0)
         {
             print("DIALOGUE TINGS");
             StartCoroutine(dummyScript.PlayerDialogue());
@@ -368,9 +369,12 @@ public class GameManager : MonoBehaviour {
         if(statManagerScript.phase_player == "reaction")
         {
             EndPlayerReact();
+
+            DisableInteractions();
         }
         else
         {
+            DisableInteractions();
 
             StartCoroutine(DisplayPhase("Enemy Reaction"));
             //ENEMY REACTS
@@ -391,9 +395,9 @@ public class GameManager : MonoBehaviour {
     private void DisableInteractions()
     {
         //disable the card interactions until it is the player's turn
-        for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
+        for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
         {
-            handManagerScript.playerDeckList[i].GetComponent<CardMovement>().isFrozen = true;
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isFrozen = true;
         }
         //disable the button
         endTurnButton.enabled = false;
@@ -401,7 +405,13 @@ public class GameManager : MonoBehaviour {
 
     private void EnableInteractions()
     {
-
+        //disable the card interactions until it is the player's turn
+        for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+        {
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isFrozen = false;
+        }
+        //disable the button
+        endTurnButton.enabled = true;
     }
 
 	// Update is called once per frame
