@@ -217,11 +217,22 @@ public class Naga : MonoBehaviour {
 
         if(numCotD > 0)
         {
-           // numCotD--;
-            //StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
-            //UpdateEnemyHand();
-           //StartCoroutine(CalloftheDeep());
-          
+
+            for (int x = 0; x <= NagaHand.Count - 1; x++)
+            {
+                if (NagaHand[x].GetComponent<CardObj>().CardName == "Call of the Deep")
+                {
+
+                    numCotD--;
+                    NagaHand[x].GetComponent<CardMovement>().PlayEnemyCard();
+                    statsManagerScript.UpdateAttack("enemy", NagaHand[x].GetComponent<CardObj>().Attack);
+                    StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
+                    UpdateEnemyHand();
+                  
+                    yield return new WaitForSecondsRealtime(1);
+                }
+            }
+
         }
 
         print("DONE WITH ENEMY REACTION");
