@@ -24462,6 +24462,7 @@ MonoBehaviour:
   TurnCount: -1
   timer: 4
   dialogueText: {fileID: 891843701}
+  menuScript: {fileID: 2134202307}
 --- !u!114 &2134202307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24473,6 +24474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 082cc04caf9f4154da4723de67217ad1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneManagerScript: {fileID: 0}
   level: 0
 --- !u!114 &2134202308
 MonoBehaviour:
