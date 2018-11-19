@@ -456,13 +456,14 @@ public class CardEffectManager : MonoBehaviour {
                     }
                 }
             }
-            handManagerScript.playerDeckList.RemoveAt(index);
-            statManagerScript.UpdateCardsInDeck("player",-1,1);
-            handManagerScript.playerDeckList.Add(highestValCard);
+         
+            //statManagerScript.UpdateCardsInDeck("player",-1,1);
+            handManagerScript.playerDeckList.Add(handManagerScript.playerDeckList[index]);
             StartCoroutine(handManagerScript.DrawCards(1, "player"));
-           // StartCoroutine(areaManagerScript.TempDisplay(highestValCard, tempDisplayPlayer, tempDisplayPlayer));
+            handManagerScript.playerDeckList.RemoveAt(index);
+            // StartCoroutine(areaManagerScript.TempDisplay(highestValCard, tempDisplayPlayer, tempDisplayPlayer));
 
-            handManagerScript.playerHandList.Add(highestValCard);
+            //handManagerScript.playerHandList.Add(highestValCard);
             handManagerScript.ReorderHandLayers("player");
         }
         else if (Card.CardName == "Second Wind")
