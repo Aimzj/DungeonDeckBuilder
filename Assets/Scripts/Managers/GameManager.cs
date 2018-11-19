@@ -89,7 +89,15 @@ public class GameManager : MonoBehaviour {
         level++;
         PlayerPrefs.SetInt("Level", level);
 
-         StartCoroutine(menuScript.LoadLevel(4));
+        if (level > 2)
+        {
+            StartCoroutine(menuScript.LoadLevel(4));
+        }
+        else
+        {
+            StartCoroutine(menuScript.LoadLevel(5));
+        }
+         
 
     }
 
@@ -121,7 +129,11 @@ public class GameManager : MonoBehaviour {
         {
             level = PlayerPrefs.GetInt("Level");
 
-            NextBossButton.transform.Find("Label").GetComponent<TextMeshProUGUI>().text = "End Game";
+            if (level > 2)
+            {
+                NextBossButton.transform.Find("Label").GetComponent<TextMeshProUGUI>().text = "End Game";
+            }
+            
             NextBossButton.enabled = true;
         }
         else
@@ -475,7 +487,7 @@ public class GameManager : MonoBehaviour {
             EndLevel(1);
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
+     /*   if (Input.GetKeyDown(KeyCode.D))
         {
             areaManagerScript.Call_DiscardPlayArea("player");
         }
@@ -483,7 +495,7 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.R))
         {
             areaManagerScript.Call_RenewDeck("player");
-        }
+        }*/
         
     
     }

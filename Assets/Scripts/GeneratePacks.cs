@@ -226,7 +226,6 @@ public class GeneratePacks : MonoBehaviour {
         packNames.Add("Reinforcement 1");
         packNames.Add("Reinforcement 2");
         packNames.Add("Ash");
-        packNames.Add("Necromancer");
         packNames.Add("Arcane");
         packNames.Add("Primus");
         int random;
