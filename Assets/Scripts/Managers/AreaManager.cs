@@ -234,7 +234,7 @@ public class AreaManager : MonoBehaviour {
         soundManagerScript.PlaySound_BurnCard();
 
         //add 1 to the burn pool
-        if(cardObj.GetComponent<CardObj>().CardName == "Poison" || cardObj.GetComponent<CardObj>().CardName == "Wound")
+        if(cardObj.GetComponent<CardObj>().CardName != "Poison" || cardObj.GetComponent<CardObj>().CardName != "Wound")
         {
             statManagerScript.UpdateBurn(target, 1);
         }
