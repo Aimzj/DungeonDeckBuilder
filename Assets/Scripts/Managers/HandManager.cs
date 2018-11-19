@@ -363,7 +363,7 @@ public class HandManager : MonoBehaviour {
 
             if (discardList[j].GetComponent<CardObj>().CardType == "status")
             {
-                statManagerScript.UpdateNumStatusCards(0, -1);
+                statManagerScript.UpdateNumStatusCards(1, -1);
             }
 
             //change target position of each card to the player's deck

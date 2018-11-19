@@ -230,59 +230,48 @@ public class GeneratePacks : MonoBehaviour {
         packNames.Add("Arcane");
         packNames.Add("Primus");
         int random;
-        if (lvl == 1)
-        {
-            //PACK 1
-            SetHealingPack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
 
+        packNames.Add("Healing Pack");
+
+        //PACK 1
+        random = Random.Range(0, packNames.Count - 1);
+        if(packNames[random]=="Healing Pack")
+        {
+            SetHealingPack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
             pack1 = cardGenScript.HealingPack;
         }
-        else
+        else if (packNames[random] == "Reinforcement 1")
         {
-            packNames.Add("Healing Pack");
-
-            //PACK 1
-            random = Random.Range(0, packNames.Count - 1);
-            if(packNames[random]=="Healing Pack")
-            {
-                SetHealingPack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
-                pack1 = cardGenScript.HealingPack;
-            }
-            else if (packNames[random] == "Reinforcement 1")
-            {
-                SetReinf1Pack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
-                pack1 = cardGenScript.ReinforcementPack1;
-            }
-            else if (packNames[random] == "Reinforcement 2")
-            {
-                SetReinf2Pack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
-                pack1 = cardGenScript.ReinforcementPack2;
-            }
-            else if (packNames[random] == "Ash")
-            {
-                SetAshPack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
-                pack1 = cardGenScript.AshPack;
-            }
-            else if (packNames[random] == "Necromancer")
-            {
-                SetNecroPack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
-                pack1 = cardGenScript.NecromancerPack;
-            }
-            else if (packNames[random] == "Arcane")
-            {
-                SetArcanePack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
-                pack1 = cardGenScript.ArcanePack;
-            }
-            else if (packNames[random] == "Primus")
-            {
-                SetPrimusPack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
-                pack1 = cardGenScript.PrimusPack;
-            }
-
-            packNames.RemoveAt(random);
-
-            
+            SetReinf1Pack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
+            pack1 = cardGenScript.ReinforcementPack1;
         }
+        else if (packNames[random] == "Reinforcement 2")
+        {
+            SetReinf2Pack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
+            pack1 = cardGenScript.ReinforcementPack2;
+        }
+        else if (packNames[random] == "Ash")
+        {
+            SetAshPack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
+            pack1 = cardGenScript.AshPack;
+        }
+        else if (packNames[random] == "Necromancer")
+        {
+            SetNecroPack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
+            pack1 = cardGenScript.NecromancerPack;
+        }
+        else if (packNames[random] == "Arcane")
+        {
+            SetArcanePack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
+            pack1 = cardGenScript.ArcanePack;
+        }
+        else if (packNames[random] == "Primus")
+        {
+            SetPrimusPack(Title1, card1_1, card1_2, card1_3, card1_4, card1_5);
+            pack1 = cardGenScript.PrimusPack;
+        }
+
+        packNames.RemoveAt(random);
 
 
         //PACK 2
