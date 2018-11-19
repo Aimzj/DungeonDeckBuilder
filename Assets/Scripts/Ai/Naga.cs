@@ -248,6 +248,11 @@ public class Naga : MonoBehaviour {
                 yield return new WaitForSecondsRealtime(1);
             }
         }
+        for (int i = 0; i < handManagerScript.enemyHandlist.Count; i++)
+        {
+            handManagerScript.enemyHandlist[i].GetComponent<CardMovement>().isPlayed = false;
+            handManagerScript.enemyHandlist[i].GetComponent<CardMovement>().isInHand = true;
+        }
         numCard = 2;
     }
 
@@ -267,7 +272,7 @@ public class Naga : MonoBehaviour {
         }
     }
 
-    public void CrushingBlow()
+    public void CrushingBlow( int damagedealt)
     {
         /*if(NumCBInPlay > areaManagerScript.player_PlayCardList.Count)
         {
@@ -278,9 +283,9 @@ public class Naga : MonoBehaviour {
         print("Player defence is : " + PlayerDefTotal);
         for (int i = 0; i < NumCBInPlay; i ++)
         {
-            PlayerDefTotal-=3;
+            //PlayerDefTotal-=3;
          
-            if(PlayerDefTotal > 0)
+            if(damagedealt > 0)
             {
                 print("Player defence is : " + PlayerDefTotal);
                 if (areaManagerScript.player_PlayCardList.Count > 0)
