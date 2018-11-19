@@ -120,8 +120,12 @@ public class CardEffectManager : MonoBehaviour {
             handManagerScript.playerDeckList.Insert(rand, newCard);
             StartCoroutine(areaManagerScript.TempDisplay(newCard, tempDisplayPlayer, playerDeckTrans));
             statManagerScript.UpdateCardsInDeck("player", 1, 1);
-       
 
+            for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+            {
+                handManagerScript.playerHandList[i].GetComponent<CardMovement>().isPlayed = false;
+                handManagerScript.playerHandList[i].GetComponent<CardMovement>().isInHand = true;
+            }
         }
         else if (Card.CardName == "Pact of Maggots")
         {
@@ -186,6 +190,14 @@ public class CardEffectManager : MonoBehaviour {
         {
             StartCoroutine(handManagerScript.DrawTrash(1, "player"));
         }
+
+        //Reset bools for cards in hand
+        for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+        {
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isPlayed = false;
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isInHand = true;
+        }
+        handManagerScript.ReorderHandLayers("player");
     }
 
     void eternalWill()
@@ -230,7 +242,8 @@ public class CardEffectManager : MonoBehaviour {
 
 
             }
-           
+
+          
             //FOR PLAYER
             //Add deck to tempdeck
             for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
@@ -276,6 +289,20 @@ public class CardEffectManager : MonoBehaviour {
 
             StartCoroutine(handManagerScript.DrawCards(enemyHandSize, "enemy"));
             StartCoroutine(handManagerScript.DrawCards(playerHandSize, "player"));
+
+            //Reset bools in enemy hand
+            for (int i = 0; i < handManagerScript.enemyHandlist.Count; i++)
+            {
+                handManagerScript.enemyHandlist[i].GetComponent<CardMovement>().isPlayed = false;
+                handManagerScript.enemyHandlist[i].GetComponent<CardMovement>().isInHand = true;
+            }
+
+            //Reset bools in player hand
+            for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+            {
+                handManagerScript.playerHandList[i].GetComponent<CardMovement>().isPlayed = false;
+                handManagerScript.playerHandList[i].GetComponent<CardMovement>().isInHand = true;
+            }
         }
     }
     public int PlayUndyingPoisonEffects()
@@ -308,8 +335,13 @@ public class CardEffectManager : MonoBehaviour {
             handManagerScript.Shuffle(ref areaManagerScript.player_DiscardCardList);
             StartCoroutine(handManagerScript.DrawDiscard(1, "player"));
         }
-       
-        
+
+        //Reset Bools for player cards
+        for (int i = 0; i < handManagerScript.playerHandList.Count; i++)
+        {
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isPlayed = false;
+            handManagerScript.playerHandList[i].GetComponent<CardMovement>().isInHand = true;
+        }
     }
 
     public void PlayOnArrivalEffects(GameObject cardObj)
