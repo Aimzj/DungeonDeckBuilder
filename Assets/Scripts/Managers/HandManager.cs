@@ -282,6 +282,10 @@ public class HandManager : MonoBehaviour {
         //check if the card drawn was kindling
         if(handList[handList.Count - 1].GetComponent<CardMovement>().isKindling)
         {
+            if (target == "enemy")
+            {
+                print("ENEMY DREW KINDLING");
+            }
             statManagerScript.UpdateKindling(target, -1, 0);
         }
 
@@ -366,9 +370,11 @@ public class HandManager : MonoBehaviour {
             }
 
             count++;
+
+            statManagerScript.UpdateCardsInDeck(target, 1, 0);
         }
 
-        statManagerScript.SetTotalCards(target, deckList.Count,0);
+        //statManagerScript.SetTotalCards(target, deckList.Count,0);
         discardList.Clear();
         
 

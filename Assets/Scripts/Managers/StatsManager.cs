@@ -57,7 +57,7 @@ public class StatsManager : MonoBehaviour {
         {
             numKindling_enemy += numInDeck;
             numTotalKindling_enemy += numTotal;
-            enemyKindling.text = numKindling_enemy + "/" + numKindling_enemy;
+            enemyKindling.text = numKindling_enemy + "/" + numTotalKindling_enemy;
         }
     }
 
@@ -163,7 +163,7 @@ public class StatsManager : MonoBehaviour {
         attackText.text = numAttack.ToString();
     }
 
-    public void SetTotalCards(string target, int num, int cardsInPlay)
+    /*public void SetTotalCards(string target, int num, int cardsInPlay)
     {
         if (target == "player")
         {
@@ -177,7 +177,7 @@ public class StatsManager : MonoBehaviour {
             numCardsInDeck_enemy = num;
             enemyCardsInDeck.text = (numCardsInDeck_enemy-cardsInPlay) + "/" + totalCards_enemy;
         }
-    }
+    }*/
 
     public void UpdateCardsInDeck(string target, int numCards, int numTotal)
     {

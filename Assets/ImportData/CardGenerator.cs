@@ -521,9 +521,9 @@ public class CardGenerator : MonoBehaviour {
 
         //fill stats
         statManagerScript.UpdateHealth("player", player_health, player_health);
-        statManagerScript.SetTotalCards("player", player_cardsInDeck,0);
+        statManagerScript.UpdateCardsInDeck("player", player_cardsInDeck,player_cardsInDeck);
         statManagerScript.UpdateHealth("enemy", enemy_health,enemy_health);
-        statManagerScript.SetTotalCards("enemy", enemy_cardsInDeck,0);
+        statManagerScript.UpdateCardsInDeck("enemy", enemy_cardsInDeck,enemy_cardsInDeck);
 
 
         //start the game
