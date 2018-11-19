@@ -19,6 +19,7 @@ public class Dummy : MonoBehaviour {
 
     public TextMeshProUGUI dialogueText;
 
+    public Menu menuScript;
     private void Start()
     {
         StartCoroutine(startMessage());
@@ -183,6 +184,10 @@ public class Dummy : MonoBehaviour {
                 dialogueText.text = "Good luck and get ready to burn!";
                 yield return new WaitForSecondsRealtime(timer);
                 dialogueText.text = "";
+                //move the player to level 1
+                PlayerPrefs.SetString("Pack", "none");
+                PlayerPrefs.SetInt("Level", 1);
+                StartCoroutine(menuScript.LoadLevel(2));
                 //TRIGGER PROMPT FOR PLAYER
                 statsManagerScript.UpdateSigils("enemy", -2);
                 break;
