@@ -274,10 +274,10 @@ public class Naga : MonoBehaviour {
 
     public void CrushingBlow( int damagedealt)
     {
-        /*if(NumCBInPlay > areaManagerScript.player_PlayCardList.Count)
+        if(NumCBInPlay > areaManagerScript.player_PlayCardList.Count)
         {
             NumCBInPlay = areaManagerScript.player_PlayCardList.Count;
-        }*/
+        }
         print("CRUSHING BLOW EFFECT");
         int PlayerDefTotal = statsManagerScript.numDefense;
         print("Player defence is : " + PlayerDefTotal);
