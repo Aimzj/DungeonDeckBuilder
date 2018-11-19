@@ -302,6 +302,7 @@ public class CardMovement : MonoBehaviour {
     }
     private void OnMouseUp()
     {
+        print("PickUp");
         if (!isEnemyCard
             && !isFrozen
             && !isPlayed)
