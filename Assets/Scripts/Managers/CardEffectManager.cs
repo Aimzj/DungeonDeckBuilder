@@ -80,14 +80,18 @@ public class CardEffectManager : MonoBehaviour {
         if(Card.CardName=="Advanced Guard")
         {
             //Reaction - if played after a card with a defense value higher than 1, add +2 defense to this card
-            GameObject lastPlayedCard = areaManagerScript.player_PlayCardList[areaManagerScript.player_PlayCardList.Count - 1];
-            if(statManagerScript.phase_player == "reaction"
-                && lastPlayedCard.GetComponent<CardObj>().Defense > 1)
+            if (areaManagerScript.player_PlayCardList.Count > 1)
             {
-                //Card.Defense += 2;
-                playedCard.transform.Find("DefenseCost").GetComponent<TextMeshPro>().text = (Card.Defense+2).ToString();
-                statManagerScript.UpdateDefense("player", 2);
+                GameObject lastPlayedCard = areaManagerScript.player_PlayCardList[areaManagerScript.player_PlayCardList.Count - 2];
+                if (statManagerScript.phase_player == "reaction"
+                    && lastPlayedCard.GetComponent<CardObj>().Defense > 1)
+                {
+                    //Card.Defense += 2;
+                    playedCard.transform.Find("DefenseCost").GetComponent<TextMeshPro>().text = (Card.Defense + 2).ToString();
+                    statManagerScript.UpdateDefense("player", 2);
+                }
             }
+            
 
         }
         else if(Card.CardName=="Naga Red Eye Gem")
