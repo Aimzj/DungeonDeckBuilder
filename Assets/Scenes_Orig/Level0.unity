@@ -9734,12 +9734,12 @@ Prefab:
     - target: {fileID: 114293564168419156, guid: dd80e57a8351f454fa030baef4d95e4a,
         type: 2}
       propertyPath: m_havePropertiesChanged
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114293564168419156, guid: dd80e57a8351f454fa030baef4d95e4a,
         type: 2}
       propertyPath: m_isInputParsingRequired
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114293564168419156, guid: dd80e57a8351f454fa030baef4d95e4a,
         type: 2}
@@ -9762,6 +9762,16 @@ Prefab:
         type: 2}
       propertyPath: m_textInfo.lineCount
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 224685697019411336, guid: dd80e57a8351f454fa030baef4d95e4a,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -90.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 224685697019411336, guid: dd80e57a8351f454fa030baef4d95e4a,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 216.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd80e57a8351f454fa030baef4d95e4a, type: 2}
@@ -24163,6 +24173,7 @@ GameObject:
   - component: {fileID: 2134202305}
   - component: {fileID: 2134202308}
   - component: {fileID: 2134202306}
+  - component: {fileID: 2134202307}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -24450,6 +24461,18 @@ MonoBehaviour:
   TurnCount: -1
   timer: 4
   dialogueText: {fileID: 891843701}
+--- !u!114 &2134202307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2134202296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082cc04caf9f4154da4723de67217ad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level: 0
 --- !u!114 &2134202308
 MonoBehaviour:
   m_ObjectHideFlags: 0
