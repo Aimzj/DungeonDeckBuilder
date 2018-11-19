@@ -209,6 +209,8 @@ public class HandManager : MonoBehaviour {
                 }
                 else
                 {
+                    print("I'm trying to draw");
+                    //check that there are cards in the discard
                     RemakeDeck("enemy", ref areaManagerScript.enemy_DiscardCardList, ref enemyDeckList, enemyDeck);
                     yield return new WaitForSecondsRealtime(0.3f);
                     i--;
@@ -216,18 +218,6 @@ public class HandManager : MonoBehaviour {
             }
 
             yield return new WaitForSecondsRealtime(0.3f);
-        }
-
-        for (int i = 0; i < playerHandList.Count; i++)
-        {
-          playerHandList[i].GetComponent<CardMovement>().isPlayed = false;
-          playerHandList[i].GetComponent<CardMovement>().isInHand = true;
-        }
-
-        for (int i = 0; i < enemyHandlist.Count; i++)
-        {
-            enemyHandlist[i].GetComponent<CardMovement>().isPlayed = false;
-            enemyHandlist[i].GetComponent<CardMovement>().isInHand = true;
         }
 
     }
@@ -622,12 +612,13 @@ public class HandManager : MonoBehaviour {
                 }
                 else if (target == "enemy")
                 {
+                    print("I need to reshuffle to burn a card");
                     RemakeDeck(target, ref areaManagerScript.enemy_DiscardCardList, ref enemyDeckList, enemyDeck); 
                 }
 
-                yield return new WaitForSecondsRealtime(1f);
-                InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, target);
                 yield return new WaitForSecondsRealtime(0.5f);
+                InitialiseDeck(ref tempDeckPileList, ref tempHandList, ref tempDiscardList, target);
+                yield return new WaitForSecondsRealtime(0.2f);
                 i--;
             }
             //check if there are cards in the player's hand

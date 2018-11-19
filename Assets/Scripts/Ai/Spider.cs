@@ -110,7 +110,7 @@ public class Spider : MonoBehaviour {
     public void Lethargy()
     {
         print("enemy phase: " + statsManagerScript.phase_enemy);
-        if (statsManagerScript.phase_enemy == "reaction")
+        if (statsManagerScript.phase_enemy == "reaction" || statsManagerScript.phase_enemy == "waiting")
         {
             statsManagerScript.UpdateDefense("enemy", 1);
             UpdateEnemyHand();
