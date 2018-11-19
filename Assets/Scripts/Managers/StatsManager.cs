@@ -20,12 +20,10 @@ public class StatsManager : MonoBehaviour {
 
     private GameManager gameManagerScript;
 
-    private Canvas gameOverCanvas;
+    public Canvas gameOverCanvas;
     void Start () {
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
-        gameOverCanvas = GameObject.Find("GameOver_Canvas").GetComponent<Canvas>();
 
-        gameOverCanvas.enabled = false;
     }
 
     public void UpdateNumStatusCards(int numDeck, int numDiscard)

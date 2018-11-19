@@ -76,9 +76,10 @@ public class GameManager : MonoBehaviour {
         endGameCanvas = GameObject.Find("GameOver_Canvas").GetComponent<Canvas>();
     }
 
+    //always restart player from the beginning
     public void RestartButton()
     {
-        int level = PlayerPrefs.GetInt("Level");
+        PlayerPrefs.SetInt("Level",1);
         StartCoroutine(menuScript.LoadLevel(2));
     }
 
@@ -124,7 +125,7 @@ public class GameManager : MonoBehaviour {
 
         if (win == 0)
         {
-            //disable the buttons except for "next boss" button
+            NextBossButton.transform.Find("Label").GetComponent<TextMeshProUGUI>().text = "End Game";
             NextBossButton.enabled = true;
         }
         else
