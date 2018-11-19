@@ -14280,7 +14280,8 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Siddarth Singh\n\nLead Balance Manager\r\nLead User Interface Designer\r\nAssociate
-    User Experience Designer\nAssociate Programmer\nAssociate Game Designer\r"
+    User Experience Designer\nAssociate Programmer\nAssociate Game Designer\r\nResident
+    Bug Squasher"
 --- !u!222 &482878264
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23619,7 +23620,8 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Aimee Handley\n\nLead Programmer\r\nLead Quality Assurance\r\nLead User
-    Experience Developer\r\nAssociate Sound Designer\nAssociate Project Manager\r\n"
+    Experience Developer\r\nAssociate Sound Designer\nAssociate Project Manager\r\nResident
+    Bug Squasher\n"
 --- !u!222 &640467267
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -37775,7 +37777,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Kenrick James\n\nLead Artist\r\nLead Character Designer\r\nLead Writer\nAssociate
-    UI Designer\r\nAssociate Project Manager\r\n"
+    UI Designer\r\nAssociate Project Manager\r\nResident Sweetheart\n"
 --- !u!222 &917187541
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -84757,7 +84759,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Saili Chola\r\n\nLead Game Designer\r\nLead Sound Designer\r\nLead Project
-    Manager\r\nAssociate Writer\nAssociate UI Designer\r\n"
+    Manager\r\nAssociate Writer\nAssociate UI Designer\r\nAssociate Balance Manager\n"
 --- !u!222 &2057061085
 CanvasRenderer:
   m_ObjectHideFlags: 0
