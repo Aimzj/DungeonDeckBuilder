@@ -82,7 +82,7 @@ public class SubtitleList : MonoBehaviour {
             }
             */
 
-            if (subtitleCounter < subtitleList.Length+1)
+            if (subtitleCounter < subtitleList.Length)
             {
                 subtitleTimer = 0f;
                 subtitleTimerLim = subtitleList[subtitleCounter].GetComponent<SubtitleFunctions>().textLength;
