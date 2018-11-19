@@ -66,12 +66,19 @@ public class Naga : MonoBehaviour {
         NagaHand.Clear();
     }
 
+    //Discard function
     IEnumerator reactionDiscard(int cost, int index)
     {
+        //Counter incase while loop does odd things while testing
         int counter = 0;
+
+        //Run loop until cost is fulfilled
         while (cost != 0 && counter <= 50)
         {
             counter++;
+
+            //Check number of each card for discard
+
             if (numCrushBlow > 0)
             {
                 for (int k = 0; k > NagaHand.Count; k++)
@@ -106,6 +113,7 @@ public class Naga : MonoBehaviour {
             {
                 for (int k = 0; k > NagaHand.Count; k++)
                 {
+                    //For last card in list check if designated to play before discarding
                     if (cost > 0 && NagaHand[k].GetComponent<CardObj>().CardName == "Call of the Deep" && NagaHand[k].GetComponent<CardMovement>().ToPlay == false)
                     {
                         numCotD--;
@@ -145,8 +153,10 @@ public class Naga : MonoBehaviour {
                     {
                         // int cost = 1;
 
+                        //Set card to be played bool
                         NagaHand[i].GetComponent<CardMovement>().ToPlay = true;
-                        StartCoroutine(attackDiscard(1, x));
+                        //StartCoroutine(attackDiscard(1, x));
+                        //Deset after playing
                         NagaHand[i].GetComponent<CardMovement>().ToPlay = false;
                         
                         NagaHand[i].GetComponent<CardMovement>().PlayEnemyCard();
@@ -157,7 +167,6 @@ public class Naga : MonoBehaviour {
                         print("ELDRITCH OATH");
 
                        
-                        //TRIGGER DISCARD Last
                         numEldritchOath--;
                         print("EE:" + numEldritchOath);
                         yield return new WaitForSecondsRealtime(1);
@@ -207,7 +216,7 @@ public class Naga : MonoBehaviour {
 
         if(NumSigilsInBurn <= 2 && areaManagerScript.enemy_TrashCardList.Count >= 5 &&  enemyHand.Count >= 3)
         {
-           StartCoroutine(CalloftheDeep());
+           //StartCoroutine(CalloftheDeep());
           
         }
 
@@ -227,7 +236,10 @@ public class Naga : MonoBehaviour {
             {
 
                 NagaHand[k].GetComponent<CardMovement>().ToPlay = true;
-                StartCoroutine(reactionDiscard(1, k));
+                
+                //REMOVE DISCARD
+                //StartCoroutine(reactionDiscard(1, k));
+
                 NagaHand[k].GetComponent<CardMovement>().ToPlay = false;
 
                 NagaHand[k].GetComponent<CardMovement>().PlayEnemyCard();
@@ -338,7 +350,7 @@ public class Naga : MonoBehaviour {
                 for (int k = 0; k < NagaHand.Count; k++)
                 {
 
-                    if (cost > 0 && NagaHand[k].GetComponent<CardObj>().CardName == "Call of the Deep")
+                    if (cost > 0 && NagaHand[k].GetComponent<CardObj>().CardName == "Call of the Deep" && NagaHand[k].GetComponent<CardMovement>().ToPlay == false)
                     {
                         print("DISCARD CALL");
                         numCotD--;
@@ -362,7 +374,7 @@ public class Naga : MonoBehaviour {
                 for (int k = 0; k < NagaHand.Count; k++)
                 {
 
-                    if (cost > 0 && NagaHand[k].GetComponent<CardObj>().CardName == "Serpent's Scale")
+                    if (cost > 0 && NagaHand[k].GetComponent<CardObj>().CardName == "Serpent's Scale" && NagaHand[k].GetComponent<CardMovement>().ToPlay == false)
                     {
                         print("DISCARD SCALES");
                         numScale--;
@@ -385,7 +397,7 @@ public class Naga : MonoBehaviour {
                 for (int k = 0; k < NagaHand.Count; k++)
                 {
 
-                    if (cost > 0 && NagaHand[k].GetComponent<CardObj>().CardName == "Crushing Blow" )
+                    if (cost > 0 && NagaHand[k].GetComponent<CardObj>().CardName == "Crushing Blow" && NagaHand[k].GetComponent<CardMovement>().ToPlay == false)
                     {
                         print("DISCARD BLOW");
                         numCrushBlow--;
@@ -425,7 +437,7 @@ public class Naga : MonoBehaviour {
                     {
 
                         NagaHand[x].GetComponent<CardMovement>().ToPlay = true;
-                        StartCoroutine(attackDiscard(1, x));
+                        //StartCoroutine(attackDiscard(1, x));
                         NagaHand[x].GetComponent<CardMovement>().ToPlay = false;
 
                         NagaHand[x].GetComponent<CardMovement>().PlayEnemyCard();
