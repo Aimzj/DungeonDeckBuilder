@@ -55,6 +55,7 @@ public class Spider : MonoBehaviour {
 
                 //draw a card 
                 StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
+                print("trying to draw to defend");
 
                 yield return new WaitForSecondsRealtime(1);
                 UpdateEnemyHand();
@@ -138,7 +139,7 @@ public class Spider : MonoBehaviour {
 
                 //draw a card 
                 StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
-                print("Skitter was played");
+                print("Skitter was played in action phase");
 
                 yield return new WaitForSecondsRealtime(1);
                 UpdateEnemyHand();

@@ -190,20 +190,23 @@ public class HandManager : MonoBehaviour {
         {
             if (target == "player")
             {
-                if(playerDeckList.Count - numCards >= 0)
+                if(playerDeckList.Count - 1 >= 0)
                 {
                     DrawCards("player", ref playerDeckList, ref Player_HandPositions, ref player_x, player_yPos, ref playerHandList);
                 }
                 else
                 {
-                    RemakeDeck("player",ref areaManagerScript.player_DiscardCardList,ref playerDeckList, playerDeck);
-                    yield return new WaitForSecondsRealtime(0.3f);
-                    i--;
+                    if (areaManagerScript.player_DiscardCardList.Count > 0)
+                    {
+                        RemakeDeck("player", ref areaManagerScript.player_DiscardCardList, ref playerDeckList, playerDeck);
+                        yield return new WaitForSecondsRealtime(0.3f);
+                        i--;
+                    }
                 }
             }
             else if (target == "enemy")
             {
-                if (enemyDeckList.Count - numCards >= 0)
+                if (enemyDeckList.Count - 1 >= 0)
                 {
                     DrawCards("enemy", ref enemyDeckList, ref Enemy_HandPositions, ref enemy_x, enemy_yPos, ref enemyHandlist);
                 }
@@ -211,9 +214,13 @@ public class HandManager : MonoBehaviour {
                 {
                     print("I'm trying to draw");
                     //check that there are cards in the discard
-                    RemakeDeck("enemy", ref areaManagerScript.enemy_DiscardCardList, ref enemyDeckList, enemyDeck);
-                    yield return new WaitForSecondsRealtime(0.3f);
-                    i--;
+                    if (areaManagerScript.enemy_DiscardCardList.Count > 0)
+                    {
+                        RemakeDeck("enemy", ref areaManagerScript.enemy_DiscardCardList, ref enemyDeckList, enemyDeck);
+                        yield return new WaitForSecondsRealtime(0.3f);
+                        i--;
+                    }
+                   
                 }
             }
 
