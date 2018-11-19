@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour {
     bool isCheat = false;
     bool isHelp = false;
 
-    private Canvas endGameCanvas;
+    public Canvas endGameCanvas;
 
     // Use this for initialization
     void Start () {
@@ -73,7 +73,6 @@ public class GameManager : MonoBehaviour {
         //HELP
         HelpSprites = GameObject.FindGameObjectsWithTag("Help");
 
-        endGameCanvas = GameObject.Find("GameOver_Canvas").GetComponent<Canvas>();
     }
 
     //always restart player from the beginning
@@ -190,11 +189,7 @@ public class GameManager : MonoBehaviour {
     //called by the Enemy when they are finished playing cards
     public void EndEnemyTurn()
     {
-        //enable the card interactions until it is the enemy's turn
-        for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
-        {
-            handManagerScript.playerDeckList[i].GetComponent<CardMovement>().isFrozen = false;
-        }
+        EnableInteractions();
 
         StartCoroutine(DisplayPhase("Player Reaction"));
         //PLAYER REACT
@@ -342,15 +337,7 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(EnemyWaitToAct());
         //StartCoroutine(dummyScript.PlayerDialogue());
 
-
-
-        //disable the card interactions until it is the player's turn
-        for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
-        {
-            handManagerScript.playerDeckList[i].GetComponent<CardMovement>().isFrozen = true;
-        }
-        //disable the button
-        endTurnButton.enabled = false;
+        DisableInteractions();
     }
 
     IEnumerator EnemyWaitToAct()
@@ -384,6 +371,7 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
+
             StartCoroutine(DisplayPhase("Enemy Reaction"));
             //ENEMY REACTS
             statManagerScript.SetPhase("player", "waiting");
@@ -400,6 +388,22 @@ public class GameManager : MonoBehaviour {
     
     }
 	
+    private void DisableInteractions()
+    {
+        //disable the card interactions until it is the player's turn
+        for (int i = 0; i < handManagerScript.playerDeckList.Count; i++)
+        {
+            handManagerScript.playerDeckList[i].GetComponent<CardMovement>().isFrozen = true;
+        }
+        //disable the button
+        endTurnButton.enabled = false;
+    }
+
+    private void EnableInteractions()
+    {
+
+    }
+
 	// Update is called once per frame
 	void Update () {
 

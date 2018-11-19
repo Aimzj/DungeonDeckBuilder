@@ -100,7 +100,7 @@ public class CardEffectManager : MonoBehaviour {
 
             //Card.Attack += attack;
             playedCard.transform.Find("AttackCost").GetComponent<TextMeshPro>().text = (Card.Attack + attack).ToString();
-            statManagerScript.UpdateAttack("player", Card.Attack + attack);
+            statManagerScript.UpdateAttack("player", attack);
         }
         else if (Card.CardName == "Inner Strength")
         {

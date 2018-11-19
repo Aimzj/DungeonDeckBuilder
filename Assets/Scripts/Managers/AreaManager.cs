@@ -382,6 +382,7 @@ public class AreaManager : MonoBehaviour {
         }
 
         //count how many status effects are in the discard
+        statManagerScript.numStatusDiscard = 0;
         for(int i=0; i<player_DiscardCardList.Count; i++)
         {
             if (player_DiscardCardList[i].GetComponent<CardObj>().CardType == "status")
