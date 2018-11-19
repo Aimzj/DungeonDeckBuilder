@@ -271,7 +271,7 @@ public class CardMovement : MonoBehaviour {
 
     void playerPlayCardFilter()
     {
-        if (!handManagerScript.isExceedingHandSize
+        if ((!handManagerScript.isExceedingHandSize || this.gameObject.GetComponent<CardObj>().CardType == "status")
            && gameObject.GetComponent<CardObj>().DiscardCost <= statManagerScript.numDiscard_player)
         {
             //play sound
