@@ -47,31 +47,37 @@ public class Spider : MonoBehaviour {
 
         for (int i = 0; i < spiderHand.Count; i++)
         {
-            if (spiderHand[i].GetComponent<CardObj>().CardName == "Skitter")
+            //check that the player's attack is higher than defense
+            if (statsManagerScript.numAttack > statsManagerScript.numDefense)
             {
-                //play skitter
-                spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
-                statsManagerScript.UpdateDefense("enemy", 1);
+                if (spiderHand[i].GetComponent<CardObj>().CardName == "Skitter")
+                {
+                    //play skitter
+                    spiderHand[i].GetComponent<CardMovement>().PlayEnemyCard();
+                    statsManagerScript.UpdateDefense("enemy", 1);
 
-                //draw a card 
-                StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
-                print("trying to draw to defend");
+                    //draw a card 
+                    StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
+                    print("trying to draw to defend");
 
-                yield return new WaitForSecondsRealtime(1);
-                UpdateEnemyHand();
-                yield return new WaitForSecondsRealtime(1);
+                    yield return new WaitForSecondsRealtime(1);
+                    UpdateEnemyHand();
+                    yield return new WaitForSecondsRealtime(1);
 
-                i = -1;
-                upperBound = spiderHand.Count;
+                    i = -1;
+                    upperBound = spiderHand.Count;
 
+                }
             }
+            
         }
         UpdateEnemyHand();
         //loop through to check for a Skitter card
         bool isFound = false;
         for (int i = 0; i < spiderHand.Count; i++)
         {
-            if (spiderHand[i].GetComponent<CardObj>().CardName == "Skitter")
+            if (spiderHand[i].GetComponent<CardObj>().CardName == "Skitter"
+                && statsManagerScript.numAttack > statsManagerScript.numDefense)
             {
                 isFound = true;
 
