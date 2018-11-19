@@ -150,6 +150,7 @@ public class Naga : MonoBehaviour {
 
                         NagaHand[i].GetComponent<CardMovement>().PlayEnemyCard();
                         statsManagerScript.UpdateAttack("enemy", NagaHand[i].GetComponent<CardObj>().Attack);
+                        DamageTaken -= NagaHand[x].GetComponent<CardObj>().Defense;
                         NagaHand[i].GetComponent<CardObj>().Attack += 3;
                         NagaHand[i].GetComponent<CardObj>().Defense += 2;
                         print("ELDRITCH OATH");
