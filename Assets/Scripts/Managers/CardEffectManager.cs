@@ -443,6 +443,7 @@ public class CardEffectManager : MonoBehaviour {
                 }
             }
             handManagerScript.playerDeckList.RemoveAt(index);
+            statManagerScript.UpdateCardsInDeck("player",-1,1);
             handManagerScript.playerDeckList.Add(highestValCard);
             StartCoroutine(handManagerScript.DrawCards(1, "player"));
            // StartCoroutine(areaManagerScript.TempDisplay(highestValCard, tempDisplayPlayer, tempDisplayPlayer));
