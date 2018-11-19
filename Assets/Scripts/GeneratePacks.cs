@@ -382,7 +382,7 @@ public class GeneratePacks : MonoBehaviour {
         Title.text = "Reinforcement 1 Pack";
         btn1.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x2 Advanced Guard";
         btn2.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x1 Guard";
-        btn3.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x1 Lucky Charm";
+        btn3.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = "x2 Lucky Charm";
         btn4.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = " ";
         btn4.transform.position = new Vector3(100, 100, 100);
         btn5.transform.Find("Title1").GetComponent<TextMeshProUGUI>().text = " ";
