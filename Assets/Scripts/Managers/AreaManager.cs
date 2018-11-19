@@ -118,13 +118,17 @@ public class AreaManager : MonoBehaviour {
     }
 
     private void OrderLayerDiscard(ref List<GameObject> discardList)
-    {       
-        //loop through discard list
-        for (int i=0; i < discardList.Count; i++)
+    {
+        if (discardList.Count > 1)
         {
-            discardList[i].GetComponent<CardMovement>().ChangeOrder(11);
+            //loop through discard list
+            for (int i = 0; i < discardList.Count; i++)
+            {
+                discardList[i].GetComponent<CardMovement>().ChangeOrder(11);
+            }
+            discardList[discardList.Count - 1].GetComponent<CardMovement>().ChangeOrder(13);
         }
-        discardList[discardList.Count - 1].GetComponent<CardMovement>().ChangeOrder(13);
+        
     }
 
     private void DiscardCard(GameObject cardObj, string target, ref List<GameObject> discardList, Transform discardTrans)

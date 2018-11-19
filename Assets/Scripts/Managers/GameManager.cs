@@ -217,7 +217,10 @@ public class GameManager : MonoBehaviour {
     public IEnumerator EndPlayerReact_wait()
     {
         //resolve attack and defense values and other effects
-        int DamageDealt_toPlayer = statManagerScript.numAttack - statManagerScript.numDefense;
+        int defense = statManagerScript.numDefense;
+        if (defense < 0)
+            defense = 0;
+        int DamageDealt_toPlayer = statManagerScript.numAttack - defense;
         if (DamageDealt_toPlayer > 0)
         {
             // statManagerScript.UpdateHealth("player", -DamageDealt_toPlayer);
@@ -294,7 +297,10 @@ public class GameManager : MonoBehaviour {
         //after the enemy reacts to player's cards, it is the enemy's turn
 
         //resolve attack and defense values and other effects
-        int DamageDealt_toEnemy = statManagerScript.numAttack - statManagerScript.numDefense;
+        int defense = statManagerScript.numDefense;
+        if (defense < 0)
+            defense = 0;
+        int DamageDealt_toEnemy = statManagerScript.numAttack - defense;
         if (DamageDealt_toEnemy > 0)
         {
            // statManagerScript.UpdateHealth("enemy", -DamageDealt_toEnemy);
