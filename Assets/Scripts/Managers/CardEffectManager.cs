@@ -68,6 +68,12 @@ public class CardEffectManager : MonoBehaviour {
             
         }
 
+        if (statManagerScript.phase_player == "waiting")
+        {
+            print("waiting, added defense");
+            statManagerScript.UpdateDefense("player", Card.Defense);
+        }
+
         //DEFEND
         if(statManagerScript.phase_player == "reaction")
         {
@@ -309,6 +315,8 @@ public class CardEffectManager : MonoBehaviour {
             }
         }
     }
+
+    //UNDYING
     public int PlayUndyingPoisonEffects()
     {
 
@@ -348,6 +356,7 @@ public class CardEffectManager : MonoBehaviour {
         }
     }
 
+    //ON ARRIVAL
     public void PlayOnArrivalEffects(GameObject cardObj)
     {
         //retrieve card data

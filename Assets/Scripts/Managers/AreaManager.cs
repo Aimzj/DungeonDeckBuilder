@@ -209,7 +209,10 @@ public class AreaManager : MonoBehaviour {
         yield return new WaitForSecondsRealtime(0.5f);
 
         //change order in layer
-        card.GetComponent<CardMovement>().ChangeOrder(0);
+        if(targetTrans == playerDiscard || targetTrans == enemyDiscard)
+            card.GetComponent<CardMovement>().ChangeOrder(11);
+        else
+            card.GetComponent<CardMovement>().ChangeOrder(0);
     }
 
     public void Call_TrashCard(GameObject cardObj, string target)
@@ -370,11 +373,14 @@ public class AreaManager : MonoBehaviour {
                 //disable burn halos
                 playList[i].transform.Find("BurnBorder").GetComponent<SpriteRenderer>().enabled = false;
 
+                playList[i].GetComponent<CardMovement>().ChangeOrder(11);
+
                 discardList.Add(playList[i]);
 
                 //change target position of each card to the discard pile
                 var obj = (GameObject)Instantiate(TempObj, new Vector3(discardTrans.position.x, discardTrans.position.y, discardTrans.position.z), Quaternion.Euler(90, 90, 0));
                 playList[i].GetComponent<CardMovement>()._targetTransform = obj.transform;
+
             }
             //clear play list
             playList.Clear();

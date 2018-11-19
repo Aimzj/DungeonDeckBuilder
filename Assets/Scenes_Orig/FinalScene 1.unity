@@ -20114,6 +20114,9 @@ MonoBehaviour:
   card3_3: {fileID: 1480481693}
   card3_4: {fileID: 28800027}
   card3_5: {fileID: 40181641}
+  Choose1: {fileID: 250207001}
+  Choose2: {fileID: 618313333}
+  Choose3: {fileID: 385584257}
   cardList: {fileID: 1905488234}
   pack1: []
   pack2: []
