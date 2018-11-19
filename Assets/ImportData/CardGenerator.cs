@@ -552,7 +552,7 @@ public class CardGenerator : MonoBehaviour {
         StartCoroutine(menuScript.FadeOutFadeIn());
         yield return new WaitForSecondsRealtime(1.5f);
         packCanvas.enabled = false;
-
+        yield return new WaitForSecondsRealtime(0.5f);
         //Initialise decks in their respective scripts
         handManagerScript.InitialiseCards(level);
         gameManagerScript.StartGame(level);

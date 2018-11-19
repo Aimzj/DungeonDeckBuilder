@@ -1739,7 +1739,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1976136819}
-        m_MethodName: ViewCredits
+        m_MethodName: WatchOpening
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

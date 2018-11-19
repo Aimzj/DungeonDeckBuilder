@@ -148,6 +148,11 @@ public class CardEffectManager : MonoBehaviour {
             int rand = Random.Range(0, handManagerScript.playerDeckList.Count - 1);
             StartCoroutine(handManagerScript.DrawCards(2, "player"));
         }
+        else if(Card.CardName == "Second Wind")
+        {
+            //draw 1 card
+            StartCoroutine(handManagerScript.DrawCards(1, "player"));
+        }
 
     }
 
