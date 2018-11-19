@@ -215,9 +215,11 @@ public class Naga : MonoBehaviour {
             }
         }
 
-        if(NumSigilsInBurn <= 2 && areaManagerScript.enemy_TrashCardList.Count >= 5 &&  enemyHand.Count >= 3)
+        if(numCotD > 0)
         {
-            StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
+           // numCotD--;
+            //StartCoroutine(handManagerScript.DrawCards(1, "enemy"));
+            //UpdateEnemyHand();
            //StartCoroutine(CalloftheDeep());
           
         }
